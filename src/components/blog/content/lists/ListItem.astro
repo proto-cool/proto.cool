@@ -1,7 +1,0 @@
----
-import renderNode from "@lib/blog/lexicalUtils";
-import Text from "../typography/Text.astro";
-const { children } = Astro.props;
----
-
-<li>{children.map((child) => <Text content={renderNode(child)} />)}</li>

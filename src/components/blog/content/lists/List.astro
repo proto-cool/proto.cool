@@ -1,8 +1,0 @@
----
-import UnorderedList from "./UnorderedList.astro";
-import OrderedList from "./OrderedList.astro";
-const { tag, children } = Astro.props;
----
-
-{tag === "ul" && <UnorderedList children={children} />}
-{tag === "ol" && <OrderedList children={children} />}

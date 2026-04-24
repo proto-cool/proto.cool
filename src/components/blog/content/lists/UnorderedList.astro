@@ -1,8 +1,0 @@
----
-import ListItem from "./ListItem.astro";
-const { children } = Astro.props;
----
-
-<ul>
-    {children.map((child) => <ListItem children={child.children} />)}
-</ul>

@@ -1,55 +1,42 @@
-# proto.cool - an Astro blog site powered by Payload CMS
+# sv
 
-This is an Astro website built with Tailwind V4 that is meant to be paired with this accompanying Payload CMS repository: https://github.com/proto-cool/proto.cool-payload-cms
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-Together, they both provide a comprehensive blog publishing workflow with Payload CMS on the backend that allows you to author content for the blog without writing a line of code, while leveraging the fully static benefits of Astro.
+## Creating a project
 
-For the developers, both the Astro frontend and Payload backend are fully open-source, and both basically as customizable as you see fit (and within your comfort level, of course).
+If you're seeing this, you've probably already done this step. Congrats!
 
-I personally host the site at https://proto.cool with these repositories, but the content is safe in my Payload CMS instance (and backed up!)
-
-## 🚀 Project Structure
-
-Inside of this project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+# create a new project
+npx sv create my-app
 ```
 
-You will not see traditional static assets in `public/` or content as Markdown files; this project was designed to be powered by a headless CMS like Payload instead.
+To recreate this project with the same configuration:
 
-## 🧞 Commands
+```sh
+# recreate this project
+pnpm dlx sv@0.15.1 create --template minimal --types ts --add prettier eslint vitest="usages:unit" sveltekit-adapter="adapter:node" --no-download-check --install pnpm .
+```
 
-All commands are run from the root of the project, from a terminal:
+## Developing
 
-| Command                    | Action                                           |
-| :------------------------- | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm run dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm run build`           | Build your production site to `./dist/`          |
-| `pnpm run preview`         | Preview your build locally, before deploying     |
-| `pnpm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm run astro -- --help` | Get help using the Astro CLI                     |
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-### S3 Sync Vite Plugin
+```sh
+npm run dev
 
-I have commercial fonts I use for my own website I can't share via this repository as it would be a violation of the license agreement. To remedy this, I have the `public/` directory for my build in a Cloudflare R2 Storage bucket, and I wrote the plugin you can find at `plugins/vite-s3-sync-public-dir.js` to facilitate synchronizing these commercial assets at build time, i.e. for Cloudflare pages.
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
-**Please note that there are some `.gitignore` rules for `public/` as a result!**
+## Building
 
-### Attributions
+To create a production version of your app:
 
-Brand icons used for the social links are from Simple Icons: https://simpleicons.org/
-Remaining UI icons are from Heroicons: https://heroicons.com/
-Webfonts were licensed from Fontspring: https://www.fontspring.com/
-... except for Public Sans: https://github.com/uswds/public-sans
+```sh
+npm run build
+```
 
-Made with love using:
-Astro: https://astro.build/
-Payload CMS: https://payloadcms.com/
-Tailwind CSS: https://tailwindcss.com/
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
