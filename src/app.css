@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Fonts
+   ========================================================================== */
+
+/* Atkinson Hyperlegible Next — variable, body default */
+@font-face {
+	font-family: 'Atkinson Hyperlegible Next';
+	src: url('/fonts/AtkinsonHyperlegibleNextVF-Variable.woff2') format('woff2');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Lunema Sans — static, display & marks. Only 400 / 800 cuts exist. */
+@font-face {
+	font-family: 'Lunema Sans';
+	src: url('/fonts/lunema-sans-v-02-regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Lunema Sans';
+	src: url('/fonts/lunema-sans-v-02-regular-italic.woff2') format('woff2');
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Lunema Sans';
+	src: url('/fonts/lunema-sans-v-02-extra-bold.woff2') format('woff2');
+	font-weight: 800;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Lunema Sans';
+	src: url('/fonts/lunema-sans-v-02-extra-bold-italic.woff2') format('woff2');
+	font-weight: 800;
+	font-style: italic;
+	font-display: swap;
+}
+
+/* Departure Mono — static, code & flavor. Pixel font — keep at small sizes. */
+@font-face {
+	font-family: 'Departure Mono';
+	src: url('/fonts/DepartureMono-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+
+:root {
+	--font-sans:
+		'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system,
+		BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-display: 'Lunema Sans', var(--font-sans);
+	--font-mono:
+		'Departure Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+html {
+	font-family: var(--font-sans);
+	/* Lunema only has 400/800 — don't let browsers fake mid-weights or italics */
+	font-synthesis: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-family: var(--font-mono);
+}
