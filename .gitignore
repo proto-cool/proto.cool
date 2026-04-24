@@ -15,6 +15,9 @@ Thumbs.db
 # IDE
 .idea
 
+# Superpowers brainstorming sessions
+.superpowers/
+
 # Env
 .env
 .env.*
