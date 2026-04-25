@@ -1,0 +1,83 @@
+/* src/lib/theme/base.css
+ * Element resets and base styles using tokens.
+ * Note: app.css already sets html { font-family, font-synthesis, smoothing }.
+ * This file extends that with element-level defaults.
+ */
+
+@layer base {
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	html {
+		background: var(--color-bg);
+		color: var(--color-fg);
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
+	}
+
+	body {
+		margin: 0;
+		min-height: 100vh;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 0;
+		font-weight: var(--weight-bold);
+		line-height: var(--leading-snug);
+	}
+
+	p {
+		margin: 0 0 var(--space-4) 0;
+	}
+
+	a {
+		color: var(--color-link);
+		text-decoration-color: var(--color-accent);
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+	}
+
+	a:visited {
+		color: var(--color-link-visited);
+	}
+
+	a:hover {
+		text-decoration-thickness: 3px;
+	}
+
+	*:focus {
+		outline: none;
+	}
+
+	*:focus-visible {
+		outline: none;
+		box-shadow: var(--glow-focus);
+	}
+
+	::selection {
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+	}
+
+	hr {
+		border: 0;
+		border-top: 1px solid var(--color-edge);
+		margin: var(--space-6) 0;
+	}
+
+	code,
+	kbd,
+	pre,
+	samp {
+		font-family: var(--font-mono);
+		letter-spacing: var(--tracking-mono);
+	}
+}
