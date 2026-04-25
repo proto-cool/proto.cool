@@ -1,6 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="%proto.theme%" data-mode="%proto.mode%">
 	<head>
+		<script>
+			var c = document.cookie,
+				t = c.match(/proto-theme=([^;]+)/),
+				m = c.match(/proto-mode=([^;]+)/);
+			if (t) document.documentElement.dataset.theme = t[1];
+			if (m) document.documentElement.dataset.mode = m[1];
+		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
