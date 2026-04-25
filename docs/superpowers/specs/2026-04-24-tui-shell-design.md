@@ -313,6 +313,7 @@ export const load = async ({ locals }) => ({
 ```ts
 type ChromeData = {
   identity: { user: string; host: string };
+  link:     { pds: string };
   system:   { kernel: string; shell: string; build: string; sig: string };
 };
 ```
@@ -323,6 +324,7 @@ Source for each field:
 | --- | --- |
 | `user` | `PUBLIC_OWNER_HANDLE` env var (`protocol7`) |
 | `host` | `PUBLIC_HOST_LABEL` env var (`helios`) |
+| `pds`  | `PUBLIC_PDS_HOST` env var (`pds.proto.cool`) |
 | `kernel` | `proto-kit ${SVELTEKIT_VERSION}` from `package.json` (read at build via Vite `define`) |
 | `shell` | `svelte ${SVELTE_VERSION}` from `package.json` |
 | `build` | `package.json` `version` field |

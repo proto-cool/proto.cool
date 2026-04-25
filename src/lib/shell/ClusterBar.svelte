@@ -19,17 +19,18 @@
 		{ label: 'up', value: $uptime }
 	]);
 	let linkRows = $derived([
-		{ label: 'pds', value: 'protocol7.computer' },
+		{ label: 'pds', value: chrome.link.pds },
 		{ label: 'rx/tx', value: linkInfo.rxTx },
 		{ label: 'conn', value: String(linkInfo.conn) },
 		{ label: 'sig', value: $signalSparkline }
 	]);
-	let systemRows = [
+	// $derived so the theme cell live-updates when the user picks a new theme via [t].
+	let systemRows = $derived([
 		{ label: 'kernel', value: chrome.system.kernel },
 		{ label: 'shell', value: chrome.system.shell },
 		{ label: 'build', value: chrome.system.build },
 		{ label: 'theme', value: page.data.theme as string }
-	];
+	]);
 </script>
 
 <div class="cluster-bar">
