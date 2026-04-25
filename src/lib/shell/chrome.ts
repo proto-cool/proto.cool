@@ -6,6 +6,7 @@ export type ChromeData = {
 const DEFAULT_USER = 'protocol7';
 const DEFAULT_HOST = 'cosmos';
 
+// Server-only: reads process.env directly. Call from +layout.server.ts, not universal loads.
 export function resolveChromeData(): ChromeData {
 	return {
 		identity: {
