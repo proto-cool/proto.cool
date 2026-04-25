@@ -1,0 +1,35 @@
+.chrome-zone {
+	container-type: inline-size;
+	container-name: chrome;
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	padding: 16px 18px calc(40px + env(safe-area-inset-bottom));
+	background-color: var(--color-bg);
+	background-image:
+		linear-gradient(
+				color-mix(in srgb, var(--color-accent) 3.5%, transparent) 1px,
+				transparent 1px
+			)
+			0 0/100% 12px,
+		linear-gradient(
+				90deg,
+				color-mix(in srgb, var(--color-accent) 3.5%, transparent) 1px,
+				transparent 1px
+			)
+			0 0/12px 100%;
+}
+
+[data-mode='light'] .chrome-zone {
+	background-image: none;
+}
+
+.chrome-zone > .chrome-region + .chrome-region {
+	margin-top: 12px;
+}
+
+.chrome-zone > .content-region {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
