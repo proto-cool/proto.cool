@@ -1,0 +1,24 @@
+/* src/lib/theme/utilities.css
+ * Opt-in utility classes. Theme-aware via custom properties.
+ */
+
+@layer utilities {
+	.bg-scanline {
+		position: relative;
+	}
+
+	.bg-scanline::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background-image: repeating-linear-gradient(
+			0deg,
+			transparent 0,
+			transparent 2px,
+			var(--color-accent) 2px,
+			var(--color-accent) 3px
+		);
+		opacity: var(--scanline-opacity, 0.012);
+	}
+}
