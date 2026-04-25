@@ -104,3 +104,40 @@
 		animation: none !important;
 	}
 }
+
+/* xs is the default (mobile-first). The rules below progressively re-enable
+   density as the chrome widens. Container-scoped so embedding works. */
+
+@container chrome (max-width: 479px) {
+	.chrome-zone {
+		padding: 8px 10px calc(36px + env(safe-area-inset-bottom));
+	}
+}
+
+@container chrome (min-width: 480px) {
+	/* sm — single combined cluster handled at component level (cluster-bar collapse) */
+}
+
+@container chrome (min-width: 768px) {
+	.chrome-zone {
+		padding: 16px 18px calc(40px + env(safe-area-inset-bottom));
+	}
+}
+
+@container chrome (min-width: 1024px) {
+	/* lg — tighter cluster gap */
+	.cluster-bar {
+		gap: 8px;
+	}
+}
+
+@container chrome (min-width: 1280px) {
+	/* xl — full as designed (defaults already match) */
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0s !important;
+		animation-iteration-count: 1 !important;
+	}
+}
