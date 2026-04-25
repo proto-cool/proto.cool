@@ -131,6 +131,22 @@
 	</section>
 
 	<section class="block">
+		<h2>Accents — primary vs secondary</h2>
+		<p>
+			In themes with a real secondary (magenta-vapor uses cyan), <span class="accent-2"
+				>--color-accent-2</span
+			>
+			should look distinctly different from <span class="accent">--color-accent</span>. In themes
+			with only one accent (default neon green), the two look identical — that's the contract.
+		</p>
+		<div class="row">
+			<button class="btn-secondary">[ SECONDARY ]</button>
+			<span class="accent-2-block">accent-2 fill</span>
+			<span class="accent-2">inline accent-2</span>
+		</div>
+	</section>
+
+	<section class="block">
 		<h2>Type scale — body/UI tier</h2>
 		{#each textSizes as t (t.token)}
 			<div class="type-row" style="font-size: var({t.token})">
@@ -354,10 +370,33 @@
 		letter-spacing: var(--tracking-wide);
 		cursor: pointer;
 	}
+	.btn-secondary {
+		font-family: var(--font-mono);
+		font-weight: var(--weight-bold);
+		font-size: var(--text-sm);
+		background: transparent;
+		color: var(--color-accent-2);
+		border: 1px solid var(--color-accent-2);
+		padding: var(--space-2) var(--space-4);
+		letter-spacing: var(--tracking-wide);
+		cursor: pointer;
+	}
+	.accent-2-block {
+		background: var(--color-accent-2);
+		color: var(--color-on-accent);
+		font-family: var(--font-mono);
+		font-weight: var(--weight-bold);
+		font-size: var(--text-sm);
+		padding: var(--space-1) var(--space-3);
+		letter-spacing: var(--tracking-wide);
+	}
 
 	.accent {
 		color: var(--color-accent);
 		text-shadow: var(--glow-text);
+	}
+	.accent-2 {
+		color: var(--color-accent-2);
 	}
 	.dim {
 		color: var(--color-fg-dim);
