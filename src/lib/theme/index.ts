@@ -1,0 +1,39 @@
+import { themes, type ThemeId, type Mode, DEFAULT_THEME, DEFAULT_MODE } from './registry';
+import { writeCookie } from './cookies';
+import { resolveTheme, resolveMode } from './resolve';
+
+export { themes, DEFAULT_THEME, DEFAULT_MODE };
+export type { ThemeId, Mode };
+export { resolveTheme, resolveMode };
+
+const THEME_COOKIE = 'proto-theme';
+const MODE_COOKIE = 'proto-mode';
+
+/**
+ * Browser-only: switch to the named theme.
+ * Validates against the registry. Persists to cookie + updates the dom.
+ */
+export function setTheme(id: ThemeId): void {
+	const resolved = resolveTheme(id);
+	writeCookie(THEME_COOKIE, resolved);
+	if (typeof document !== 'undefined') {
+		document.documentElement.dataset.theme = resolved;
+	}
+}
+
+/**
+ * Browser-only: switch mode.
+ * Validates. Persists to cookie + updates the dom.
+ */
+export function setMode(mode: Mode): void {
+	const resolved = resolveMode(mode);
+	writeCookie(MODE_COOKIE, resolved);
+	if (typeof document !== 'undefined') {
+		document.documentElement.dataset.mode = resolved;
+	}
+}
+
+export const COOKIE_NAMES = {
+	theme: THEME_COOKIE,
+	mode: MODE_COOKIE
+} as const;
