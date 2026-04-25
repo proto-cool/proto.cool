@@ -20,15 +20,16 @@ describe('pwdForPath', () => {
 describe('clock + uptime', () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
-		vi.setSystemTime(new Date('2026-04-25T15:30:45Z'));
+		// Local-time constructor — keeps the assertion tz-stable across CI machines.
+		vi.setSystemTime(new Date(2026, 3, 25, 15, 30, 45));
 	});
 	afterEach(() => vi.useRealTimers());
 
-	it('clock formats date and time correctly at request time', async () => {
+	it('clock formats date and time in local time', async () => {
 		vi.resetModules();
 		const { clock } = await import('./runtime');
 		expect(get(clock).date).toBe('2026-04-25');
-		expect(get(clock).time.length).toBe(8); // HH:MM:SS
+		expect(get(clock).time).toBe('15:30:45');
 	});
 
 	it('uptime computes days/hours/minutes from SITE_ORIGIN forward', async () => {

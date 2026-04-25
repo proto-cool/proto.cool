@@ -18,10 +18,15 @@ export function stopRuntimeTicks(): void {
 	}
 }
 
-export const clock: Readable<{ date: string; time: string }> = derived(now, ($n) => ({
-	date: $n.toISOString().slice(0, 10),
-	time: $n.toTimeString().slice(0, 8)
-}));
+// Both fields use the viewer's local clock — mixing UTC date with local time
+// would surface as off-by-a-day in the chrome cluster around midnight.
+export const clock: Readable<{ date: string; time: string }> = derived(now, ($n) => {
+	const pad = (n: number) => String(n).padStart(2, '0');
+	return {
+		date: `${$n.getFullYear()}-${pad($n.getMonth() + 1)}-${pad($n.getDate())}`,
+		time: `${pad($n.getHours())}:${pad($n.getMinutes())}:${pad($n.getSeconds())}`
+	};
+});
 
 export const uptime: Readable<string> = derived(now, ($n) => {
 	const ms = Math.max(0, $n.getTime() - SITE_ORIGIN.getTime());
