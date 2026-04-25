@@ -14,7 +14,7 @@ The site's identity is "nasapunk neon alternate universe" — a 90s retrofuturis
 
 ## Aesthetic intent
 
-The system pushes toward **TUI bones wrapped in modern bloom atmosphere**. Without this stated explicitly, the engine could just as easily host a polished modern dashboard with neon accents — that is *not* the goal.
+The system pushes toward **TUI bones wrapped in modern bloom atmosphere**. Without this stated explicitly, the engine could just as easily host a polished modern dashboard with neon accents — that is _not_ the goal.
 
 **Reference points** (these shape token defaults and primitive design later):
 
@@ -33,25 +33,25 @@ The system pushes toward **TUI bones wrapped in modern bloom atmosphere**. Witho
 7. **Status indicator vocabulary** — `[OK]`, `[!]`, `[X]`, `[?]`, `[●]`. Provided as glyph constants.
 8. **Scanline texture** is available as an opt-in surface utility (`.bg-scanline`), off by default.
 
-These are *guardrails*, not a style guide. The token system here makes them possible; the primitives spec exercises them.
+These are _guardrails_, not a style guide. The token system here makes them possible; the primitives spec exercises them.
 
 ## Decisions
 
-| Decision | Choice |
-|---|---|
-| Catalog scope | Engine + default neon green + 1 reference alternate (magenta vapor) |
-| Theme model | Color + glow personality vary; type/space/radii fixed across themes |
-| Light mode strategy | Knockout daytime variant — same palette, glow-off solid blocks |
-| Token architecture | Pure semantic (no primitive ramp layer) |
-| Glow vocabulary | Semantic by usage: `--glow-text`, `--glow-edge`, `--glow-focus`, `--glow-pulse` |
-| Glow personality | TUI bones (hard 1px edges) + modern bloom (wide soft halos) |
-| Type scale | Two-tier: body/UI math (20px base × 1.25) + hand-picked display tier |
-| Logomark behavior | Follows active theme — uses `--color-accent` like everything else |
-| Persistence | Cookies (SSR-readable, no FOUC) |
-| `system` mode | Resolved by CSS media query, no JS needed |
-| Themes | Static CSS files now; engine compatible with future themes-as-PDS-records |
-| Reference alternate | Magenta vapor (synthwave: hot magenta + cyan accent) |
-| Status colors | Shared across themes for accessibility recognition (overridable but not overridden in v1) |
+| Decision            | Choice                                                                                    |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| Catalog scope       | Engine + default neon green + 1 reference alternate (magenta vapor)                       |
+| Theme model         | Color + glow personality vary; type/space/radii fixed across themes                       |
+| Light mode strategy | Knockout daytime variant — same palette, glow-off solid blocks                            |
+| Token architecture  | Pure semantic (no primitive ramp layer)                                                   |
+| Glow vocabulary     | Semantic by usage: `--glow-text`, `--glow-edge`, `--glow-focus`, `--glow-pulse`           |
+| Glow personality    | TUI bones (hard 1px edges) + modern bloom (wide soft halos)                               |
+| Type scale          | Two-tier: body/UI math (20px base × 1.25) + hand-picked display tier                      |
+| Logomark behavior   | Follows active theme — uses `--color-accent` like everything else                         |
+| Persistence         | Cookies (SSR-readable, no FOUC)                                                           |
+| `system` mode       | Resolved by CSS media query, no JS needed                                                 |
+| Themes              | Static CSS files now; engine compatible with future themes-as-PDS-records                 |
+| Reference alternate | Magenta vapor (synthwave: hot magenta + cyan accent)                                      |
+| Status colors       | Shared across themes for accessibility recognition (overridable but not overridden in v1) |
 
 ## Engine architecture
 
@@ -60,7 +60,7 @@ The engine is two HTML attributes plus cookies for persistence. **No JavaScript 
 ### Attributes
 
 ```html
-<html data-theme="neon-green" data-mode="dark">
+<html data-theme="neon-green" data-mode="dark"></html>
 ```
 
 - Themes match `[data-theme="<id>"]`
@@ -81,11 +81,19 @@ Cookies (not `localStorage`) so the server reads them at SSR and renders the doc
 Each theme block defines its own `system` selector that falls through to a media query:
 
 ```css
-[data-theme="neon-green"][data-mode="dark"]   { /* dark vars */ }
-[data-theme="neon-green"][data-mode="light"]  { /* light vars */ }
-[data-theme="neon-green"][data-mode="system"] { /* dark by default */ }
+[data-theme='neon-green'][data-mode='dark'] {
+	/* dark vars */
+}
+[data-theme='neon-green'][data-mode='light'] {
+	/* light vars */
+}
+[data-theme='neon-green'][data-mode='system'] {
+	/* dark by default */
+}
 @media (prefers-color-scheme: light) {
-  [data-theme="neon-green"][data-mode="system"] { /* light vars */ }
+	[data-theme='neon-green'][data-mode='system'] {
+		/* light vars */
+	}
 }
 ```
 
@@ -107,11 +115,11 @@ Prerendered HTML is generated at build time and can't read cookies. To avoid the
 
 ```html
 <script>
-  var c=document.cookie,
-      t=c.match(/proto-theme=([^;]+)/),
-      m=c.match(/proto-mode=([^;]+)/);
-  if(t)document.documentElement.dataset.theme=t[1];
-  if(m)document.documentElement.dataset.mode=m[1];
+	var c = document.cookie,
+		t = c.match(/proto-theme=([^;]+)/),
+		m = c.match(/proto-mode=([^;]+)/);
+	if (t) document.documentElement.dataset.theme = t[1];
+	if (m) document.documentElement.dataset.mode = m[1];
 </script>
 ```
 
@@ -125,8 +133,8 @@ A small client module exports two functions:
 // src/lib/theme/index.ts
 import type { ThemeId, Mode } from './registry';
 
-export function setTheme(id: ThemeId): void;   // writes cookie + updates dom
-export function setMode(mode: Mode): void;     // writes cookie + updates dom
+export function setTheme(id: ThemeId): void; // writes cookie + updates dom
+export function setMode(mode: Mode): void; // writes cookie + updates dom
 ```
 
 The UI affordance that calls these (the picker) is **out of scope** — primitives spec.
@@ -136,8 +144,8 @@ The UI affordance that calls these (the picker) is **out of scope** — primitiv
 ```ts
 // src/lib/theme/registry.ts
 export const themes = [
-  { id: 'neon-green',    name: 'Neon green',    supportedModes: ['dark', 'light'], default: true },
-  { id: 'magenta-vapor', name: 'Magenta vapor', supportedModes: ['dark', 'light'] },
+	{ id: 'neon-green', name: 'Neon green', supportedModes: ['dark', 'light'], default: true },
+	{ id: 'magenta-vapor', name: 'Magenta vapor', supportedModes: ['dark', 'light'] }
 ] as const;
 
 export type ThemeId = (typeof themes)[number]['id'];
@@ -152,34 +160,34 @@ Six categories. Color and glow vary per theme; everything else is fixed.
 
 ### Color tokens (theme-varying)
 
-| Token | Purpose |
-|---|---|
-| `--color-bg` | Page background |
-| `--color-surface` | Raised surface (card, panel, dialog) |
-| `--color-surface-2` | Second-level raised (nested) |
-| `--color-edge` | Borders, dividers, hairlines |
-| `--color-fg` | Primary text |
-| `--color-fg-dim` | Secondary text (captions, timestamps) |
-| `--color-fg-mute` | Tertiary text (most muted; UI-only, not for body) |
-| `--color-accent` | Primary brand accent |
-| `--color-accent-2` | Secondary accent (only some themes use; defaults to `--color-accent`) |
-| `--color-on-accent` | Text on accent surfaces — almost always `#000` |
-| `--color-link` | Links |
-| `--color-link-visited` | Visited links |
-| `--color-focus` | Focus indicator |
+| Token                  | Purpose                                                               |
+| ---------------------- | --------------------------------------------------------------------- |
+| `--color-bg`           | Page background                                                       |
+| `--color-surface`      | Raised surface (card, panel, dialog)                                  |
+| `--color-surface-2`    | Second-level raised (nested)                                          |
+| `--color-edge`         | Borders, dividers, hairlines                                          |
+| `--color-fg`           | Primary text                                                          |
+| `--color-fg-dim`       | Secondary text (captions, timestamps)                                 |
+| `--color-fg-mute`      | Tertiary text (most muted; UI-only, not for body)                     |
+| `--color-accent`       | Primary brand accent                                                  |
+| `--color-accent-2`     | Secondary accent (only some themes use; defaults to `--color-accent`) |
+| `--color-on-accent`    | Text on accent surfaces — almost always `#000`                        |
+| `--color-link`         | Links                                                                 |
+| `--color-link-visited` | Visited links                                                         |
+| `--color-focus`        | Focus indicator                                                       |
 
-**Status colors** (`--color-ok`, `--color-warn`, `--color-error`, `--color-info`) are *not* theme-varying by default. They live in `tokens.css` as fixed defaults shared across themes for accessibility recognition. A theme file CAN override them inside its own selector blocks if it has a strong reason to, but neither v1 theme does.
+**Status colors** (`--color-ok`, `--color-warn`, `--color-error`, `--color-info`) are _not_ theme-varying by default. They live in `tokens.css` as fixed defaults shared across themes for accessibility recognition. A theme file CAN override them inside its own selector blocks if it has a strong reason to, but neither v1 theme does.
 
 ### Glow tokens (theme-varying)
 
 Four tokens, each holds a **complete CSS value** (not composed from sub-tokens — keeps the surface tight, lets each theme dial personality directly):
 
-| Token | Applied as | Notes |
-|---|---|---|
-| `--glow-text` | `text-shadow: var(--glow-text)` | Atmospheric bloom on accent text + display moments |
-| `--glow-edge` | `box-shadow: var(--glow-edge)` | Hard 1px outline + wide soft halo (TUI bones + bloom) |
-| `--glow-focus` | `box-shadow: var(--glow-focus)` | Concentric: 1px solid + 3px halo + outer bloom |
-| `--glow-pulse` | `animation: var(--glow-pulse)` | Animated pulse for cursors, status dots |
+| Token          | Applied as                      | Notes                                                 |
+| -------------- | ------------------------------- | ----------------------------------------------------- |
+| `--glow-text`  | `text-shadow: var(--glow-text)` | Atmospheric bloom on accent text + display moments    |
+| `--glow-edge`  | `box-shadow: var(--glow-edge)`  | Hard 1px outline + wide soft halo (TUI bones + bloom) |
+| `--glow-focus` | `box-shadow: var(--glow-focus)` | Concentric: 1px solid + 3px halo + outer bloom        |
+| `--glow-pulse` | `animation: var(--glow-pulse)`  | Animated pulse for cursors, status dots               |
 
 In **light/knockout mode**, all four neutralize: `--glow-text: none`, `--glow-edge: none`, `--glow-focus: 0 0 0 2px var(--color-focus)` (solid ring instead of halo), `--glow-pulse: none`.
 
@@ -292,24 +300,26 @@ No `--radius-md` or `--radius-lg`. **Discourage rounded corners by not providing
 Under `prefers-reduced-motion: reduce`:
 
 - All `--duration-*` resolve to `0ms` (override block lives in `tokens.css`)
-- `--glow-pulse` resolves to `none` (override block lives in *each theme file*, since the value is theme-defined)
+- `--glow-pulse` resolves to `none` (override block lives in _each theme file_, since the value is theme-defined)
 
 Pattern:
 
 ```css
 /* tokens.css — global durations override */
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --duration-instant: 0ms;
-    --duration-fast:    0ms;
-    --duration-base:    0ms;
-    --duration-slow:    0ms;
-  }
+	:root {
+		--duration-instant: 0ms;
+		--duration-fast: 0ms;
+		--duration-base: 0ms;
+		--duration-slow: 0ms;
+	}
 }
 
 /* themes/<id>.css — per-theme pulse override */
 @media (prefers-reduced-motion: reduce) {
-  [data-theme="<id>"] { --glow-pulse: none; }
+	[data-theme='<id>'] {
+		--glow-pulse: none;
+	}
 }
 ```
 
@@ -492,12 +502,12 @@ src/
 
 /* @font-face stays outside layers */
 
-@import './lib/theme/tokens.css'                  layer(tokens);
-@import './lib/theme/glow-keyframes.css';   /* @keyframes don't layer */
-@import './lib/theme/themes/neon-green.css'       layer(themes);
-@import './lib/theme/themes/magenta-vapor.css'    layer(themes);
-@import './lib/theme/base.css'                    layer(base);
-@import './lib/theme/utilities.css'               layer(utilities);
+@import './lib/theme/tokens.css' layer(tokens);
+@import './lib/theme/glow-keyframes.css'; /* @keyframes don't layer */
+@import './lib/theme/themes/neon-green.css' layer(themes);
+@import './lib/theme/themes/magenta-vapor.css' layer(themes);
+@import './lib/theme/base.css' layer(base);
+@import './lib/theme/utilities.css' layer(utilities);
 ```
 
 Component CSS added in later specs writes `@layer components { ... }` — wins over base, loses to utilities. Cheap insurance, costs nothing now.
@@ -508,11 +518,19 @@ Two file edits:
 
 1. Create `src/lib/theme/themes/<id>.css` with four selector blocks:
    ```css
-   [data-theme="<id>"][data-mode="dark"]   { /* dark vars */ }
-   [data-theme="<id>"][data-mode="light"]  { /* light vars */ }
-   [data-theme="<id>"][data-mode="system"] { /* dark by default */ }
+   [data-theme='<id>'][data-mode='dark'] {
+   	/* dark vars */
+   }
+   [data-theme='<id>'][data-mode='light'] {
+   	/* light vars */
+   }
+   [data-theme='<id>'][data-mode='system'] {
+   	/* dark by default */
+   }
    @media (prefers-color-scheme: light) {
-     [data-theme="<id>"][data-mode="system"] { /* light vars */ }
+   	[data-theme='<id>'][data-mode='system'] {
+   		/* light vars */
+   	}
    }
    ```
 2. Add an entry to `src/lib/theme/registry.ts` and import the new CSS in `app.css`.
@@ -525,38 +543,50 @@ No code changes needed elsewhere. `setTheme(<id>)` validates against the registr
 
 ```ts
 export const FRAME = {
-  // single-line box drawing
-  tl: '┌', tr: '┐', bl: '└', br: '┘',
-  h:  '─', v:  '│', cross: '┼',
-  tDown: '┬', tUp: '┴', tRight: '├', tLeft: '┤',
-  // double-line variants for emphasis
-  dTl: '╔', dTr: '╗', dBl: '╚', dBr: '╝',
-  dH:  '═', dV:  '║',
+	// single-line box drawing
+	tl: '┌',
+	tr: '┐',
+	bl: '└',
+	br: '┘',
+	h: '─',
+	v: '│',
+	cross: '┼',
+	tDown: '┬',
+	tUp: '┴',
+	tRight: '├',
+	tLeft: '┤',
+	// double-line variants for emphasis
+	dTl: '╔',
+	dTr: '╗',
+	dBl: '╚',
+	dBr: '╝',
+	dH: '═',
+	dV: '║'
 } as const;
 
 export const STATUS = {
-  ok:    '[OK]',
-  warn:  '[!]',
-  err:   '[X]',
-  info:  '[?]',
-  dot:   '[●]',
-  empty: '[ ]',
+	ok: '[OK]',
+	warn: '[!]',
+	err: '[X]',
+	info: '[?]',
+	dot: '[●]',
+	empty: '[ ]'
 } as const;
 
 export const CURSOR = {
-  block: '█',
-  bar:   '▎',
-  under: '▁',
+	block: '█',
+	bar: '▎',
+	under: '▁'
 } as const;
 
 export const PROMPT = {
-  shell: '$',
-  arrow: '>',
-  bracket: '>>',
+	shell: '$',
+	arrow: '>',
+	bracket: '>>'
 } as const;
 ```
 
-These are *constants*, not visual tokens, but they belong in the theme module because primitives reach for them constantly. Defining them centrally prevents inconsistent ad-hoc characters across components.
+These are _constants_, not visual tokens, but they belong in the theme module because primitives reach for them constantly. Defining them centrally prevents inconsistent ad-hoc characters across components.
 
 ## Utility classes
 
@@ -565,23 +595,23 @@ Opt-in classes shipped with the engine. Currently one:
 ```css
 /* src/lib/theme/utilities.css */
 @layer utilities {
-  .bg-scanline {
-    position: relative;
-  }
-  .bg-scanline::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-      0deg,
-      transparent 0,
-      transparent 2px,
-      var(--color-accent) 2px,
-      var(--color-accent) 3px
-    );
-    opacity: var(--scanline-opacity, 0.012);
-  }
+	.bg-scanline {
+		position: relative;
+	}
+	.bg-scanline::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background-image: repeating-linear-gradient(
+			0deg,
+			transparent 0,
+			transparent 2px,
+			var(--color-accent) 2px,
+			var(--color-accent) 3px
+		);
+		opacity: var(--scanline-opacity, 0.012);
+	}
 }
 ```
 
@@ -612,15 +642,15 @@ Plus:
 
 Spot-checked the palettes:
 
-| Pair | Ratio | Result |
-|---|---|---|
-| Default dark — fg on bg | 17.6:1 | AAA |
-| Default dark — accent on bg | 14:1 | AAA |
-| Default dark — fg-dim on bg | ~7.1:1 | AAA |
-| Default light — fg on bg | 19.4:1 | AAA |
-| Magenta dark — fg on bg | ~16:1 | AAA |
-| Magenta dark — magenta accent on bg | ~7.5:1 | AAA |
-| Magenta dark — cyan accent on bg | ~14:1 | AAA |
+| Pair                                | Ratio  | Result |
+| ----------------------------------- | ------ | ------ |
+| Default dark — fg on bg             | 17.6:1 | AAA    |
+| Default dark — accent on bg         | 14:1   | AAA    |
+| Default dark — fg-dim on bg         | ~7.1:1 | AAA    |
+| Default light — fg on bg            | 19.4:1 | AAA    |
+| Magenta dark — fg on bg             | ~16:1  | AAA    |
+| Magenta dark — magenta accent on bg | ~7.5:1 | AAA    |
+| Magenta dark — cyan accent on bg    | ~14:1  | AAA    |
 
 The fill-only-accent rule for light mode keeps bright neon out of text contexts where it would fail.
 

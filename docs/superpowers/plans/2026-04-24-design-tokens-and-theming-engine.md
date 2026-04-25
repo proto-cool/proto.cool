@@ -45,6 +45,7 @@ src/lib/theme/glyphs.test.ts                  NEW — tests
 ## Test strategy
 
 Vitest is configured for node environment only (per `vite.config.ts`). To stay in that environment and avoid adding jsdom:
+
 - **Pure logic** (cookie parsing, theme/mode resolution, glyph constants) lives in dedicated modules and is fully tested.
 - **DOM-touching code** (writing `document.cookie`, setting `document.documentElement.dataset.*`) is a thin wrapper, not unit-tested. Validation happens via the dev test route at `/dev/themes`.
 
@@ -53,6 +54,7 @@ Vitest is configured for node environment only (per `vite.config.ts`). To stay i
 ## Task 1: Create theme registry and types
 
 **Files:**
+
 - Create: `src/lib/theme/registry.ts`
 
 - [ ] **Step 1: Write `registry.ts`**
@@ -98,6 +100,7 @@ git commit -m "theme: add registry and types"
 ## Task 2: Create pure cookie parser with tests (TDD)
 
 **Files:**
+
 - Create: `src/lib/theme/cookies.ts`
 - Create: `src/lib/theme/cookies.test.ts`
 
@@ -193,6 +196,7 @@ git commit -m "theme: add cookie parse + write helpers"
 ## Task 3: Create theme/mode resolvers with tests (TDD)
 
 **Files:**
+
 - Create: `src/lib/theme/resolve.ts`
 - Create: `src/lib/theme/resolve.test.ts`
 
@@ -289,6 +293,7 @@ git commit -m "theme: add resolveTheme and resolveMode"
 ## Task 4: Create glyph constants with smoke test
 
 **Files:**
+
 - Create: `src/lib/theme/glyphs.ts`
 - Create: `src/lib/theme/glyphs.test.ts`
 
@@ -396,6 +401,7 @@ git commit -m "theme: add glyph constants module"
 ## Task 5: Create the public theme API
 
 **Files:**
+
 - Create: `src/lib/theme/index.ts`
 
 - [ ] **Step 1: Write `index.ts`**
@@ -465,6 +471,7 @@ git commit -m "theme: add public API (setTheme, setMode)"
 ## Task 6: Create fixed tokens CSS
 
 **Files:**
+
 - Create: `src/lib/theme/tokens.css`
 
 - [ ] **Step 1: Write `tokens.css`**
@@ -579,6 +586,7 @@ git commit -m "theme: add fixed tokens (type, space, cell, radii, motion, z, sta
 ## Task 7: Create glow keyframes CSS
 
 **Files:**
+
 - Create: `src/lib/theme/glow-keyframes.css`
 
 - [ ] **Step 1: Write `glow-keyframes.css`**
@@ -642,6 +650,7 @@ git commit -m "theme: add pulse keyframes for glow-pulse"
 ## Task 8: Create utilities CSS (.bg-scanline)
 
 **Files:**
+
 - Create: `src/lib/theme/utilities.css`
 
 - [ ] **Step 1: Write `utilities.css`**
@@ -685,6 +694,7 @@ git commit -m "theme: add .bg-scanline utility"
 ## Task 9: Create base CSS (element resets + base styles)
 
 **Files:**
+
 - Create: `src/lib/theme/base.css`
 
 - [ ] **Step 1: Write `base.css`**
@@ -787,6 +797,7 @@ git commit -m "theme: add element resets and base styles"
 ## Task 10: Create default theme — neon green
 
 **Files:**
+
 - Create: `src/lib/theme/themes/neon-green.css`
 
 - [ ] **Step 1: Write `neon-green.css`**
@@ -812,17 +823,11 @@ git commit -m "theme: add element resets and base styles"
 	--color-link-visited: #3daa3d;
 	--color-focus: #5bfa5b;
 
-	--glow-text:
-		0 0 8px rgba(91, 250, 91, 0.5),
-		0 0 18px rgba(91, 250, 91, 0.25);
+	--glow-text: 0 0 8px rgba(91, 250, 91, 0.5), 0 0 18px rgba(91, 250, 91, 0.25);
 	--glow-edge:
-		0 0 0 1px rgba(91, 250, 91, 1),
-		0 0 16px rgba(91, 250, 91, 0.4),
-		0 0 4px rgba(91, 250, 91, 0.5);
+		0 0 0 1px rgba(91, 250, 91, 1), 0 0 16px rgba(91, 250, 91, 0.4), 0 0 4px rgba(91, 250, 91, 0.5);
 	--glow-focus:
-		0 0 0 1px #5bfa5b,
-		0 0 0 3px rgba(91, 250, 91, 0.4),
-		0 0 14px rgba(91, 250, 91, 0.55);
+		0 0 0 1px #5bfa5b, 0 0 0 3px rgba(91, 250, 91, 0.4), 0 0 14px rgba(91, 250, 91, 0.55);
 	--glow-pulse: pulse-green 2s var(--ease-in-out) infinite;
 }
 
@@ -890,6 +895,7 @@ git commit -m "theme: add neon green default theme"
 ## Task 11: Create reference alternate — magenta vapor
 
 **Files:**
+
 - Create: `src/lib/theme/themes/magenta-vapor.css`
 
 - [ ] **Step 1: Write `magenta-vapor.css`**
@@ -915,17 +921,12 @@ git commit -m "theme: add neon green default theme"
 	--color-link-visited: #b01f95;
 	--color-focus: #2bffe7;
 
-	--glow-text:
-		0 0 8px rgba(255, 43, 214, 0.6),
-		0 0 24px rgba(255, 43, 214, 0.25);
+	--glow-text: 0 0 8px rgba(255, 43, 214, 0.6), 0 0 24px rgba(255, 43, 214, 0.25);
 	--glow-edge:
-		0 0 0 1px rgba(255, 43, 214, 1),
-		0 0 14px rgba(255, 43, 214, 0.5),
+		0 0 0 1px rgba(255, 43, 214, 1), 0 0 14px rgba(255, 43, 214, 0.5),
 		0 0 4px rgba(43, 255, 231, 0.4);
 	--glow-focus:
-		0 0 0 1px #2bffe7,
-		0 0 0 3px rgba(43, 255, 231, 0.4),
-		0 0 14px rgba(43, 255, 231, 0.55);
+		0 0 0 1px #2bffe7, 0 0 0 3px rgba(43, 255, 231, 0.4), 0 0 14px rgba(43, 255, 231, 0.55);
 	--glow-pulse: pulse-magenta 2s var(--ease-in-out) infinite;
 }
 
@@ -992,6 +993,7 @@ git commit -m "theme: add magenta vapor reference alternate"
 ## Task 12: Wire CSS imports into app.css with layer order
 
 **Files:**
+
 - Modify: `src/app.css`
 
 - [ ] **Step 1: Read current `app.css`**
@@ -1071,11 +1073,10 @@ The current file ends with the body/code base styles. Replace the entire file wi
 
 :root {
 	--font-sans:
-		'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system,
-		BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+		'Segoe UI', sans-serif;
 	--font-display: 'Lunema Sans', var(--font-sans);
-	--font-mono:
-		'Departure Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	--font-mono: 'Departure Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 /* ==========================================================================
@@ -1110,6 +1111,7 @@ git commit -m "theme: wire layer order and import token + theme stylesheets"
 ## Task 13: Declare App.Locals shape
 
 **Files:**
+
 - Modify: `src/app.d.ts`
 
 - [ ] **Step 1: Read current `app.d.ts`**
@@ -1158,6 +1160,7 @@ git commit -m "theme: declare App.Locals theme + mode shape"
 ## Task 14: Create the SSR `handle` hook
 
 **Files:**
+
 - Create: `src/hooks.server.ts`
 
 - [ ] **Step 1: Write `hooks.server.ts`**
@@ -1199,6 +1202,7 @@ git commit -m "theme: add SSR handle hook for cookie-driven theming"
 ## Task 15: Add placeholders + inline safety script to app.html
 
 **Files:**
+
 - Modify: `src/app.html`
 
 - [ ] **Step 1: Read current `app.html`**
@@ -1211,12 +1215,15 @@ Expected: shows the existing scaffold with font preloads.
 Edit `src/app.html`:
 
 Replace:
+
 ```html
 <html lang="en">
-	<head>
+	<head></head>
+</html>
 ```
 
 With:
+
 ```html
 <html lang="en" data-theme="%proto.theme%" data-mode="%proto.mode%">
 	<head>
@@ -1227,6 +1234,8 @@ With:
 			if (t) document.documentElement.dataset.theme = t[1];
 			if (m) document.documentElement.dataset.mode = m[1];
 		</script>
+	</head>
+</html>
 ```
 
 The result should be:
@@ -1283,6 +1292,7 @@ git commit -m "theme: wire data-theme/data-mode placeholders + inline cookie scr
 ## Task 16: Pass theme/mode through layout server load
 
 **Files:**
+
 - Create: `src/routes/+layout.server.ts`
 
 - [ ] **Step 1: Write `+layout.server.ts`**
@@ -1337,6 +1347,7 @@ Kill the background dev process.
 - [ ] **Step 5: Commit (if anything was inadvertently changed; otherwise skip)**
 
 If `git status` shows nothing modified, skip. Otherwise:
+
 ```bash
 git status
 # investigate any unexpected changes
@@ -1347,6 +1358,7 @@ git status
 ## Task 18: Build the dev test route — `/dev/themes`
 
 **Files:**
+
 - Create: `src/routes/dev/themes/+page.server.ts`
 - Create: `src/routes/dev/themes/+page.svelte`
 
@@ -1449,10 +1461,8 @@ export const load: PageServerLoad = () => {
 		<div class="picker-row">
 			<span class="picker-label">MODE</span>
 			{#each modes as m}
-				<button
-					class="picker-btn"
-					class:active={currentMode === m}
-					onclick={() => applyMode(m)}>{m}</button
+				<button class="picker-btn" class:active={currentMode === m} onclick={() => applyMode(m)}
+					>{m}</button
 				>
 			{/each}
 		</div>
@@ -1560,8 +1570,8 @@ export const load: PageServerLoad = () => {
 	<section class="block">
 		<h2>Character cell calibration</h2>
 		<p>
-			A row of 30 monospace characters should align to 30 cell widths. If the green grid
-			and the chars don't match exactly, adjust <code>--cell-w</code> in
+			A row of 30 monospace characters should align to 30 cell widths. If the green grid and the
+			chars don't match exactly, adjust <code>--cell-w</code> in
 			<code>tokens.css</code>.
 		</p>
 		<div class="cell-calib">
@@ -1849,6 +1859,7 @@ Run: `pnpm dev`
 Visit: http://localhost:5173/dev/themes
 
 Expected:
+
 - The page renders with the default neon green theme in dark/system mode.
 - Theme picker buttons at the top show "Neon green" (active) and "Magenta vapor".
 - Mode picker shows "dark", "light", "system" with "system" active.

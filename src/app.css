@@ -65,11 +65,10 @@
 
 :root {
 	--font-sans:
-		'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system,
-		BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+		'Segoe UI', sans-serif;
 	--font-display: 'Lunema Sans', var(--font-sans);
-	--font-mono:
-		'Departure Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	--font-mono: 'Departure Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 /* ==========================================================================

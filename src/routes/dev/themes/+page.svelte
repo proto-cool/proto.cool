@@ -69,7 +69,7 @@
 	<header class="picker">
 		<div class="picker-row">
 			<span class="picker-label">THEME</span>
-			{#each themes as t}
+			{#each themes as t (t.id)}
 				<button
 					class="picker-btn"
 					class:active={currentTheme === t.id}
@@ -79,11 +79,9 @@
 		</div>
 		<div class="picker-row">
 			<span class="picker-label">MODE</span>
-			{#each modes as m}
-				<button
-					class="picker-btn"
-					class:active={currentMode === m}
-					onclick={() => applyMode(m)}>{m}</button
+			{#each modes as m (m)}
+				<button class="picker-btn" class:active={currentMode === m} onclick={() => applyMode(m)}
+					>{m}</button
 				>
 			{/each}
 		</div>
@@ -134,7 +132,7 @@
 
 	<section class="block">
 		<h2>Type scale — body/UI tier</h2>
-		{#each textSizes as t}
+		{#each textSizes as t (t.token)}
 			<div class="type-row" style="font-size: var({t.token})">
 				{t.name} — The quick brown fox jumps over the lazy dog
 			</div>
@@ -143,7 +141,7 @@
 
 	<section class="block">
 		<h2>Type scale — display tier</h2>
-		{#each displaySizes as t}
+		{#each displaySizes as t (t.token)}
 			<div class="display-row" style="font-size: var({t.token})">
 				display-{t.name}
 			</div>
@@ -164,7 +162,7 @@
 	<section class="block">
 		<h2>Color tokens</h2>
 		<div class="swatches">
-			{#each colorTokens as token}
+			{#each colorTokens as token (token)}
 				<div class="swatch">
 					<div class="swatch-chip" style="background: var({token})"></div>
 					<code>{token}</code>
@@ -191,8 +189,8 @@
 	<section class="block">
 		<h2>Character cell calibration</h2>
 		<p>
-			A row of 30 monospace characters should align to 30 cell widths. If the green grid
-			and the chars don't match exactly, adjust <code>--cell-w</code> in
+			A row of 30 monospace characters should align to 30 cell widths. If the green grid and the
+			chars don't match exactly, adjust <code>--cell-w</code> in
 			<code>tokens.css</code>.
 		</p>
 		<div class="cell-calib">

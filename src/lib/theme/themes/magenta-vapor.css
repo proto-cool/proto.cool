@@ -18,17 +18,12 @@
 	--color-link-visited: #b01f95;
 	--color-focus: #2bffe7;
 
-	--glow-text:
-		0 0 8px rgba(255, 43, 214, 0.6),
-		0 0 24px rgba(255, 43, 214, 0.25);
+	--glow-text: 0 0 8px rgba(255, 43, 214, 0.6), 0 0 24px rgba(255, 43, 214, 0.25);
 	--glow-edge:
-		0 0 0 1px rgba(255, 43, 214, 1),
-		0 0 14px rgba(255, 43, 214, 0.5),
+		0 0 0 1px rgba(255, 43, 214, 1), 0 0 14px rgba(255, 43, 214, 0.5),
 		0 0 4px rgba(43, 255, 231, 0.4);
 	--glow-focus:
-		0 0 0 1px #2bffe7,
-		0 0 0 3px rgba(43, 255, 231, 0.4),
-		0 0 14px rgba(43, 255, 231, 0.55);
+		0 0 0 1px #2bffe7, 0 0 0 3px rgba(43, 255, 231, 0.4), 0 0 14px rgba(43, 255, 231, 0.55);
 	--glow-pulse: pulse-magenta 2s var(--ease-in-out) infinite;
 }
 
