@@ -284,7 +284,9 @@
 	}
 	.logo-prompt {
 		font-family: var(--font-mono);
-		color: var(--color-accent);
+		/* Uses secondary accent so themes with two colors (e.g. magenta-vapor)
+		   show both. In themes where accent-2 == accent this still looks right. */
+		color: var(--color-accent-2);
 		font-size: var(--text-2xl);
 		line-height: 1;
 		text-shadow: var(--glow-text);
@@ -302,7 +304,7 @@
 	}
 	.logo-cursor {
 		display: inline-block;
-		background: var(--color-accent);
+		background: var(--color-accent-2);
 		width: 14px;
 		height: var(--text-2xl);
 		box-shadow: var(--glow-edge);
