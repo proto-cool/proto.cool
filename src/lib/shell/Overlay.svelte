@@ -39,7 +39,10 @@
 		prevActive = document.activeElement;
 		(async () => {
 			await tick();
-			focusables()[0]?.focus();
+			// Focus the first interactive element if any, otherwise fall back to the
+			// dialog container itself (it has tabindex="-1") so backdrop keydown still
+			// fires and the trap doesn't silently break for content-less overlays.
+			(focusables()[0] ?? dialogEl)?.focus();
 		})();
 		return () => {
 			(prevActive as HTMLElement | null)?.focus?.();
