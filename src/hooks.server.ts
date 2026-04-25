@@ -12,6 +12,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	return resolve(event, {
 		transformPageChunk: ({ html }) =>
-			html.replace('%proto.theme%', theme).replace('%proto.mode%', mode)
+			html.replaceAll('%proto.theme%', theme).replaceAll('%proto.mode%', mode)
 	});
 };
