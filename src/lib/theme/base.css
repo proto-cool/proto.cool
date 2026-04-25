@@ -20,7 +20,7 @@
 
 	body {
 		margin: 0;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	h1,
@@ -59,7 +59,8 @@
 
 	*:focus-visible {
 		outline: none;
-		box-shadow: var(--glow-focus);
+		/* Fallback ensures keyboard focus stays visible even if --glow-focus isn't set yet. */
+		box-shadow: var(--glow-focus, 0 0 0 2px currentColor);
 	}
 
 	::selection {
