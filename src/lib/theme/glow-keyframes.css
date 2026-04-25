@@ -1,0 +1,44 @@
+/* src/lib/theme/glow-keyframes.css
+ * @keyframes for theme --glow-pulse animations.
+ * @keyframes don't go inside @layer.
+ */
+
+@keyframes pulse-green {
+	0%,
+	100% {
+		text-shadow:
+			0 0 6px rgba(91, 250, 91, 0.55),
+			0 0 14px rgba(91, 250, 91, 0.25);
+		box-shadow:
+			0 0 0 1px rgba(91, 250, 91, 1),
+			0 0 8px rgba(91, 250, 91, 0.4);
+	}
+	50% {
+		text-shadow:
+			0 0 12px rgba(91, 250, 91, 0.85),
+			0 0 24px rgba(91, 250, 91, 0.45);
+		box-shadow:
+			0 0 0 1px rgba(91, 250, 91, 1),
+			0 0 18px rgba(91, 250, 91, 0.7);
+	}
+}
+
+@keyframes pulse-magenta {
+	0%,
+	100% {
+		text-shadow:
+			0 0 6px rgba(255, 43, 214, 0.55),
+			0 0 14px rgba(255, 43, 214, 0.25);
+		box-shadow:
+			0 0 0 1px rgba(255, 43, 214, 1),
+			0 0 8px rgba(255, 43, 214, 0.4);
+	}
+	50% {
+		text-shadow:
+			0 0 12px rgba(255, 43, 214, 0.85),
+			0 0 24px rgba(255, 43, 214, 0.45);
+		box-shadow:
+			0 0 0 1px rgba(255, 43, 214, 1),
+			0 0 18px rgba(255, 43, 214, 0.7);
+	}
+}
