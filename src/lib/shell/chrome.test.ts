@@ -13,11 +13,11 @@ beforeEach(() => {
 describe('resolveChromeData', () => {
 	it('returns the expected shape with values from env + build constants', async () => {
 		process.env.PUBLIC_OWNER_HANDLE = 'protocol7';
-		process.env.PUBLIC_HOST_LABEL = 'cosmos';
+		process.env.PUBLIC_HOST_LABEL = 'helios';
 		const { resolveChromeData } = await import('./chrome');
 		const data = resolveChromeData();
 		expect(data).toEqual({
-			identity: { user: 'protocol7', host: 'cosmos' },
+			identity: { user: 'protocol7', host: 'helios' },
 			system: {
 				kernel: 'proto-kit 2.57.0',
 				shell: 'svelte 5.55.2',
@@ -34,7 +34,7 @@ describe('resolveChromeData', () => {
 		const { resolveChromeData } = await import('./chrome');
 		const data = resolveChromeData();
 		expect(data.identity.user).toBe('protocol7');
-		expect(data.identity.host).toBe('cosmos');
+		expect(data.identity.host).toBe('helios');
 	});
 
 	it('truncates SHA to first 7 chars', async () => {

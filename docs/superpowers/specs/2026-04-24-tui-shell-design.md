@@ -16,7 +16,7 @@ This spec covers the shell **only**. The federated content feed (Bluesky / pckt 
 
 The site IS a TUI/OS — the chrome is full-bleed, dense, instrumentation-style. The voice is **hackerpunk / dotfiles-porn**, not government console:
 
-- Personal terminal somebody built for themselves — `protocol7@cosmos:~/content`, not `CLEARANCE: COSMIC // EYES ONLY`
+- Personal terminal somebody built for themselves — `protocol7@helios:~/content`, not `CLEARANCE: COSMIC // EYES ONLY`
 - TUI bones (boxed cells, hard 1px edges, character-cell vocabulary, gridline texture) wrapped in modern bloom atmosphere (per the theming engine guardrails)
 - Greeble grouped into labeled clusters with visible logical structure (`// identity`, `// clock`, `// link`, `// system`) — no scattered flat rows of cells
 - Real typography (Atkinson body, Lunema display) **inside** the content window; pixel font (Departure Mono) reserved for **chrome only** (status, labels, prompts, meta-row dates)
@@ -141,7 +141,7 @@ Each cluster is a labeled box:
 ```
 ┌─ // identity ─────────┐
 │ user   protocol7      │
-│ host   cosmos         │
+│ host   helios         │
 │ pwd    ~/content      │
 └───────────────────────┘
 ```
@@ -322,7 +322,7 @@ Source for each field:
 | Field | Source |
 | --- | --- |
 | `user` | `PUBLIC_OWNER_HANDLE` env var (`protocol7`) |
-| `host` | `PUBLIC_HOST_LABEL` env var (`cosmos`) |
+| `host` | `PUBLIC_HOST_LABEL` env var (`helios`) |
 | `kernel` | `proto-kit ${SVELTEKIT_VERSION}` from `package.json` (read at build via Vite `define`) |
 | `shell` | `svelte ${SVELTE_VERSION}` from `package.json` |
 | `build` | `package.json` `version` field |
