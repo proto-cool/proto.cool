@@ -33,3 +33,74 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.pl-segment {
+	position: relative;
+	padding: 4px 14px 4px 12px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--font-mono);
+	font-size: var(--text-xs);
+	letter-spacing: var(--tracking-wide);
+	line-height: 18px;
+	height: 26px;
+	white-space: nowrap;
+}
+.pl-segment::after {
+	content: '';
+	position: absolute;
+	right: -13px;
+	top: 0;
+	border: 13px solid transparent;
+	border-left-color: var(--pl-bg, transparent);
+	border-right: 0;
+	z-index: 1;
+}
+.pl-segment.pl-knockout {
+	background: var(--color-accent);
+	color: var(--color-on-accent);
+	--pl-bg: var(--color-accent);
+}
+.pl-segment.pl-tinted {
+	background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+	color: var(--color-accent);
+	--pl-bg: color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+.pl-segment.pl-faint {
+	background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+	color: var(--color-fg-dim);
+	--pl-bg: color-mix(in srgb, var(--color-accent) 8%, transparent);
+}
+.pl-segment.pl-surface2 {
+	background: var(--color-surface-2);
+	color: var(--color-accent-2);
+	--pl-bg: var(--color-surface-2);
+}
+.pl-segment.pl-clock {
+	background: var(--color-accent);
+	color: var(--color-on-accent);
+	--pl-bg: var(--color-accent);
+}
+.pl-segment:last-child::after {
+	display: none;
+}
+.pl-bar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: stretch;
+	background: var(--color-bg);
+	padding-bottom: env(safe-area-inset-bottom);
+	z-index: var(--z-raised, 10);
+}
+.pl-bar > .pl-spacer {
+	flex: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+	.pl-rec-dot {
+		animation: none !important;
+	}
+}
