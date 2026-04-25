@@ -221,6 +221,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2);
+		/* Border keeps the picker framed in light mode where --glow-edge is none */
+		border-bottom: 1px solid var(--color-edge);
 		box-shadow: var(--glow-edge);
 		z-index: var(--z-raised);
 	}
