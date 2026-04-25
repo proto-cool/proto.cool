@@ -53,6 +53,8 @@
 	--glow-pulse: none;
 }
 
+/* Mirror of [data-mode='light'] block above. Keep in sync — CSS variables
+ * cannot be hoisted across selector boundaries. */
 @media (prefers-color-scheme: light) {
 	[data-theme='magenta-vapor'][data-mode='system'] {
 		--color-bg: #faf5f8;
@@ -76,6 +78,7 @@
 	}
 }
 
+/* Reduced motion — per-theme pulse override */
 @media (prefers-reduced-motion: reduce) {
 	[data-theme='magenta-vapor'] {
 		--glow-pulse: none;
