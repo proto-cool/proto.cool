@@ -1,0 +1,83 @@
+/* src/lib/theme/themes/magenta-vapor.css
+ * Reference alternate. Synthwave: hot magenta + cyan secondary, layered halos.
+ */
+
+[data-theme='magenta-vapor'][data-mode='dark'],
+[data-theme='magenta-vapor'][data-mode='system'] {
+	--color-bg: #100012;
+	--color-surface: #1a0f1f;
+	--color-surface-2: #241828;
+	--color-edge: #3a1e40;
+	--color-fg: #f5e8f2;
+	--color-fg-dim: #b59cb0;
+	--color-fg-mute: #6e5468;
+	--color-accent: #ff2bd6;
+	--color-accent-2: #2bffe7;
+	--color-on-accent: #000;
+	--color-link: #ff2bd6;
+	--color-link-visited: #b01f95;
+	--color-focus: #2bffe7;
+
+	--glow-text:
+		0 0 8px rgba(255, 43, 214, 0.6),
+		0 0 24px rgba(255, 43, 214, 0.25);
+	--glow-edge:
+		0 0 0 1px rgba(255, 43, 214, 1),
+		0 0 14px rgba(255, 43, 214, 0.5),
+		0 0 4px rgba(43, 255, 231, 0.4);
+	--glow-focus:
+		0 0 0 1px #2bffe7,
+		0 0 0 3px rgba(43, 255, 231, 0.4),
+		0 0 14px rgba(43, 255, 231, 0.55);
+	--glow-pulse: pulse-magenta 2s var(--ease-in-out) infinite;
+}
+
+[data-theme='magenta-vapor'][data-mode='light'] {
+	--color-bg: #faf5f8;
+	--color-surface: #ffffff;
+	--color-surface-2: #fafaf8;
+	--color-edge: #1f1f1f;
+	--color-fg: #0a0a0a;
+	--color-fg-dim: #4a4a4a;
+	--color-fg-mute: #7a7a7a;
+	--color-accent: #ff2bd6;
+	--color-accent-2: #2bffe7;
+	--color-on-accent: #000;
+	--color-link: #0a0a0a;
+	--color-link-visited: #4a4a4a;
+	--color-focus: #0a0a0a;
+
+	--glow-text: none;
+	--glow-edge: none;
+	--glow-focus: 0 0 0 2px var(--color-focus);
+	--glow-pulse: none;
+}
+
+@media (prefers-color-scheme: light) {
+	[data-theme='magenta-vapor'][data-mode='system'] {
+		--color-bg: #faf5f8;
+		--color-surface: #ffffff;
+		--color-surface-2: #fafaf8;
+		--color-edge: #1f1f1f;
+		--color-fg: #0a0a0a;
+		--color-fg-dim: #4a4a4a;
+		--color-fg-mute: #7a7a7a;
+		--color-accent: #ff2bd6;
+		--color-accent-2: #2bffe7;
+		--color-on-accent: #000;
+		--color-link: #0a0a0a;
+		--color-link-visited: #4a4a4a;
+		--color-focus: #0a0a0a;
+
+		--glow-text: none;
+		--glow-edge: none;
+		--glow-focus: 0 0 0 2px var(--color-focus);
+		--glow-pulse: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-theme='magenta-vapor'] {
+		--glow-pulse: none;
+	}
+}
