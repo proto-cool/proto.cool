@@ -3,8 +3,8 @@
 	<head>
 		<script>
 			var c = document.cookie,
-				t = c.match(/proto-theme=([^;]+)/),
-				m = c.match(/proto-mode=([^;]+)/);
+				t = c.match(/(?:^|; )proto-theme=([^;]*)/),
+				m = c.match(/(?:^|; )proto-mode=([^;]*)/);
 			if (t) document.documentElement.dataset.theme = t[1];
 			if (m) document.documentElement.dataset.mode = m[1];
 		</script>
