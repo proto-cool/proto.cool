@@ -1,16 +1,10 @@
 <script lang="ts">
 	import Overlay from './Overlay.svelte';
-	import { themes, setTheme, setMode, type ThemeId, type Mode } from '$lib/theme';
+	import { themes, setTheme, type ThemeId } from '$lib/theme';
 	import { closeOverlay } from './overlay';
-
-	const modes: Mode[] = ['dark', 'light', 'system'];
 
 	function pickTheme(id: ThemeId) {
 		setTheme(id);
-		closeOverlay();
-	}
-	function pickMode(m: Mode) {
-		setMode(m);
 		closeOverlay();
 	}
 </script>
@@ -24,43 +18,46 @@
 			</button>
 		{/each}
 	</div>
-	<div class="row">
-		<span class="label">// mode</span>
-		{#each modes as m (m)}
-			<button type="button" class="btn" onclick={() => pickMode(m)}>{m}</button>
-		{/each}
-	</div>
+	<p class="hint">light mode and theme alternates land in a follow-up.</p>
 </Overlay>
 
 <style>
 	.row {
 		display: flex;
-		gap: 6px;
+		gap: 8px;
 		align-items: center;
 		flex-wrap: wrap;
 	}
-	.row + .row {
-		margin-top: 12px;
-	}
 	.label {
-		color: var(--color-fg-mute);
+		color: var(--hal-dim);
 		min-width: 70px;
-		letter-spacing: var(--tracking-wide);
+		letter-spacing: 0.1em;
+		font-family: var(--font-mono);
+		text-transform: uppercase;
 	}
 	.btn {
 		font: inherit;
-		padding: 4px 10px;
-		background: transparent;
-		color: var(--color-fg);
-		border: 1px solid var(--color-edge);
+		padding: 6px 12px;
+		background: rgba(184, 255, 90, 0.05);
+		color: var(--hal-bone);
+		border: 1px solid var(--hal-edge);
 		cursor: pointer;
+		font-family: var(--font-mono);
+		letter-spacing: 0.06em;
 	}
 	.btn:hover {
-		border-color: var(--color-accent);
-		color: var(--color-accent);
+		border-color: var(--hal-hot);
+		color: var(--hal-bone);
+		box-shadow: inset 0 0 12px rgba(184, 255, 90, 0.18);
 	}
 	.btn:focus-visible {
-		outline: 2px solid var(--color-focus);
+		outline: 2px solid var(--hal-hot);
 		outline-offset: 2px;
+	}
+	.hint {
+		margin: 14px 0 0;
+		color: var(--hal-dim);
+		font-size: var(--text-xs);
+		font-family: var(--font-mono);
 	}
 </style>

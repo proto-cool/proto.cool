@@ -2,7 +2,7 @@
 	import Overlay from './Overlay.svelte';
 	import { commands, type CommandCategory } from './commands';
 
-	const cats: CommandCategory[] = ['navigation', 'theme', 'prompt', 'help'];
+	const cats: CommandCategory[] = ['navigation', 'theme', 'help'];
 	const grouped = cats.map((cat) => ({
 		cat,
 		items: commands.filter((c) => c.category === cat)
@@ -29,14 +29,15 @@
 
 <style>
 	.group + .group {
-		margin-top: 12px;
+		margin-top: 14px;
 	}
 	.cat {
 		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		color: var(--color-fg-dim);
-		letter-spacing: var(--tracking-wide);
-		margin: 0 0 6px;
+		color: var(--hal-dim);
+		letter-spacing: 0.12em;
+		margin: 0 0 8px;
+		text-transform: uppercase;
 	}
 	.rows {
 		list-style: none;
@@ -52,9 +53,10 @@
 		gap: 12px;
 	}
 	.hk {
-		color: var(--color-accent);
+		color: var(--hal-hot);
+		text-shadow: 0 0 8px rgba(184, 255, 90, 0.5);
 	}
 	.lbl {
-		color: var(--color-fg);
+		color: var(--hal-bone);
 	}
 </style>

@@ -4,7 +4,6 @@
 	import { currentOverlay, closeOverlay, type OverlayKind } from './overlay';
 	import HelpOverlay from './HelpOverlay.svelte';
 	import ThemePickerOverlay from './ThemePickerOverlay.svelte';
-	import StubOverlay from './StubOverlay.svelte';
 
 	let openKind = $state<OverlayKind | null>(null);
 	$effect(() => currentOverlay.subscribe((v) => (openKind = v)));
@@ -45,8 +44,4 @@
 	<HelpOverlay />
 {:else if openKind === 'theme'}
 	<ThemePickerOverlay />
-{:else if openKind === 'search-stub'}
-	<StubOverlay kind="search" />
-{:else if openKind === 'command-stub'}
-	<StubOverlay kind="command" />
 {/if}
