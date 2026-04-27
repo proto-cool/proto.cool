@@ -21,4 +21,26 @@
 		);
 		opacity: var(--scanline-opacity, 0.012);
 	}
+
+	/* ------------------------------------------------------------------
+	   Bayer dither tiles. Use as background-image; tiles at 4px so the
+	   pattern reads as 1-bit dither at viewing distance. Theme files may
+	   override the --dither-* custom properties to recolor.
+	   ------------------------------------------------------------------ */
+	.dither-sparse,
+	.dither-medium,
+	.dither-dense {
+		background-repeat: repeat;
+		background-size: 4px 4px;
+		image-rendering: pixelated;
+	}
+	.dither-sparse {
+		background-image: var(--dither-sparse);
+	}
+	.dither-medium {
+		background-image: var(--dither-medium);
+	}
+	.dither-dense {
+		background-image: var(--dither-dense);
+	}
 }
