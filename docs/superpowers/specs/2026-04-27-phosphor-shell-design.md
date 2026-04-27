@@ -27,34 +27,34 @@ The visual reference of record is `.superpowers/brainstorm/78171-1777315780/cont
 
 ## Decisions
 
-| Decision | Choice |
-| --- | --- |
-| Page frame | None. Full-bleed stage with a dithered halogen halo that bleeds beyond the canvas |
-| Top chrome | `NavPanel` — elevated panel with brand badge + channel pads + status strip |
-| Bottom chrome | `StatsPanel` — elevated panel with mono register tape (~6 columns) |
-| Hero | Open zone in the middle of the page; dithered halo + lockup + instrument cluster live here |
-| Wordmark | `proto.cool` — locked lockup, italic Lunema 800, always one line, in a lit brand badge |
-| Channel nav | Lit pill-style "channel pads" — content / projects / about / feed; live channel highlighted with phosphor border + inset glow |
-| Status strip | Live dot · date · sig (mono) — right side of the nav panel |
-| Hero lockup | Two-line italic Lunema 800 display; line 1 solid bone with halogen text-shadow; line 2 outline-only with phosphor stroke; punctuation hot |
-| Halo | Three concentric Bayer-dither rings (dense → medium → sparse), masked with stepped radial gradients, anchored at lower-left of hero, bleeds beyond canvas |
-| Instrument cluster | One `InstrumentCluster` panel to the right of the hero — meter (with dithered overflow tail), readout grid (rx · conn · pds · uptime), signal minimap with dither + grid backing |
-| Stats panel | 6 mono columns: VOL/№, EST, NET, BUILD, MODE, identity-pointer |
-| Prompt bar / TUI bar | Removed |
-| Sigils / cursor / "$ pwd" / "// kernel" | Removed. Greeble is typographic only |
-| Gridline page background | Removed. Replaced by ambient screen-blended dither at very low opacity |
-| Logoblock subline + sigil row | Removed |
-| Cluster bar (4 clusters) | Removed. One curated `InstrumentCluster` lives in the hero |
-| Powerline statusbar (fixed bottom) | Removed |
-| Theme | New `phosphor-green` is the v1 default. Existing `neon-green` and `magenta-vapor` themes deleted; tokens reshaped around halogen vocabulary |
-| Mode | Dark is canonical. Light mode is **out of scope for v1** — punted to a follow-up spec (the halogen vocabulary is dark-native; a paper-mode requires fresh design, not a token flip) |
-| Reduced motion | Pulse animations and glow softening neutralised; dither tiles stay (they're static images, not motion) |
-| Font stack | Unchanged: Atkinson Hyperlegible Next / Lunema Sans / Departure Mono |
-| Routes | Unchanged: `/` (content), `/projects`, `/about`. Keyboard hotkeys 1/2/3 still wired |
-| Overlays | Unchanged mechanism (`Overlay.svelte` + content components). `?` help and `t` theme picker still work; their content gets restyled to the phosphor vocabulary |
-| Search/cmd (`/`, `:`) | Out of scope for v1. Drop the chip from the chrome; deferred to feed spec |
-| Container queries | Kept. `chrome` container scope is now on the `Stage` element |
-| Prerendering | Unchanged: `/about` and `/projects` prerender; `/` stays dynamic for the feed |
+| Decision                                | Choice                                                                                                                                                                              |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page frame                              | None. Full-bleed stage with a dithered halogen halo that bleeds beyond the canvas                                                                                                   |
+| Top chrome                              | `NavPanel` — elevated panel with brand badge + channel pads + status strip                                                                                                          |
+| Bottom chrome                           | `StatsPanel` — elevated panel with mono register tape (~6 columns)                                                                                                                  |
+| Hero                                    | Open zone in the middle of the page; dithered halo + lockup + instrument cluster live here                                                                                          |
+| Wordmark                                | `proto.cool` — locked lockup, italic Lunema 800, always one line, in a lit brand badge                                                                                              |
+| Channel nav                             | Lit pill-style "channel pads" — content / projects / about / feed; live channel highlighted with phosphor border + inset glow                                                       |
+| Status strip                            | Live dot · date · sig (mono) — right side of the nav panel                                                                                                                          |
+| Hero lockup                             | Two-line italic Lunema 800 display; line 1 solid bone with halogen text-shadow; line 2 outline-only with phosphor stroke; punctuation hot                                           |
+| Halo                                    | Three concentric Bayer-dither rings (dense → medium → sparse), masked with stepped radial gradients, anchored at lower-left of hero, bleeds beyond canvas                           |
+| Instrument cluster                      | One `InstrumentCluster` panel to the right of the hero — meter (with dithered overflow tail), readout grid (rx · conn · pds · uptime), signal minimap with dither + grid backing    |
+| Stats panel                             | 6 mono columns: VOL/№, EST, NET, BUILD, MODE, identity-pointer                                                                                                                      |
+| Prompt bar / TUI bar                    | Removed                                                                                                                                                                             |
+| Sigils / cursor / "$ pwd" / "// kernel" | Removed. Greeble is typographic only                                                                                                                                                |
+| Gridline page background                | Removed. Replaced by ambient screen-blended dither at very low opacity                                                                                                              |
+| Logoblock subline + sigil row           | Removed                                                                                                                                                                             |
+| Cluster bar (4 clusters)                | Removed. One curated `InstrumentCluster` lives in the hero                                                                                                                          |
+| Powerline statusbar (fixed bottom)      | Removed                                                                                                                                                                             |
+| Theme                                   | New `phosphor-green` is the v1 default. Existing `neon-green` and `magenta-vapor` themes deleted; tokens reshaped around halogen vocabulary                                         |
+| Mode                                    | Dark is canonical. Light mode is **out of scope for v1** — punted to a follow-up spec (the halogen vocabulary is dark-native; a paper-mode requires fresh design, not a token flip) |
+| Reduced motion                          | Pulse animations and glow softening neutralised; dither tiles stay (they're static images, not motion)                                                                              |
+| Font stack                              | Unchanged: Atkinson Hyperlegible Next / Lunema Sans / Departure Mono                                                                                                                |
+| Routes                                  | Unchanged: `/` (content), `/projects`, `/about`. Keyboard hotkeys 1/2/3 still wired                                                                                                 |
+| Overlays                                | Unchanged mechanism (`Overlay.svelte` + content components). `?` help and `t` theme picker still work; their content gets restyled to the phosphor vocabulary                       |
+| Search/cmd (`/`, `:`)                   | Out of scope for v1. Drop the chip from the chrome; deferred to feed spec                                                                                                           |
+| Container queries                       | Kept. `chrome` container scope is now on the `Stage` element                                                                                                                        |
+| Prerendering                            | Unchanged: `/about` and `/projects` prerender; `/` stays dynamic for the feed                                                                                                       |
 
 ## Architecture
 
@@ -131,34 +131,36 @@ Existing theme files **deleted**:
 ## Theme tokens (phosphor-green)
 
 ```css
---hal-anthra:    #060906;   /* base anthracite */
---hal-anthra-2:  #0a0e0a;   /* +1 */
---hal-anthra-3:  #0e1310;   /* panel surface */
---hal-edge:      #1d2c1a;   /* warm dark green hairline */
---hal-warm:      #82e34b;   /* mid phosphor — register marks, glow values */
---hal-hot:       #b8ff5a;   /* hot lime — accents, lit channels, badge border */
---hal-ember:     #d4ff80;   /* peak — meter peak segment, pulse pip */
---hal-bone:      #e2f5cf;   /* off-white green-tinted body text */
---hal-dim:       #6e8a5c;   /* dim mono labels */
---hal-deep-dim:  #2c3a26;   /* dimmed lamp / inactive */
---hal-cool:      #4ad29c;   /* rare cyan-teal accent — sig, "atproto" */
+--hal-anthra: #060906; /* base anthracite */
+--hal-anthra-2: #0a0e0a; /* +1 */
+--hal-anthra-3: #0e1310; /* panel surface */
+--hal-edge: #1d2c1a; /* warm dark green hairline */
+--hal-warm: #82e34b; /* mid phosphor — register marks, glow values */
+--hal-hot: #b8ff5a; /* hot lime — accents, lit channels, badge border */
+--hal-ember: #d4ff80; /* peak — meter peak segment, pulse pip */
+--hal-bone: #e2f5cf; /* off-white green-tinted body text */
+--hal-dim: #6e8a5c; /* dim mono labels */
+--hal-deep-dim: #2c3a26; /* dimmed lamp / inactive */
+--hal-cool: #4ad29c; /* rare cyan-teal accent — sig, "atproto" */
 ```
 
 Glow tokens:
 
 ```css
---glow-text:    0 0 1px rgba(226,245,207,.95), 0 0 6px rgba(184,255,90,.55), 0 0 22px rgba(184,255,90,.30);
---glow-edge:    0 0 8px rgba(184,255,90,.55);
---glow-panel:   inset 0 1px 0 rgba(184,255,90,.10), 0 6px 22px rgba(0,0,0,.55);
---glow-pip:     0 0 6px var(--hal-hot), 0 0 16px rgba(130,227,75,.7);
+--glow-text:
+	0 0 1px rgba(226, 245, 207, 0.95), 0 0 6px rgba(184, 255, 90, 0.55),
+	0 0 22px rgba(184, 255, 90, 0.3);
+--glow-edge: 0 0 8px rgba(184, 255, 90, 0.55);
+--glow-panel: inset 0 1px 0 rgba(184, 255, 90, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
+--glow-pip: 0 0 6px var(--hal-hot), 0 0 16px rgba(130, 227, 75, 0.7);
 ```
 
 Dither pattern URLs as tokens (so utilities and one-off components share them):
 
 ```css
---dither-sparse: url("data:image/svg+xml;utf8,…");
---dither-medium: url("data:image/svg+xml;utf8,…");
---dither-dense:  url("data:image/svg+xml;utf8,…");
+--dither-sparse: url('data:image/svg+xml;utf8,…');
+--dither-medium: url('data:image/svg+xml;utf8,…');
+--dither-dense: url('data:image/svg+xml;utf8,…');
 ```
 
 Atkinson / Lunema / Departure Mono kept as-is. `--font-sans`, `--font-display`, `--font-mono` unchanged.
@@ -176,6 +178,7 @@ Container queries on `Stage` (`container-name: chrome`). Same five breakpoints a
 ## Reduced motion
 
 `@media (prefers-reduced-motion: reduce)` neutralises:
+
 - pulse keyframes on the brand badge pip and status live-dot
 - meter peak segment any animation
 - minimap pulse animation

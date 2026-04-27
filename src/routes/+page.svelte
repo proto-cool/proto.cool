@@ -10,15 +10,10 @@
 
 <div class="page">
 	<Halo />
-	<HeroLockup
-		line1="an indexed"
-		emphasis="indexed"
-		line2="personal archive"
-		punct="."
-	>
+	<HeroLockup line1="an indexed" emphasis="indexed" line2="personal archive" punct=".">
 		{#snippet deck()}
-			a personal site, kept in the open — <b>posts, projects, ephemera</b>.
-			longform lives in the pds, indexed and instrumented from here.
+			a personal site, kept in the open — <b>posts, projects, ephemera</b>. longform lives in the
+			pds, indexed and instrumented from here.
 		{/snippet}
 	</HeroLockup>
 	<InstrumentCluster />
@@ -34,11 +29,11 @@
 		min-height: 420px;
 		flex: 1;
 	}
-@container chrome (max-width: 767px) {
-	.page {
-		grid-template-columns: 1fr;
-		gap: 24px;
-		min-height: auto;
+	@container chrome (max-width: 767px) {
+		.page {
+			grid-template-columns: 1fr;
+			gap: 24px;
+			min-height: auto;
+		}
 	}
-}
 </style>

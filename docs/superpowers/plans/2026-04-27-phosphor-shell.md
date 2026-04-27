@@ -12,32 +12,32 @@
 
 ## Source spec sections → tasks coverage
 
-| Spec section | Tasks |
-| --- | --- |
-| Halogen palette + glow tokens | A1, A4 |
-| Bayer dither utilities | A2 |
-| `pulse-phosphor` keyframe | A3 |
-| New `phosphor-green` theme & default | A4, B1 |
-| `instrument-data.ts` colocated cosmetic helper | C1 |
-| `BrandBadge` / `ChannelPads` / `StatusStrip` | D1, D2, D3 |
-| `NavPanel` (elevated, edge-catch, drop shadow, corner brackets) | D4 |
-| `HeroLockup` (italic Lunema 800, knockout line 2, deck) | D5 |
-| `Halo` (3 dithered rings, mask-stepped) | D6 |
-| `InstrumentCluster` (meter + readout + minimap) | D7 |
-| `StatsPanel` (6 mono columns, edge-catch) | D8 |
-| `Stage` (anthracite bg, ambient dither, container query) | E1 |
-| `Shell.svelte` rewrite | E2 |
-| Hero lockups on `/`, `/projects`, `/about` | E3 |
-| Drop `/`, `:` chip + stubs | F1, F2, F3 |
-| Restyle `HelpOverlay`, `ThemePickerOverlay` | F3 |
-| Trim `ChromeData` (drop `kernel`/`shell`) | G1 |
-| Delete old shell components | H1 |
-| Delete `cosmetic.ts`, `shell.css`, `glyphs.ts(/test)` | H1, H2 |
-| Delete `neon-green.css`, `magenta-vapor.css` | H2 |
-| Trim `glow-keyframes.css` (drop `pulse-green`, `pulse-magenta`) | H3 |
-| Container-query breakpoints (xs/sm/md/lg/xl) | I1 |
-| Reduced motion | I2 |
-| Validation & acceptance | J1 |
+| Spec section                                                         | Tasks           |
+| -------------------------------------------------------------------- | --------------- |
+| Halogen palette + glow tokens                                        | A1, A4          |
+| Bayer dither utilities                                               | A2              |
+| `pulse-phosphor` keyframe                                            | A3              |
+| New `phosphor-green` theme & default                                 | A4, B1          |
+| `instrument-data.ts` colocated cosmetic helper                       | C1              |
+| `BrandBadge` / `ChannelPads` / `StatusStrip`                         | D1, D2, D3      |
+| `NavPanel` (elevated, edge-catch, drop shadow, corner brackets)      | D4              |
+| `HeroLockup` (italic Lunema 800, knockout line 2, deck)              | D5              |
+| `Halo` (3 dithered rings, mask-stepped)                              | D6              |
+| `InstrumentCluster` (meter + readout + minimap)                      | D7              |
+| `StatsPanel` (6 mono columns, edge-catch)                            | D8              |
+| `Stage` (anthracite bg, ambient dither, container query)             | E1              |
+| `Shell.svelte` rewrite                                               | E2              |
+| Hero lockups on `/`, `/projects`, `/about`                           | E3              |
+| Drop `/`, `:` chip + stubs                                           | F1, F2, F3      |
+| Restyle `HelpOverlay`, `ThemePickerOverlay`                          | F3              |
+| Trim `ChromeData` (drop `kernel`/`shell`)                            | G1              |
+| Delete old shell components                                          | H1              |
+| Delete `cosmetic.ts`, `shell.css`, `glyphs.ts(/test)`                | H1, H2          |
+| Delete `neon-green.css`, `magenta-vapor.css`                         | H2              |
+| Trim `glow-keyframes.css` (drop `pulse-green`, `pulse-magenta`)      | H3              |
+| Container-query breakpoints (xs/sm/md/lg/xl)                         | I1              |
+| Reduced motion                                                       | I2              |
+| Validation & acceptance                                              | J1              |
 | Out of scope (light mode, search/cmd palette, feed, animated dither) | not implemented |
 
 ---
@@ -305,21 +305,15 @@ Write `src/lib/theme/themes/phosphor-green.css`:
 
 	/* ---- glow tokens (halogen vocabulary) ---- */
 	--glow-text:
-		0 0 1px rgba(226, 245, 207, 0.95),
-		0 0 6px rgba(184, 255, 90, 0.55),
+		0 0 1px rgba(226, 245, 207, 0.95), 0 0 6px rgba(184, 255, 90, 0.55),
 		0 0 22px rgba(184, 255, 90, 0.3);
 	--glow-edge:
-		0 0 0 1px rgba(184, 255, 90, 1),
-		0 0 12px rgba(184, 255, 90, 0.45),
+		0 0 0 1px rgba(184, 255, 90, 1), 0 0 12px rgba(184, 255, 90, 0.45),
 		0 0 4px rgba(184, 255, 90, 0.55);
-	--glow-panel:
-		inset 0 1px 0 rgba(184, 255, 90, 0.1),
-		0 6px 22px rgba(0, 0, 0, 0.55);
+	--glow-panel: inset 0 1px 0 rgba(184, 255, 90, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
 	--glow-pip: 0 0 6px var(--hal-hot), 0 0 16px rgba(130, 227, 75, 0.7);
 	--glow-focus:
-		0 0 0 1px var(--hal-hot),
-		0 0 0 3px rgba(184, 255, 90, 0.4),
-		0 0 14px rgba(184, 255, 90, 0.55);
+		0 0 0 1px var(--hal-hot), 0 0 0 3px rgba(184, 255, 90, 0.4), 0 0 14px rgba(184, 255, 90, 0.55);
 	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
 }
 
@@ -373,6 +367,7 @@ export const DEFAULT_MODE: Mode = 'dark';
 ```
 
 Notes:
+
 - We deliberately drop `neon-green` and `magenta-vapor` from the registry now. The theme files still exist on disk; they get deleted in Task H2. Cookies that reference the old themes resolve to the default through `resolveTheme`.
 - `DEFAULT_MODE` is now `'dark'` because light mode is out of scope.
 
@@ -648,12 +643,7 @@ Write `src/lib/shell/ChannelPads.svelte`:
 <nav class="channels" aria-label="sections">
 	{#each sections as s (s.id)}
 		{@const active = isActive(s.href, page.url.pathname)}
-		<a
-			class="ch"
-			class:live={active}
-			href={s.href}
-			aria-current={active ? 'page' : undefined}
-		>
+		<a class="ch" class:live={active} href={s.href} aria-current={active ? 'page' : undefined}>
 			<span class="lamp" aria-hidden="true"></span>
 			<span class="label">{s.label}</span>
 		</a>
@@ -919,7 +909,9 @@ Write `src/lib/shell/HeroLockup.svelte`:
 	<span class="l1">
 		{line1Parts.before}{#if line1Parts.mid}<em>{line1Parts.mid}</em>{/if}{line1Parts.after}
 	</span>
-	<span class="l2">{line2}{#if punct}<span class="punct">{punct}</span>{/if}</span>
+	<span class="l2"
+		>{line2}{#if punct}<span class="punct">{punct}</span>{/if}</span
+	>
 	{#if deck}
 		<div class="deck">{@render deck()}</div>
 	{/if}
@@ -1106,9 +1098,15 @@ Write `src/lib/shell/InstrumentCluster.svelte`:
 		</div>
 
 		<div class="readout">
-			<span class="lab">rx</span><span class="ind on"></span><span class="val glow">{linkInfo.rxTx} kb/s</span>
-			<span class="lab">conn</span><span class="ind on"></span><span class="val">{linkInfo.conn} / 12</span>
-			<span class="lab">pds</span><span class="ind cool"></span><span class="val">{chrome.link.pds}</span>
+			<span class="lab">rx</span><span class="ind on"></span><span class="val glow"
+				>{linkInfo.rxTx} kb/s</span
+			>
+			<span class="lab">conn</span><span class="ind on"></span><span class="val"
+				>{linkInfo.conn} / 12</span
+			>
+			<span class="lab">pds</span><span class="ind cool"></span><span class="val"
+				>{chrome.link.pds}</span
+			>
 			<span class="lab">uptime</span><span class="ind on"></span><span class="val">{up}</span>
 		</div>
 
@@ -1355,9 +1353,14 @@ Write `src/lib/shell/StatsPanel.svelte`:
 	</div>
 	<div class="cell"><span class="lab">EST</span><b>{EST}</b></div>
 	<div class="cell"><span class="lab">NET</span><b class="cool">ATPROTO</b></div>
-	<div class="cell"><span class="lab">BUILD</span><b class="glow">0x{chrome.system.sig.toUpperCase().slice(0, 4)}</b></div>
+	<div class="cell">
+		<span class="lab">BUILD</span><b class="glow">0x{chrome.system.sig.toUpperCase().slice(0, 4)}</b
+		>
+	</div>
 	<div class="cell"><span class="lab">MODE</span><b>{MODE_LABEL}</b></div>
-	<div class="cell"><span class="lab">↳</span><b>{chrome.identity.user}@{chrome.identity.host}</b></div>
+	<div class="cell">
+		<span class="lab">↳</span><b>{chrome.identity.user}@{chrome.identity.host}</b>
+	</div>
 </footer>
 
 <style>
@@ -1589,15 +1592,10 @@ Write:
 
 <div class="page">
 	<Halo />
-	<HeroLockup
-		line1="an indexed"
-		emphasis="indexed"
-		line2="personal archive"
-		punct="."
-	>
+	<HeroLockup line1="an indexed" emphasis="indexed" line2="personal archive" punct=".">
 		{#snippet deck()}
-			a personal site, kept in the open — <b>posts, projects, ephemera</b>.
-			longform lives in the pds, indexed and instrumented from here.
+			a personal site, kept in the open — <b>posts, projects, ephemera</b>. longform lives in the
+			pds, indexed and instrumented from here.
 		{/snippet}
 	</HeroLockup>
 	<InstrumentCluster />
@@ -1673,9 +1671,8 @@ Write:
 	<Halo />
 	<HeroLockup line1="kept in the" line2="open" emphasis="open" punct=".">
 		{#snippet deck()}
-			proto.cool is a personal terminal somebody (protocol7) built for
-			themselves on top of the at protocol. real content lands in the
-			federated feed spec.
+			proto.cool is a personal terminal somebody (protocol7) built for themselves on top of the at
+			protocol. real content lands in the federated feed spec.
 		{/snippet}
 	</HeroLockup>
 	<InstrumentCluster />
@@ -1700,6 +1697,7 @@ Run: `npm run dev`
 Visit `/`, `/projects`, `/about` in the browser.
 
 Expected:
+
 - Each page renders with the dithered halogen halo bleeding in from the lower-left.
 - Italic Lunema headline at huge scale (line 1 with halogen text-shadow, line 2 outline-only).
 - Deck text below the headline.
@@ -1887,10 +1885,7 @@ describe('commands registry', () => {
 	});
 
 	it('hotkey list equals section + utility hotkeys', () => {
-		const expected = new Set([
-			...sections.map((s) => s.hotkey),
-			...utilities.map((u) => u.hotkey)
-		]);
+		const expected = new Set([...sections.map((s) => s.hotkey), ...utilities.map((u) => u.hotkey)]);
 		const actual = new Set(commands.map((c) => c.hotkey));
 		expect(actual).toEqual(expected);
 	});
@@ -2111,6 +2106,7 @@ Replace the file with:
 - [ ] **Step 4: Run dev, hit `?` and `t` to verify overlays**
 
 Run: `npm run dev`. In the browser:
+
 - Press `?` — Help overlay opens; keybinds list looks restyled.
 - Press `Esc` — closes.
 - Press `t` — Theme picker opens with `Phosphor green` button.
@@ -2511,6 +2507,7 @@ In each of `src/routes/+page.svelte`, `src/routes/projects/+page.svelte`, `src/r
 Run: `npm run dev`. Resize the window from ~360px wide up to ~1500px. Visit `/`, `/projects`, `/about` at each breakpoint.
 
 Expected:
+
 - xs (≤479px): nav stacks (badge top-left, channels wrap to row 2, sig hidden); hero collapses to 1 column; cluster goes below; stats shows 2 columns (VOL, EST).
 - sm (480-767px): same nav stack; hero still 1 column.
 - md (768-1023px): nav single row; hero 2 columns; cluster narrower (still 280px); stats shows 3 columns.
@@ -2603,9 +2600,9 @@ Expected: all five succeed.
 
 Run: `npm run dev`. In the browser:
 
-- Visit `/` — content channel highlighted; hero "an *indexed* / personal archive." with halogen halo bleeding from lower-left; instrument cluster on the right; stats footer pinned at the bottom.
-- Visit `/projects` — projects channel highlighted; hero "things in / *flight*."
-- Visit `/about` — about channel highlighted; hero "kept in the / *open*."
+- Visit `/` — content channel highlighted; hero "an _indexed_ / personal archive." with halogen halo bleeding from lower-left; instrument cluster on the right; stats footer pinned at the bottom.
+- Visit `/projects` — projects channel highlighted; hero "things in / _flight_."
+- Visit `/about` — about channel highlighted; hero "kept in the / _open_."
 - Press `1`, `2`, `3` — keyboard nav routes to the right pages and the live channel updates.
 - Press `?` — Help overlay opens; lists `goto-content [1]`, `goto-projects [2]`, `goto-about [3]`, `theme-picker [t]`, `help [?]`. Press `Esc` to close.
 - Press `t` — Theme picker opens. The only theme is "Phosphor green". Click it; overlay closes; nothing changes (the theme is already active). Press `t` again, press `Esc`.
@@ -2620,6 +2617,7 @@ Expected: every interaction works without console errors.
 Run: `git status && git log --oneline | head -30`
 
 Expected:
+
 - Working tree clean.
 - The phosphor-shell commits since the spec are present in the log.
 

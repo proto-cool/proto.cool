@@ -11,12 +11,7 @@
 <nav class="channels" aria-label="sections">
 	{#each sections as s (s.id)}
 		{@const active = isActive(s.href, page.url.pathname)}
-		<a
-			class="ch"
-			class:live={active}
-			href={s.href}
-			aria-current={active ? 'page' : undefined}
-		>
+		<a class="ch" class:live={active} href={s.href} aria-current={active ? 'page' : undefined}>
 			<span class="lamp" aria-hidden="true"></span>
 			<span class="label">{s.label}</span>
 		</a>

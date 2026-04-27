@@ -54,24 +54,24 @@
 	.nav-panel :global(.channels) {
 		justify-self: center;
 	}
-@container chrome (max-width: 767px) {
-	.nav-panel {
-		grid-template-columns: 1fr auto;
-		gap: 12px;
-		padding: 10px 16px;
+	@container chrome (max-width: 767px) {
+		.nav-panel {
+			grid-template-columns: 1fr auto;
+			gap: 12px;
+			padding: 10px 16px;
+		}
+		.nav-panel :global(.channels) {
+			grid-column: 1 / -1;
+			grid-row: 2;
+			justify-self: stretch;
+			flex-wrap: wrap;
+		}
+		.nav-panel :global(.status) {
+			font-size: 10px;
+			gap: 8px;
+		}
+		.nav-panel :global(.status .cool) {
+			display: none; /* drop sig on small */
+		}
 	}
-	.nav-panel :global(.channels) {
-		grid-column: 1 / -1;
-		grid-row: 2;
-		justify-self: stretch;
-		flex-wrap: wrap;
-	}
-	.nav-panel :global(.status) {
-		font-size: 10px;
-		gap: 8px;
-	}
-	.nav-panel :global(.status .cool) {
-		display: none; /* drop sig on small */
-	}
-}
 </style>

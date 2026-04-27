@@ -47,19 +47,19 @@
 		flex-direction: column;
 		padding: 72px 36px 60px;
 	}
-@container chrome (max-width: 479px) {
-	.hero {
-		padding: 40px 16px 36px;
+	@container chrome (max-width: 479px) {
+		.hero {
+			padding: 40px 16px 36px;
+		}
 	}
-}
-@container chrome (min-width: 480px) and (max-width: 1023px) {
-	.hero {
-		padding: 56px 24px 48px;
+	@container chrome (min-width: 480px) and (max-width: 1023px) {
+		.hero {
+			padding: 56px 24px 48px;
+		}
 	}
-}
-@container chrome (min-width: 1024px) {
-	.hero {
-		padding: 72px 36px 60px;
+	@container chrome (min-width: 1024px) {
+		.hero {
+			padding: 72px 36px 60px;
+		}
 	}
-}
 </style>

@@ -12,9 +12,8 @@
 	<Halo />
 	<HeroLockup line1="kept in the" line2="open" punct=".">
 		{#snippet deck()}
-			proto.cool is a personal terminal somebody (protocol7) built for
-			themselves on top of the at protocol. real content lands in the
-			federated feed spec.
+			proto.cool is a personal terminal somebody (protocol7) built for themselves on top of the at
+			protocol. real content lands in the federated feed spec.
 		{/snippet}
 	</HeroLockup>
 	<InstrumentCluster />
@@ -30,11 +29,11 @@
 		min-height: 420px;
 		flex: 1;
 	}
-@container chrome (max-width: 767px) {
-	.page {
-		grid-template-columns: 1fr;
-		gap: 24px;
-		min-height: auto;
+	@container chrome (max-width: 767px) {
+		.page {
+			grid-template-columns: 1fr;
+			gap: 24px;
+			min-height: auto;
+		}
 	}
-}
 </style>

@@ -26,34 +26,34 @@ The visual reference is iteration v6 of the brainstorm session at `.superpowers/
 
 ## Decisions
 
-| Decision | Choice |
-| --- | --- |
-| Sections | `content` (`/`), `projects` (`/projects`), `about` (`/about`); hotkeys `1`/`2`/`3` |
-| `/dev/themes` | Killed — chrome itself is the visual validation surface |
-| `/projects` | Real route, minimal stub list view |
-| Top taskbar | None — clusters cover its job, less duplication |
-| Bottom statusbar | Powerline / agnoster-style angled segments |
-| Content window | Reading-width (max 660px), centered inside full-bleed chrome |
-| Logomark | Dedicated bordered "logoblock" with sub-line + sigil; anchors top-left |
-| Greeble grouping | Labeled clusters (`// identity` etc.) — header + label/value rows |
-| Cluster set v1 | identity · clock · link · system (4) |
-| Filter UI for content | Lives in the content window's crumb-strip (not chrome) — wired in feed spec; visual placeholder only in v1 |
-| Component model | Composable siblings under `src/lib/shell/`, assembled by root layout |
-| Chrome data — real | version, kernel, shell, sig, user, host, theme, clock, uptime, pwd |
-| Chrome data — cosmetic | rx/tx, conn, signal sparkline, cur, mode, rec timer (all in `cosmetic.ts`) |
-| Uptime origin | Fixed `SITE_ORIGIN` date (counted forward); `runtime.ts` ticks client-side |
-| Keyboard | Single global `KeyboardLayer` for `1`/`2`/`3`/`t`/`?`/`/`/`:`/`Esc` |
-| Section-local hotkeys | Visible in dock, not wired in v1 (lands with feed spec) |
-| `t` behavior | Opens theme picker overlay (not a blind cycle) |
-| Search / command (`/` `:`) | Stub overlays in v1 ("coming soon" centered modal) |
-| Help (`?`) | Real overlay listing every registered command from `commands.ts` |
-| Modal pattern | Single `Overlay.svelte` chrome + content components per overlay type |
-| Mode display in statusbar | Cosmetic-only in v1, always `normal` |
-| Responsive | Container queries on chrome zone; 5 progressive breakpoints |
-| Light mode | Glows neutralize (engine handles); gridline bg hides; logoblock loses halo; statusbar still works |
-| New tokens | None — chrome derives from existing theme tokens with computed opacities |
-| Routing | Native `<a href>` links; SvelteKit handles client-side nav; `aria-current="page"` for active |
-| Prerendering | About + projects = `prerender = true`; content stays dynamic for the feed spec |
+| Decision                   | Choice                                                                                                     |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Sections                   | `content` (`/`), `projects` (`/projects`), `about` (`/about`); hotkeys `1`/`2`/`3`                         |
+| `/dev/themes`              | Killed — chrome itself is the visual validation surface                                                    |
+| `/projects`                | Real route, minimal stub list view                                                                         |
+| Top taskbar                | None — clusters cover its job, less duplication                                                            |
+| Bottom statusbar           | Powerline / agnoster-style angled segments                                                                 |
+| Content window             | Reading-width (max 660px), centered inside full-bleed chrome                                               |
+| Logomark                   | Dedicated bordered "logoblock" with sub-line + sigil; anchors top-left                                     |
+| Greeble grouping           | Labeled clusters (`// identity` etc.) — header + label/value rows                                          |
+| Cluster set v1             | identity · clock · link · system (4)                                                                       |
+| Filter UI for content      | Lives in the content window's crumb-strip (not chrome) — wired in feed spec; visual placeholder only in v1 |
+| Component model            | Composable siblings under `src/lib/shell/`, assembled by root layout                                       |
+| Chrome data — real         | version, kernel, shell, sig, user, host, theme, clock, uptime, pwd                                         |
+| Chrome data — cosmetic     | rx/tx, conn, signal sparkline, cur, mode, rec timer (all in `cosmetic.ts`)                                 |
+| Uptime origin              | Fixed `SITE_ORIGIN` date (counted forward); `runtime.ts` ticks client-side                                 |
+| Keyboard                   | Single global `KeyboardLayer` for `1`/`2`/`3`/`t`/`?`/`/`/`:`/`Esc`                                        |
+| Section-local hotkeys      | Visible in dock, not wired in v1 (lands with feed spec)                                                    |
+| `t` behavior               | Opens theme picker overlay (not a blind cycle)                                                             |
+| Search / command (`/` `:`) | Stub overlays in v1 ("coming soon" centered modal)                                                         |
+| Help (`?`)                 | Real overlay listing every registered command from `commands.ts`                                           |
+| Modal pattern              | Single `Overlay.svelte` chrome + content components per overlay type                                       |
+| Mode display in statusbar  | Cosmetic-only in v1, always `normal`                                                                       |
+| Responsive                 | Container queries on chrome zone; 5 progressive breakpoints                                                |
+| Light mode                 | Glows neutralize (engine handles); gridline bg hides; logoblock loses halo; statusbar still works          |
+| New tokens                 | None — chrome derives from existing theme tokens with computed opacities                                   |
+| Routing                    | Native `<a href>` links; SvelteKit handles client-side nav; `aria-current="page"` for active               |
+| Prerendering               | About + projects = `prerender = true`; content stays dynamic for the feed spec                             |
 
 ## Section model
 
@@ -62,14 +62,14 @@ Three real sections in v1:
 ```ts
 // src/lib/shell/sections.ts
 export const sections = [
-  { id: 'content',  label: 'content',  href: '/',         hotkey: '1', pwd: '~/content'  },
-  { id: 'projects', label: 'projects', href: '/projects', hotkey: '2', pwd: '~/projects' },
-  { id: 'about',    label: 'about',    href: '/about',    hotkey: '3', pwd: '~/about'    },
+	{ id: 'content', label: 'content', href: '/', hotkey: '1', pwd: '~/content' },
+	{ id: 'projects', label: 'projects', href: '/projects', hotkey: '2', pwd: '~/projects' },
+	{ id: 'about', label: 'about', href: '/about', hotkey: '3', pwd: '~/about' }
 ] as const;
 
 export const utilities = [
-  { id: 'themes', label: 'themes', hotkey: 't' },
-  { id: 'help',   label: 'help',   hotkey: '?' },
+	{ id: 'themes', label: 'themes', hotkey: 't' },
+	{ id: 'help', label: 'help', hotkey: '?' }
 ] as const;
 ```
 
@@ -116,8 +116,8 @@ Each region is its own component (next section). The chrome zone has subtle grid
 
 ```css
 background:
-  linear-gradient(rgba(91,250,91,.035) 1px, transparent 1px) 0 0/100% 12px,
-  linear-gradient(90deg, rgba(91,250,91,.035) 1px, transparent 1px) 0 0/12px 100%;
+	linear-gradient(rgba(91, 250, 91, 0.035) 1px, transparent 1px) 0 0/100% 12px,
+	linear-gradient(90deg, rgba(91, 250, 91, 0.035) 1px, transparent 1px) 0 0/12px 100%;
 ```
 
 The opacity values resolve to `--color-accent` at `rgba(…, .035)` in the actual implementation — derived from the theme via `color-mix()`.
@@ -153,12 +153,12 @@ Each cluster is a labeled box:
 
 The four v1 clusters:
 
-| Cluster | Rows |
-| --- | --- |
-| `// identity` | user, host, pwd |
-| `// clock` | date, time, up |
-| `// link` | pds, rx/tx, conn |
-| `// system` | kernel, shell, build, theme |
+| Cluster       | Rows                        |
+| ------------- | --------------------------- |
+| `// identity` | user, host, pwd             |
+| `// clock`    | date, time, up              |
+| `// link`     | pds, rx/tx, conn            |
+| `// system`   | kernel, shell, build, theme |
 
 `<Cluster>` is generic — takes `{ id, rows }` props. New clusters are one-line additions in the `+layout.server.ts` data.
 
@@ -216,17 +216,17 @@ Full-bleed agnoster-style strip at the bottom edge of the viewport (above any sa
 
 Segments left → right:
 
-| Segment | Content | Style |
-| --- | --- | --- |
-| s1 | `$ <pwd>` | Knockout accent (bg: accent, fg: on-accent) |
-| s2 | `[N] <section>` | Tinted accent bg, accent fg |
-| s3 | `<entries> · <meta>` | Faint accent bg, dim fg |
-| (spacer) | | — |
-| tray | `cur N,N` | Faint accent bg, dim label / accent value |
-| tray | `mode normal` | same |
-| tray | `rec ● 0:42:11` | same; pulsing red `●` cosmetic |
-| theme | `⌁ neon-green/dk` | Surface-2 bg, cyan fg (matches the cyan accent used elsewhere) |
-| clock | `14:32:07` | Knockout accent (matches s1) |
+| Segment  | Content              | Style                                                          |
+| -------- | -------------------- | -------------------------------------------------------------- |
+| s1       | `$ <pwd>`            | Knockout accent (bg: accent, fg: on-accent)                    |
+| s2       | `[N] <section>`      | Tinted accent bg, accent fg                                    |
+| s3       | `<entries> · <meta>` | Faint accent bg, dim fg                                        |
+| (spacer) |                      | —                                                              |
+| tray     | `cur N,N`            | Faint accent bg, dim label / accent value                      |
+| tray     | `mode normal`        | same                                                           |
+| tray     | `rec ● 0:42:11`      | same; pulsing red `●` cosmetic                                 |
+| theme    | `⌁ neon-green/dk`    | Surface-2 bg, cyan fg (matches the cyan accent used elsewhere) |
+| clock    | `14:32:07`           | Knockout accent (matches s1)                                   |
 
 Each segment ends in a `::after` triangle border that flows into the next segment's color. Implementation: small CSS-triangle pseudo-element per segment, sized to match the bar height.
 
@@ -262,19 +262,19 @@ Root layout:
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
-  import '../app.css';
-  import { setContext, onMount } from 'svelte';
-  import Shell from '$lib/shell/Shell.svelte';
-  import KeyboardLayer from '$lib/shell/KeyboardLayer.svelte';
-  import { startRuntimeTicks } from '$lib/shell/runtime';
-  let { data, children } = $props();
-  setContext('chrome', data.chrome);
-  onMount(() => startRuntimeTicks());
+	import '../app.css';
+	import { setContext, onMount } from 'svelte';
+	import Shell from '$lib/shell/Shell.svelte';
+	import KeyboardLayer from '$lib/shell/KeyboardLayer.svelte';
+	import { startRuntimeTicks } from '$lib/shell/runtime';
+	let { data, children } = $props();
+	setContext('chrome', data.chrome);
+	onMount(() => startRuntimeTicks());
 </script>
 
 <KeyboardLayer />
 <Shell>
-  {@render children()}
+	{@render children()}
 </Shell>
 ```
 
@@ -285,7 +285,7 @@ Each route's `+page.svelte` only renders the inside of the content window:
 ```svelte
 <!-- src/routes/+page.svelte -->
 <script>
-  let { data } = $props();
+	let { data } = $props();
 </script>
 
 <!-- this renders inside ContentFrame's reading window -->
@@ -302,9 +302,9 @@ Each route's `+page.svelte` only renders the inside of the content window:
 import { resolveChromeData } from '$lib/shell/chrome';
 
 export const load = async ({ locals }) => ({
-  theme: locals.theme,        // existing
-  mode: locals.mode,          // existing
-  chrome: resolveChromeData() // new
+	theme: locals.theme, // existing
+	mode: locals.mode, // existing
+	chrome: resolveChromeData() // new
 });
 ```
 
@@ -312,23 +312,23 @@ export const load = async ({ locals }) => ({
 
 ```ts
 type ChromeData = {
-  identity: { user: string; host: string };
-  link:     { pds: string };
-  system:   { kernel: string; shell: string; build: string; sig: string };
+	identity: { user: string; host: string };
+	link: { pds: string };
+	system: { kernel: string; shell: string; build: string; sig: string };
 };
 ```
 
 Source for each field:
 
-| Field | Source |
-| --- | --- |
-| `user` | `PUBLIC_OWNER_HANDLE` env var (`protocol7`) |
-| `host` | `PUBLIC_HOST_LABEL` env var (`helios`) |
-| `pds`  | `PUBLIC_PDS_HOST` env var (`pds.proto.cool`) |
-| `kernel` | `proto-kit ${SVELTEKIT_VERSION}` from `package.json` (read at build via Vite `define`) |
-| `shell` | `svelte ${SVELTE_VERSION}` from `package.json` |
-| `build` | `package.json` `version` field |
-| `sig` | First 7 chars of `GIT_COMMIT_SHA` (set at build via `process.env.GIT_COMMIT_SHA`, falls back to `0000000`) |
+| Field    | Source                                                                                                     |
+| -------- | ---------------------------------------------------------------------------------------------------------- |
+| `user`   | `PUBLIC_OWNER_HANDLE` env var (`protocol7`)                                                                |
+| `host`   | `PUBLIC_HOST_LABEL` env var (`helios`)                                                                     |
+| `pds`    | `PUBLIC_PDS_HOST` env var (`pds.proto.cool`)                                                               |
+| `kernel` | `proto-kit ${SVELTEKIT_VERSION}` from `package.json` (read at build via Vite `define`)                     |
+| `shell`  | `svelte ${SVELTE_VERSION}` from `package.json`                                                             |
+| `build`  | `package.json` `version` field                                                                             |
+| `sig`    | First 7 chars of `GIT_COMMIT_SHA` (set at build via `process.env.GIT_COMMIT_SHA`, falls back to `0000000`) |
 
 Vite config exposes the build-time constants via `define`. Use `execFileSync` (not `exec`) — explicit args, no shell, no injection surface:
 
@@ -338,18 +338,21 @@ import pkg from './package.json';
 import { execFileSync } from 'node:child_process';
 
 const sha = (() => {
-  try { return execFileSync('git', ['rev-parse', 'HEAD']).toString().trim(); }
-  catch { return '0000000'; }
+	try {
+		return execFileSync('git', ['rev-parse', 'HEAD']).toString().trim();
+	} catch {
+		return '0000000';
+	}
 })();
 
 export default defineConfig({
-  define: {
-    '__BUILD_VERSION__': JSON.stringify(pkg.version),
-    '__BUILD_SHA__': JSON.stringify(sha),
-    '__SVELTE_VERSION__': JSON.stringify(pkg.devDependencies.svelte),
-    '__SVELTEKIT_VERSION__': JSON.stringify(pkg.devDependencies['@sveltejs/kit']),
-  },
-  // ...existing config...
+	define: {
+		__BUILD_VERSION__: JSON.stringify(pkg.version),
+		__BUILD_SHA__: JSON.stringify(sha),
+		__SVELTE_VERSION__: JSON.stringify(pkg.devDependencies.svelte),
+		__SVELTEKIT_VERSION__: JSON.stringify(pkg.devDependencies['@sveltejs/kit'])
+	}
+	// ...existing config...
 });
 ```
 
@@ -367,28 +370,28 @@ const now = writable(new Date());
 let interval: ReturnType<typeof setInterval> | null = null;
 
 export function startRuntimeTicks() {
-  if (interval) return;
-  interval = setInterval(() => now.set(new Date()), 1000);
+	if (interval) return;
+	interval = setInterval(() => now.set(new Date()), 1000);
 }
 
-export const clock: Readable<{ date: string; time: string }> = derived(now, $n => ({
-  date: $n.toISOString().slice(0, 10),
-  time: $n.toTimeString().slice(0, 8),
+export const clock: Readable<{ date: string; time: string }> = derived(now, ($n) => ({
+	date: $n.toISOString().slice(0, 10),
+	time: $n.toTimeString().slice(0, 8)
 }));
 
-export const uptime: Readable<string> = derived(now, $n => {
-  const ms = $n.getTime() - SITE_ORIGIN.getTime();
-  const d = Math.floor(ms / 86400000);
-  const h = Math.floor((ms % 86400000) / 3600000);
-  const m = Math.floor((ms % 3600000) / 60000);
-  return `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m`;
+export const uptime: Readable<string> = derived(now, ($n) => {
+	const ms = $n.getTime() - SITE_ORIGIN.getTime();
+	const d = Math.floor(ms / 86400000);
+	const h = Math.floor((ms % 86400000) / 3600000);
+	const m = Math.floor((ms % 3600000) / 60000);
+	return `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m`;
 });
 
 export function pwdForPath(pathname: string): string {
-  if (pathname === '/') return '~/content';
-  if (pathname.startsWith('/projects')) return '~/projects';
-  if (pathname.startsWith('/about')) return '~/about';
-  return '~' + pathname;
+	if (pathname === '/') return '~/content';
+	if (pathname.startsWith('/projects')) return '~/projects';
+	if (pathname.startsWith('/about')) return '~/about';
+	return '~' + pathname;
 }
 ```
 
@@ -400,23 +403,25 @@ SSR-safe: stores have an initial value; `startRuntimeTicks` is called from `onMo
 // src/lib/shell/cosmetic.ts — honest fakes
 import { readable } from 'svelte/store';
 
-export const signalSparkline = readable('▁▂▃▅▇▅▃▂', set => {
-  const frames = ['▁▂▃▅▇▅▃▂', '▂▃▅▇▅▃▂▁', '▃▅▇▅▃▂▁▂', '▅▇▅▃▂▁▂▃', '▇▅▃▂▁▂▃▅'];
-  let i = 0;
-  const id = setInterval(() => set(frames[i = (i + 1) % frames.length]), 600);
-  return () => clearInterval(id);
+export const signalSparkline = readable('▁▂▃▅▇▅▃▂', (set) => {
+	const frames = ['▁▂▃▅▇▅▃▂', '▂▃▅▇▅▃▂▁', '▃▅▇▅▃▂▁▂', '▅▇▅▃▂▁▂▃', '▇▅▃▂▁▂▃▅'];
+	let i = 0;
+	const id = setInterval(() => set(frames[(i = (i + 1) % frames.length)]), 600);
+	return () => clearInterval(id);
 });
 
 export const cursorCoords = readable('1,1');
 export const editorMode = readable('normal');
 export const linkInfo = { rxTx: '42 / 07', conn: 3 };
-export const recTimer = readable('0:42:11', set => {
-  const start = Date.now();
-  const id = setInterval(() => {
-    const s = Math.floor((Date.now() - start) / 1000);
-    set(`${Math.floor(s / 3600)}:${String(Math.floor(s/60)%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`);
-  }, 1000);
-  return () => clearInterval(id);
+export const recTimer = readable('0:42:11', (set) => {
+	const start = Date.now();
+	const id = setInterval(() => {
+		const s = Math.floor((Date.now() - start) / 1000);
+		set(
+			`${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
+		);
+	}, 1000);
+	return () => clearInterval(id);
 });
 ```
 
@@ -433,29 +438,47 @@ import { sections } from './sections';
 import { openOverlay } from './overlay';
 
 export type Command = {
-  id: string;
-  hotkey: string;       // single character, no modifiers
-  label: string;
-  category: 'navigation' | 'theme' | 'prompt' | 'help';
-  run: () => void;
+	id: string;
+	hotkey: string; // single character, no modifiers
+	label: string;
+	category: 'navigation' | 'theme' | 'prompt' | 'help';
+	run: () => void;
 };
 
 // Navigation commands are derived from sections.ts — single source of truth.
 // Adding a section in sections.ts automatically registers its hotkey.
-const navCommands: Command[] = sections.map(s => ({
-  id: `goto-${s.id}`,
-  hotkey: s.hotkey,
-  label: `go to ${s.label}`,
-  category: 'navigation',
-  run: () => goto(s.href),
+const navCommands: Command[] = sections.map((s) => ({
+	id: `goto-${s.id}`,
+	hotkey: s.hotkey,
+	label: `go to ${s.label}`,
+	category: 'navigation',
+	run: () => goto(s.href)
 }));
 
 export const commands: Command[] = [
-  ...navCommands,
-  { id: 'theme-picker', hotkey: 't', label: 'theme picker', category: 'theme',  run: () => openOverlay('theme') },
-  { id: 'help',         hotkey: '?', label: 'help',         category: 'help',   run: () => openOverlay('help') },
-  { id: 'search',       hotkey: '/', label: 'search',       category: 'prompt', run: () => openOverlay('search-stub') },
-  { id: 'command',      hotkey: ':', label: 'command',      category: 'prompt', run: () => openOverlay('command-stub') },
+	...navCommands,
+	{
+		id: 'theme-picker',
+		hotkey: 't',
+		label: 'theme picker',
+		category: 'theme',
+		run: () => openOverlay('theme')
+	},
+	{ id: 'help', hotkey: '?', label: 'help', category: 'help', run: () => openOverlay('help') },
+	{
+		id: 'search',
+		hotkey: '/',
+		label: 'search',
+		category: 'prompt',
+		run: () => openOverlay('search-stub')
+	},
+	{
+		id: 'command',
+		hotkey: ':',
+		label: 'command',
+		category: 'prompt',
+		run: () => openOverlay('command-stub')
+	}
 ];
 ```
 
@@ -494,30 +517,38 @@ Five progressive breakpoints:
 
 ```css
 @layer base {
-  .chrome-zone {
-    container-type: inline-size;
-    container-name: chrome;
-  }
+	.chrome-zone {
+		container-type: inline-size;
+		container-name: chrome;
+	}
 }
 
 @layer base {
-  /* defaults are mobile-first (xs) */
-  /* xs (< 480px): single info row, scrollable nav, minimal prompt + status */
+	/* defaults are mobile-first (xs) */
+	/* xs (< 480px): single info row, scrollable nav, minimal prompt + status */
 
-  @container chrome (min-width: 480px)  { /* sm — single combined cluster */ }
-  @container chrome (min-width: 768px)  { /* md — clusters wrap to 2 rows; full prompt dock */ }
-  @container chrome (min-width: 1024px) { /* lg — all clusters in 1 row */ }
-  @container chrome (min-width: 1280px) { /* xl — full as designed */ }
+	@container chrome (min-width: 480px) {
+		/* sm — single combined cluster */
+	}
+	@container chrome (min-width: 768px) {
+		/* md — clusters wrap to 2 rows; full prompt dock */
+	}
+	@container chrome (min-width: 1024px) {
+		/* lg — all clusters in 1 row */
+	}
+	@container chrome (min-width: 1280px) {
+		/* xl — full as designed */
+	}
 }
 ```
 
-| Breakpoint | Logoblock | Clusters | Nav tabs | Prompt | Statusbar |
-| --- | --- | --- | --- | --- | --- |
-| **xs** (< 480px) | logomark only, smaller (~22px) | single compact info row (user · pwd · time) | hotkey prefix hidden; horizontal scroll if overflow | dock collapsed to icons only | `pwd · clock` only |
-| **sm** (≥ 480px) | + sub-line | one combined `// info` cluster (user, host, pwd, time) | hotkey prefix hidden | center chip; dock visible | + section + theme |
-| **md** (≥ 768px) | + sigil | clusters wrap to 2 rows | hotkey prefix visible | full | + count |
-| **lg** (≥ 1024px) | full | all clusters in 1 row, tighter padding | full | full | full minus cosmetic tray |
-| **xl** (≥ 1280px) | full | full as designed | full | full | full incl. cosmetic tray |
+| Breakpoint        | Logoblock                      | Clusters                                               | Nav tabs                                            | Prompt                       | Statusbar                |
+| ----------------- | ------------------------------ | ------------------------------------------------------ | --------------------------------------------------- | ---------------------------- | ------------------------ |
+| **xs** (< 480px)  | logomark only, smaller (~22px) | single compact info row (user · pwd · time)            | hotkey prefix hidden; horizontal scroll if overflow | dock collapsed to icons only | `pwd · clock` only       |
+| **sm** (≥ 480px)  | + sub-line                     | one combined `// info` cluster (user, host, pwd, time) | hotkey prefix hidden                                | center chip; dock visible    | + section + theme        |
+| **md** (≥ 768px)  | + sigil                        | clusters wrap to 2 rows                                | hotkey prefix visible                               | full                         | + count                  |
+| **lg** (≥ 1024px) | full                           | all clusters in 1 row, tighter padding                 | full                                                | full                         | full minus cosmetic tray |
+| **xl** (≥ 1280px) | full                           | full as designed                                       | full                                                | full                         | full incl. cosmetic tray |
 
 Touch behavior:
 
@@ -534,9 +565,9 @@ The chrome derives all colors from existing tokens — **no new color tokens add
 
 ```css
 .cluster-header {
-  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  color: var(--color-fg-dim);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+	background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+	color: var(--color-fg-dim);
+	border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 ```
 
@@ -559,7 +590,7 @@ Opens `ThemePickerOverlay`, which lists themes from `$lib/theme/registry.ts` and
 
 ## Accessibility
 
-- **Nav tabs** are `<a href>` links with `aria-current="page"` for active state. Click + keyboard activation (Enter / Space on focused link) work natively. Tabs are *not* `role="tab"` — they're routed nav.
+- **Nav tabs** are `<a href>` links with `aria-current="page"` for active state. Click + keyboard activation (Enter / Space on focused link) work natively. Tabs are _not_ `role="tab"` — they're routed nav.
 - **Cosmetic chrome** (`cur 1,1`, `mode normal`, `rec 0:42:11`, signal sparkline, the ASCII sigil under the logomark) is `aria-hidden="true"` — decoration, not content.
 - **Live data**: clock + uptime have `aria-live="off"` (avoid screen-reader chatter every second). Theme name + section name have `aria-live="polite"` so changes are announced.
 - **Overlays** trap focus inside, restore focus on close, are dismissible with `Escape`. Backdrop click closes too. Each overlay has a labelled heading.

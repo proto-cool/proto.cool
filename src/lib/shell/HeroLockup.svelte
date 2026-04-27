@@ -26,7 +26,9 @@
 	<span class="l1">
 		{line1Parts.before}{#if line1Parts.mid}<em>{line1Parts.mid}</em>{/if}{line1Parts.after}
 	</span>
-	<span class="l2">{line2}{#if punct}<span class="punct">{punct}</span>{/if}</span>
+	<span class="l2"
+		>{line2}{#if punct}<span class="punct">{punct}</span>{/if}</span
+	>
 	{#if deck}
 		<div class="deck">{@render deck()}</div>
 	{/if}
@@ -85,19 +87,19 @@
 		color: var(--hal-bone);
 		font-weight: 700;
 	}
-@container chrome (max-width: 767px) {
-	.l1,
-	.l2 {
-		font-size: 72px;
+	@container chrome (max-width: 767px) {
+		.l1,
+		.l2 {
+			font-size: 72px;
+		}
+		.deck {
+			font-size: var(--text-sm);
+		}
 	}
-	.deck {
-		font-size: var(--text-sm);
+	@container chrome (min-width: 768px) and (max-width: 1023px) {
+		.l1,
+		.l2 {
+			font-size: 96px;
+		}
 	}
-}
-@container chrome (min-width: 768px) and (max-width: 1023px) {
-	.l1,
-	.l2 {
-		font-size: 96px;
-	}
-}
 </style>

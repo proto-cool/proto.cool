@@ -35,10 +35,7 @@ describe('commands registry', () => {
 	});
 
 	it('hotkey list equals section + utility hotkeys', () => {
-		const expected = new Set([
-			...sections.map((s) => s.hotkey),
-			...utilities.map((u) => u.hotkey)
-		]);
+		const expected = new Set([...sections.map((s) => s.hotkey), ...utilities.map((u) => u.hotkey)]);
 		const actual = new Set(commands.map((c) => c.hotkey));
 		expect(actual).toEqual(expected);
 	});

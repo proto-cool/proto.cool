@@ -36,21 +36,15 @@
 
 	/* ---- glow tokens (halogen vocabulary) ---- */
 	--glow-text:
-		0 0 1px rgba(226, 245, 207, 0.95),
-		0 0 6px rgba(184, 255, 90, 0.55),
+		0 0 1px rgba(226, 245, 207, 0.95), 0 0 6px rgba(184, 255, 90, 0.55),
 		0 0 22px rgba(184, 255, 90, 0.3);
 	--glow-edge:
-		0 0 0 1px rgba(184, 255, 90, 1),
-		0 0 12px rgba(184, 255, 90, 0.45),
+		0 0 0 1px rgba(184, 255, 90, 1), 0 0 12px rgba(184, 255, 90, 0.45),
 		0 0 4px rgba(184, 255, 90, 0.55);
-	--glow-panel:
-		inset 0 1px 0 rgba(184, 255, 90, 0.1),
-		0 6px 22px rgba(0, 0, 0, 0.55);
+	--glow-panel: inset 0 1px 0 rgba(184, 255, 90, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
 	--glow-pip: 0 0 6px var(--hal-hot), 0 0 16px rgba(130, 227, 75, 0.7);
 	--glow-focus:
-		0 0 0 1px var(--hal-hot),
-		0 0 0 3px rgba(184, 255, 90, 0.4),
-		0 0 14px rgba(184, 255, 90, 0.55);
+		0 0 0 1px var(--hal-hot), 0 0 0 3px rgba(184, 255, 90, 0.4), 0 0 14px rgba(184, 255, 90, 0.55);
 	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
 }
 

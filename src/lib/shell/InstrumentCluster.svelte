@@ -30,9 +30,15 @@
 		</div>
 
 		<div class="readout">
-			<span class="lab">rx</span><span class="ind on"></span><span class="val glow">{linkInfo.rxTx} kb/s</span>
-			<span class="lab">conn</span><span class="ind on"></span><span class="val">{linkInfo.conn} / 12</span>
-			<span class="lab">pds</span><span class="ind cool"></span><span class="val">{chrome.link.pds}</span>
+			<span class="lab">rx</span><span class="ind on"></span><span class="val glow"
+				>{linkInfo.rxTx} kb/s</span
+			>
+			<span class="lab">conn</span><span class="ind on"></span><span class="val"
+				>{linkInfo.conn} / 12</span
+			>
+			<span class="lab">pds</span><span class="ind cool"></span><span class="val"
+				>{chrome.link.pds}</span
+			>
 			<span class="lab">uptime</span><span class="ind on"></span><span class="val">{up}</span>
 		</div>
 
@@ -230,9 +236,9 @@
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 	}
-@container chrome (max-width: 767px) {
-	.cluster {
-		width: 100%;
+	@container chrome (max-width: 767px) {
+		.cluster {
+			width: 100%;
+		}
 	}
-}
 </style>
