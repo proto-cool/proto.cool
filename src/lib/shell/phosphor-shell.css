@@ -1,5 +1,17 @@
 /* src/lib/shell/phosphor-shell.css
- * Shell-wide styles. Most styling lives inside individual Svelte
- * component <style> blocks; this file is reserved for cross-component
- * concerns (reduced motion, etc.). Filled in during Task I2.
+ * Shell-wide cross-component concerns.
  */
+
+@layer shell {
+	/* Reduced motion — global guarantee that no animation runs in the shell.
+	 * Per-component pulse animations already read --glow-pulse (set to none in
+	 * the theme's reduced-motion block); this is a belt-and-suspenders stop. */
+	@media (prefers-reduced-motion: reduce) {
+		.stage *,
+		.stage *::before,
+		.stage *::after {
+			animation-duration: 0s !important;
+			animation-iteration-count: 1 !important;
+		}
+	}
+}
