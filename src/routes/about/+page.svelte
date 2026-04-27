@@ -10,7 +10,7 @@
 
 <div class="page">
 	<Halo />
-	<HeroLockup line1="kept in the" line2="open" emphasis="open" punct=".">
+	<HeroLockup line1="kept in the" line2="open" punct=".">
 		{#snippet deck()}
 			proto.cool is a personal terminal somebody (protocol7) built for
 			themselves on top of the at protocol. real content lands in the

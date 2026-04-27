@@ -10,7 +10,7 @@
 
 <div class="page">
 	<Halo />
-	<HeroLockup line1="things in" line2="flight" emphasis="flight" punct=".">
+	<HeroLockup line1="things in" line2="flight" punct=".">
 		{#snippet deck()}
 			projects in flight, archived, abandoned. wired in a follow-up spec.
 		{/snippet}
