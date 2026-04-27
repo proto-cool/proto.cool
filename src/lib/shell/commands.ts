@@ -2,7 +2,7 @@ import { goto } from '$app/navigation';
 import { sections } from './sections';
 import { openOverlay } from './overlay';
 
-export type CommandCategory = 'navigation' | 'theme' | 'prompt' | 'help';
+export type CommandCategory = 'navigation' | 'theme' | 'help';
 
 export type Command = {
 	id: string;
@@ -35,20 +35,6 @@ export const commands: Command[] = [
 		label: 'help',
 		category: 'help',
 		run: () => openOverlay('help')
-	},
-	{
-		id: 'search',
-		hotkey: '/',
-		label: 'search',
-		category: 'prompt',
-		run: () => openOverlay('search-stub')
-	},
-	{
-		id: 'command',
-		hotkey: ':',
-		label: 'command',
-		category: 'prompt',
-		run: () => openOverlay('command-stub')
 	}
 ];
 

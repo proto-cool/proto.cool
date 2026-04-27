@@ -14,11 +14,14 @@ describe('commands registry', () => {
 		}
 	});
 
-	it('contains theme-picker, help, search, command', () => {
+	it('contains theme-picker and help', () => {
 		expect(commands.find((c) => c.id === 'theme-picker')).toBeDefined();
 		expect(commands.find((c) => c.id === 'help')).toBeDefined();
-		expect(commands.find((c) => c.id === 'search')).toBeDefined();
-		expect(commands.find((c) => c.id === 'command')).toBeDefined();
+	});
+
+	it('does NOT contain search or command (out of scope for v1)', () => {
+		expect(commands.find((c) => c.id === 'search')).toBeUndefined();
+		expect(commands.find((c) => c.id === 'command')).toBeUndefined();
 	});
 
 	it('every hotkey is unique', () => {
@@ -26,17 +29,15 @@ describe('commands registry', () => {
 		expect(new Set(keys).size).toBe(keys.length);
 	});
 
-	it('every category is one of the four allowed values', () => {
-		const allowed = new Set(['navigation', 'theme', 'prompt', 'help']);
+	it('every category is one of the three allowed values', () => {
+		const allowed = new Set(['navigation', 'theme', 'help']);
 		for (const c of commands) expect(allowed.has(c.category)).toBe(true);
 	});
 
-	it('has the same hotkey list as section + utility hotkeys plus / and :', () => {
+	it('hotkey list equals section + utility hotkeys', () => {
 		const expected = new Set([
 			...sections.map((s) => s.hotkey),
-			...utilities.map((u) => u.hotkey),
-			'/',
-			':'
+			...utilities.map((u) => u.hotkey)
 		]);
 		const actual = new Set(commands.map((c) => c.hotkey));
 		expect(actual).toEqual(expected);
