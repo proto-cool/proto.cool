@@ -84,6 +84,19 @@
 	--color-info: #50a0ff;
 }
 
+/* ==========================================================================
+   Halogen tokens — shared dither tile URLs (per-theme palette overrides
+   the actual fill colors via theme files).
+   The dither tiles below are LIME by default; theme files may override
+   the --dither-* custom properties to recolor.
+   ========================================================================== */
+
+:root {
+	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3C/svg%3E");
+	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3C/svg%3E");
+	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23b8ff5a'/%3E%3C/svg%3E");
+}
+
 /* Reduced motion — neutralize all durations */
 @media (prefers-reduced-motion: reduce) {
 	:root {
