@@ -39,6 +39,10 @@ export default defineConfig(
 	{
 		// Override or add rule settings here, such as:
 		// 'svelte/button-has-type': 'error'
-		rules: {}
+		rules: {
+			// Simple hrefs and goto() calls in this project don't use navigation guards;
+			// suppressing the SvelteKit recommended rule that requires resolve() wrappers.
+			'svelte/no-navigation-without-resolve': 'off'
+		}
 	}
 );
