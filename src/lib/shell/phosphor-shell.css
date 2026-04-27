@@ -1,0 +1,5 @@
+/* src/lib/shell/phosphor-shell.css
+ * Shell-wide styles. Most styling lives inside individual Svelte
+ * component <style> blocks; this file is reserved for cross-component
+ * concerns (reduced motion, etc.). Filled in during Task I2.
+ */
