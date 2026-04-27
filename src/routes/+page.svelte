@@ -1,19 +1,37 @@
+<script lang="ts">
+	import HeroLockup from '$lib/shell/HeroLockup.svelte';
+	import Halo from '$lib/shell/Halo.svelte';
+	import InstrumentCluster from '$lib/shell/InstrumentCluster.svelte';
+</script>
+
 <svelte:head>
 	<title>content · proto.cool</title>
 </svelte:head>
 
-<h1>~/content</h1>
-<p>
-	federated feed surface — bluesky / pckt / grain. wired in the feed spec. for now this is the
-	placeholder.
-</p>
+<div class="page">
+	<Halo />
+	<HeroLockup
+		line1="an indexed"
+		emphasis="indexed"
+		line2="personal archive"
+		punct="."
+	>
+		{#snippet deck()}
+			a personal site, kept in the open — <b>posts, projects, ephemera</b>.
+			longform lives in the pds, indexed and instrumented from here.
+		{/snippet}
+	</HeroLockup>
+	<InstrumentCluster />
+</div>
 
 <style>
-	h1 {
-		font-family: var(--font-display);
-		font-weight: var(--weight-black);
-		letter-spacing: var(--tracking-tight);
-		font-size: var(--display-md);
-		margin: 0 0 var(--space-4);
+	.page {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr 280px;
+		gap: 36px;
+		align-items: center;
+		min-height: 420px;
+		flex: 1;
 	}
 </style>

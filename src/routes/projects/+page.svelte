@@ -1,29 +1,31 @@
-<!-- src/routes/projects/+page.svelte -->
+<script lang="ts">
+	import HeroLockup from '$lib/shell/HeroLockup.svelte';
+	import Halo from '$lib/shell/Halo.svelte';
+	import InstrumentCluster from '$lib/shell/InstrumentCluster.svelte';
+</script>
+
 <svelte:head>
 	<title>projects · proto.cool</title>
 </svelte:head>
 
-<h1>~/projects</h1>
-<p>list of things in flight, archived, and abandoned. wired in a follow-up spec.</p>
-
-<ul class="stub">
-	<li>proto.cool v2 — TUI shell</li>
-	<li>theming engine</li>
-	<li>at-proto integration</li>
-</ul>
+<div class="page">
+	<Halo />
+	<HeroLockup line1="things in" line2="flight" emphasis="flight" punct=".">
+		{#snippet deck()}
+			projects in flight, archived, abandoned. wired in a follow-up spec.
+		{/snippet}
+	</HeroLockup>
+	<InstrumentCluster />
+</div>
 
 <style>
-	h1 {
-		font-family: var(--font-display);
-		font-weight: var(--weight-black);
-		letter-spacing: var(--tracking-tight);
-		font-size: var(--display-md);
-		margin: 0 0 var(--space-4);
-	}
-	.stub {
-		font-family: var(--font-mono);
-		font-size: var(--text-sm);
-		color: var(--color-fg-dim);
-		padding-left: var(--space-4);
+	.page {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr 280px;
+		gap: 36px;
+		align-items: center;
+		min-height: 420px;
+		flex: 1;
 	}
 </style>
