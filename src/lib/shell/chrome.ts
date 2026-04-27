@@ -1,7 +1,7 @@
 export type ChromeData = {
 	identity: { user: string; host: string };
 	link: { pds: string };
-	system: { kernel: string; shell: string; build: string; sig: string };
+	system: { build: string; sig: string };
 };
 
 // Defaults match the production deployment so a clean checkout renders correctly
@@ -21,8 +21,6 @@ export function resolveChromeData(): ChromeData {
 			pds: process.env.PUBLIC_PDS_HOST || DEFAULT_PDS
 		},
 		system: {
-			kernel: `proto-kit ${__SVELTEKIT_VERSION__}`,
-			shell: `svelte ${__SVELTE_VERSION__}`,
 			build: __BUILD_VERSION__,
 			sig: __BUILD_SHA__.slice(0, 7)
 		}

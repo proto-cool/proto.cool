@@ -2,8 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.stubGlobal('__BUILD_VERSION__', '0.7.2');
 vi.stubGlobal('__BUILD_SHA__', '7a3f2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a');
-vi.stubGlobal('__SVELTE_VERSION__', '5.55.2');
-vi.stubGlobal('__SVELTEKIT_VERSION__', '2.57.0');
 
 const env = process.env;
 beforeEach(() => {
@@ -21,8 +19,6 @@ describe('resolveChromeData', () => {
 			identity: { user: 'protocol7', host: 'helios' },
 			link: { pds: 'pds.proto.cool' },
 			system: {
-				kernel: 'proto-kit 2.57.0',
-				shell: 'svelte 5.55.2',
 				build: '0.7.2',
 				sig: '7a3f2b1'
 			}
