@@ -28,4 +28,11 @@
 		min-height: 420px;
 		flex: 1;
 	}
+@container chrome (max-width: 767px) {
+	.page {
+		grid-template-columns: 1fr;
+		gap: 24px;
+		min-height: auto;
+	}
+}
 </style>

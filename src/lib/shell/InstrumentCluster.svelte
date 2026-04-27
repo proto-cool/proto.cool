@@ -230,4 +230,9 @@
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 	}
+@container chrome (max-width: 767px) {
+	.cluster {
+		width: 100%;
+	}
+}
 </style>

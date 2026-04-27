@@ -85,4 +85,19 @@
 		color: var(--hal-bone);
 		font-weight: 700;
 	}
+@container chrome (max-width: 767px) {
+	.l1,
+	.l2 {
+		font-size: 72px;
+	}
+	.deck {
+		font-size: var(--text-sm);
+	}
+}
+@container chrome (min-width: 768px) and (max-width: 1023px) {
+	.l1,
+	.l2 {
+		font-size: 96px;
+	}
+}
 </style>

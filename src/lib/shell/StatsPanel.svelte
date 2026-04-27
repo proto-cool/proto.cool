@@ -92,4 +92,20 @@
 		box-shadow: 0 0 6px var(--hal-hot);
 		align-self: center;
 	}
+@container chrome (max-width: 767px) {
+	.stats-panel {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.stats-panel .cell:nth-child(n + 5) {
+		display: none;
+	}
+}
+@container chrome (min-width: 768px) and (max-width: 1023px) {
+	.stats-panel {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.stats-panel .cell:nth-child(n + 7) {
+		display: none;
+	}
+}
 </style>
