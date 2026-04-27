@@ -21,7 +21,7 @@ describe('overlay store', () => {
 	});
 
 	it('closeOverlay resets to null', () => {
-		openOverlay('search-stub');
+		openOverlay('help');
 		closeOverlay();
 		expect(get(currentOverlay)).toBeNull();
 	});

@@ -1,6 +1,6 @@
 import { writable, type Readable } from 'svelte/store';
 
-export type OverlayKind = 'help' | 'theme' | 'search-stub' | 'command-stub';
+export type OverlayKind = 'help' | 'theme';
 
 const store = writable<OverlayKind | null>(null);
 
