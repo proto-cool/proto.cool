@@ -13,103 +13,184 @@
 </script>
 
 <footer class="stats-panel" aria-hidden="true">
-	<div class="cell">
-		<span class="pip"></span><span class="lab">VOL</span>
-		<b class="glow">{VOL} / № {ISSUE}</b>
-	</div>
-	<div class="cell"><span class="lab">EST</span><b>{EST}</b></div>
-	<div class="cell"><span class="lab">NET</span><b class="cool">ATPROTO</b></div>
-	<div class="cell">
-		<span class="lab">BUILD</span><b class="glow">0x{chrome.system.sig.toUpperCase().slice(0, 4)}</b
+	<span class="shapes shapes-l">
+		<span class="sq fill"></span>
+		<span class="sq fill"></span>
+		<span class="sq fill"></span>
+		<span class="sq"></span>
+		<span class="sq"></span>
+	</span>
+
+	<span class="line">
+		<span class="seg"><span class="k">vol</span><span class="v">{VOL}</span></span>
+		<span class="seg"><span class="k">no</span><span class="v">{ISSUE}</span></span>
+		<span class="seg"><span class="k">est</span><span class="v">{EST}</span></span>
+		<span class="seg"><span class="k">net</span><span class="v warm">atproto</span></span>
+		<span class="seg"
+			><span class="k">build</span><span class="v"
+				>0x{chrome.system.sig.toUpperCase().slice(0, 4)}</span
+			></span
 		>
-	</div>
-	<div class="cell"><span class="lab">MODE</span><b>{MODE_LABEL}</b></div>
-	<div class="cell">
-		<span class="lab">↳</span><b>{chrome.identity.user}@{chrome.identity.host}</b>
-	</div>
+		<span class="seg"><span class="k">mode</span><span class="v">{MODE_LABEL}</span></span>
+	</span>
+
+	<span class="ident">
+		<span class="tri">▷</span>
+		<span class="who">{chrome.identity.user}@{chrome.identity.host}</span>
+	</span>
 </footer>
 
 <style>
 	.stats-panel {
-		position: relative;
-		z-index: 3;
-		display: grid;
-		grid-template-columns: repeat(6, 1fr);
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 6;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
 		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		letter-spacing: 0.08em;
+		font-size: 10px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
 		color: var(--hal-dim);
-		background: linear-gradient(180deg, var(--hal-anthra-3) 0%, #0d130c 100%);
+		background: rgba(6, 9, 6, 0.72);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
 		border-top: 1px solid var(--hal-edge);
-		box-shadow:
-			inset 0 1px 0 rgba(184, 255, 90, 0.05),
-			inset 0 -1px 0 rgba(184, 255, 90, 0.1),
-			0 -6px 22px rgba(0, 0, 0, 0.55);
-		padding: 0 12px;
-	}
-	.stats-panel::before,
-	.stats-panel::after {
-		content: '';
-		position: absolute;
-		bottom: 6px;
-		width: 10px;
-		height: 10px;
-		border: 0 solid var(--hal-hot);
-		box-shadow: 0 0 4px rgba(184, 255, 90, 0.5);
-		opacity: 0.6;
+		padding: 5px 18px;
+		min-height: 24px;
 		pointer-events: none;
 	}
+	.ident {
+		pointer-events: auto;
+	}
 	.stats-panel::before {
-		left: 8px;
-		border-bottom-width: 1.5px;
-		border-left-width: 1.5px;
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: -1px;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent 0,
+			rgba(184, 255, 90, 0.35) 20%,
+			rgba(184, 255, 90, 0.6) 50%,
+			rgba(184, 255, 90, 0.35) 80%,
+			transparent 100%
+		);
+		box-shadow: 0 0 6px rgba(184, 255, 90, 0.35);
+		pointer-events: none;
 	}
-	.stats-panel::after {
-		right: 8px;
-		border-bottom-width: 1.5px;
-		border-right-width: 1.5px;
+
+	.shapes {
+		display: inline-flex;
+		gap: 3px;
+		align-items: center;
 	}
-	.cell {
-		padding: 14px 14px;
-		display: flex;
-		gap: 8px;
-		align-items: baseline;
+	.sq {
+		display: inline-block;
+		width: 7px;
+		height: 7px;
+		background: transparent;
+		border: 1px solid var(--hal-edge);
 	}
-	.cell + .cell {
-		border-left: 1px dotted var(--hal-edge);
-	}
-	.cell b {
-		font-weight: 400;
-		color: var(--hal-bone);
-	}
-	.cell .glow {
-		color: var(--hal-warm);
-		text-shadow: 0 0 6px rgba(184, 255, 90, 0.5);
-	}
-	.cell .cool {
-		color: var(--hal-cool);
-	}
-	.pip {
-		width: 6px;
-		height: 6px;
-		border-radius: 999px;
+	.sq.fill {
 		background: var(--hal-hot);
-		box-shadow: 0 0 6px var(--hal-hot);
+		border-color: var(--hal-hot);
+		box-shadow: 0 0 4px rgba(184, 255, 90, 0.6);
+	}
+
+	.line {
+		display: inline-flex;
+		align-items: center;
+		gap: 14px;
+		flex: 1;
+		justify-content: center;
+		min-width: 0;
+		flex-wrap: wrap;
+	}
+	.seg {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 5px;
+		white-space: nowrap;
+		position: relative;
+	}
+	.seg + .seg::before {
+		content: '◆';
+		color: var(--hal-deep-dim);
+		font-size: 7px;
+		line-height: 1;
+		margin-right: 14px;
+		margin-left: -14px;
 		align-self: center;
 	}
-	@container chrome (max-width: 767px) {
+	.k {
+		color: var(--hal-dim);
+	}
+	.v {
+		color: var(--hal-bone);
+	}
+	.v.warm {
+		color: var(--hal-cool);
+	}
+
+	.ident {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		white-space: nowrap;
+	}
+	.tri {
+		color: var(--hal-hot);
+		font-size: 9px;
+		line-height: 1;
+		text-shadow: 0 0 4px rgba(184, 255, 90, 0.6);
+	}
+	.who {
+		color: var(--hal-bone);
+	}
+
+	@container chrome (max-width: 1023px) {
 		.stats-panel {
-			grid-template-columns: repeat(2, 1fr);
+			padding: 6px 14px;
+			gap: 12px;
 		}
-		.stats-panel .cell:nth-child(n + 5) {
+		.line {
+			gap: 12px;
+		}
+		.seg + .seg::before {
+			margin-right: 12px;
+			margin-left: -12px;
+		}
+		.line .seg:nth-child(n + 6) {
 			display: none;
 		}
 	}
-	@container chrome (min-width: 768px) and (max-width: 1023px) {
+	@container chrome (max-width: 767px) {
 		.stats-panel {
-			grid-template-columns: repeat(3, 1fr);
+			gap: 10px;
+			padding: 6px 12px;
 		}
-		.stats-panel .cell:nth-child(n + 7) {
+		.shapes-l {
+			display: none;
+		}
+		.line {
+			justify-content: flex-start;
+			gap: 10px;
+		}
+		.seg + .seg::before {
+			margin-right: 10px;
+			margin-left: -10px;
+		}
+		.line .seg:nth-child(n + 4) {
+			display: none;
+		}
+		.ident .who {
 			display: none;
 		}
 	}
