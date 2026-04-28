@@ -127,6 +127,8 @@
 	}
 	.k {
 		color: var(--hal-dim);
+		text-transform: none;
+		letter-spacing: 0.16em;
 	}
 	.v {
 		color: var(--hal-bone);
