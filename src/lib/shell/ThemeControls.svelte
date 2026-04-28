@@ -62,9 +62,14 @@
 		currentThemeId = resolved as ThemeId;
 	}
 
+	function closeDropdown({ restoreFocus = false }: { restoreFocus?: boolean } = {}) {
+		themeDropdownOpen.set(false);
+		if (restoreFocus) themeButtonEl?.focus();
+	}
+
 	function pickRow(id: ThemeId) {
 		applyTheme(id, { remember: true });
-		themeDropdownOpen.set(false);
+		closeDropdown();
 	}
 
 	function toggleSys() {
@@ -81,14 +86,14 @@
 
 	function onDocClick(e: MouseEvent) {
 		if (!open) return;
-		if (rootEl && !rootEl.contains(e.target as Node)) themeDropdownOpen.set(false);
+		if (rootEl && !rootEl.contains(e.target as Node)) closeDropdown({ restoreFocus: true });
 	}
 
 	function onKeydown(e: KeyboardEvent) {
 		if (!open) return;
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			themeDropdownOpen.set(false);
+			closeDropdown({ restoreFocus: true });
 		}
 	}
 
@@ -96,6 +101,12 @@
 		if (!dropdownEl) return;
 		const buttons = Array.from(dropdownEl.querySelectorAll<HTMLButtonElement>('button.row'));
 		const currentIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
+
+		if (currentIndex === -1 && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+			e.preventDefault();
+			buttons[0]?.focus();
+			return;
+		}
 
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
@@ -107,12 +118,10 @@
 			prev?.focus();
 		} else if (e.key === 'Tab') {
 			e.preventDefault();
-			themeDropdownOpen.set(false);
-			themeButtonEl?.focus();
+			closeDropdown({ restoreFocus: true });
 		} else if (e.key === 'Escape') {
 			e.preventDefault();
-			themeDropdownOpen.set(false);
-			themeButtonEl?.focus();
+			closeDropdown({ restoreFocus: true });
 		}
 	}
 
@@ -161,6 +170,7 @@
 		class:live={sysActive}
 		aria-pressed={sysActive}
 		title="follow OS color scheme"
+		aria-label="follow OS color scheme"
 		onclick={toggleSys}
 	>
 		<span class="icon" aria-hidden="true"><Monitor size={14} weight="regular" /></span>
@@ -173,6 +183,7 @@
 		aria-haspopup="listbox"
 		aria-expanded={open}
 		title={currentEntry.familyName + ' · ' + currentEntry.variant}
+		aria-label="theme"
 		onclick={toggleDropdown}
 		bind:this={themeButtonEl}
 	>
