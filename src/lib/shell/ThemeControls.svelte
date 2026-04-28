@@ -7,6 +7,10 @@
 	let open = $state(false);
 	$effect(() => themeDropdownOpen.subscribe((v) => (open = v)));
 
+	let rootEl: HTMLDivElement;
+	let themeButtonEl: HTMLButtonElement;
+	let dropdownEl: HTMLUListElement | undefined = $state();
+
 	let currentThemeId = $state<ThemeId>(
 		typeof document !== 'undefined'
 			? resolveTheme(document.documentElement.dataset.theme)
@@ -77,8 +81,7 @@
 
 	function onDocClick(e: MouseEvent) {
 		if (!open) return;
-		const root = document.querySelector('.theme-controls');
-		if (root && !root.contains(e.target as Node)) themeDropdownOpen.set(false);
+		if (rootEl && !rootEl.contains(e.target as Node)) themeDropdownOpen.set(false);
 	}
 
 	function onKeydown(e: KeyboardEvent) {
@@ -88,6 +91,43 @@
 			themeDropdownOpen.set(false);
 		}
 	}
+
+	function onListboxKey(e: KeyboardEvent) {
+		if (!dropdownEl) return;
+		const buttons = Array.from(dropdownEl.querySelectorAll<HTMLButtonElement>('button.row'));
+		const currentIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			const next = buttons[(currentIndex + 1 + buttons.length) % buttons.length];
+			next?.focus();
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			const prev = buttons[(currentIndex - 1 + buttons.length) % buttons.length];
+			prev?.focus();
+		} else if (e.key === 'Tab') {
+			e.preventDefault();
+			themeDropdownOpen.set(false);
+			themeButtonEl?.focus();
+		} else if (e.key === 'Escape') {
+			e.preventDefault();
+			themeDropdownOpen.set(false);
+			themeButtonEl?.focus();
+		}
+	}
+
+	$effect(() => {
+		if (!open) return;
+		queueMicrotask(() => {
+			if (!dropdownEl) return;
+			const buttons = Array.from(dropdownEl.querySelectorAll<HTMLButtonElement>('button.row'));
+			const activeIdx = themes.findIndex(
+				(t) => t.id === currentThemeId && currentMode !== 'system'
+			);
+			const target = activeIdx >= 0 ? buttons[activeIdx] : buttons[0];
+			target?.focus();
+		});
+	});
 
 	onMount(() => {
 		mql = window.matchMedia('(prefers-color-scheme: dark)');
@@ -114,7 +154,7 @@
 	let sysActive = $derived(currentMode === 'system');
 </script>
 
-<div class="theme-controls">
+<div class="theme-controls" bind:this={rootEl}>
 	<button
 		type="button"
 		class="ctrl sys"
@@ -134,6 +174,7 @@
 		aria-expanded={open}
 		title={currentEntry.familyName + ' · ' + currentEntry.variant}
 		onclick={toggleDropdown}
+		bind:this={themeButtonEl}
 	>
 		<span class="swatch" aria-hidden="true">
 			<i style="background:{currentEntry.palette.hot}"></i>
@@ -145,7 +186,13 @@
 	</button>
 
 	{#if open}
-		<ul class="dropdown" role="listbox" aria-label="theme">
+		<ul
+			class="dropdown"
+			role="listbox"
+			aria-label="theme"
+			bind:this={dropdownEl}
+			onkeydown={onListboxKey}
+		>
 			{#each themes as t (t.id)}
 				{@const active = t.id === currentThemeId && currentMode !== 'system'}
 				<li>
