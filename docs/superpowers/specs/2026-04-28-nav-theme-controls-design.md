@@ -5,10 +5,10 @@ Branch: feat/move-to-atproto
 
 ## Summary
 
-Restructure `NavPanel` from `[BrandBadge] [ChannelPads] [StatusStrip]` to four columns, left → right:
+Restructure `NavPanel` so `BrandBadge` (with its inline archive greeble — the `.meta` panel showing `№02`, `archive`, the bar graph, and `live`) stays anchored to the left exactly as it is, and **everything else pulls into a tight cluster on the right edge**: `ChannelPads`, the new `ThemeControls`, and the new `GreebleStrip`. Grid becomes `auto 1fr auto auto auto`, where the `1fr` is the elastic gap between the brand and the right cluster.
 
 ```
-[ BrandBadge ]   [ ChannelPads ]   [ ThemeControls ]   [ GreebleStrip ]
+[ BrandBadge + archive greeble ]   ←  1fr gap  →   [ ChannelPads ] [ ThemeControls ] [ GreebleStrip ]
 ```
 
 1. **ThemeControls** — two icon-driven buttons:
@@ -37,13 +37,21 @@ The standalone `ThemePickerOverlay` is removed; the dropdown replaces it.
 
 ## Layout
 
-`NavPanel.svelte` grid changes from `auto 1fr auto` to `auto 1fr auto auto`:
+`NavPanel.svelte` grid changes from `auto 1fr auto` to `auto 1fr auto auto auto`:
 
 ```
-[ BrandBadge ]   [ ChannelPads ]   [ ThemeControls ]   [ GreebleStrip ]
+col 1: BrandBadge       (auto, left)
+col 2: <empty gap>      (1fr — elastic spacer; takes whatever room is left)
+col 3: ChannelPads      (auto, right cluster)
+col 4: ThemeControls    (auto, right cluster)
+col 5: GreebleStrip     (auto, right cluster, hugs the right padding)
 ```
 
-`ThemeControls` and `GreebleStrip` both share the existing scroll-shrink animation that was applied to `.status` (transform: scale(0.92) when `nav-panel.scrolled`). They use `transform`, not `padding`, to keep the GPU path consistent with the rest of the nav.
+`BrandBadge` (including its inline archive greeble) is unchanged — same column, same scroll-shrink behavior.
+
+`ChannelPads` loses its `justify-self: center` rule — it now sits in its own auto column on the right, separated from `ThemeControls` and `GreebleStrip` by the existing `gap` on `.nav-panel` (28px → 18px when scrolled). The right cluster reads as one tight assembly.
+
+`ChannelPads`, `ThemeControls`, and `GreebleStrip` all share the existing scroll-shrink animation that was applied to `.status` and `.channels` (`transform: scale(...)` when `nav-panel.scrolled`). They use `transform`, not `padding`, to keep the GPU path consistent with the rest of the nav.
 
 ### ThemeControls subgroup
 
@@ -180,7 +188,7 @@ export const themeDropdownOpen = writable(false);
 
 | File | Change |
 |------|--------|
-| `src/lib/shell/NavPanel.svelte` | grid: 4-col; mount `<ThemeControls />` and `<GreebleStrip />`; drop `<StatusStrip />` import |
+| `src/lib/shell/NavPanel.svelte` | grid: 5-col `auto 1fr auto auto auto`; mount `<ThemeControls />` and `<GreebleStrip />`; drop `<StatusStrip />` import; drop the `.channels { justify-self: center }` rule |
 | `src/lib/shell/ChannelPads.svelte` | render corner pip from `s.hotkey` |
 | `src/lib/shell/ThemeControls.svelte` | **new** — sys button, theme button, dropdown |
 | `src/lib/shell/theme-controls.ts` | **new** — `themeDropdownOpen` store |
