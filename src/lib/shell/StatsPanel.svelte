@@ -223,6 +223,13 @@
 			margin-right: 12px;
 			margin-left: -12px;
 		}
+		.line .seg:nth-of-type(4) {
+			display: none; /* hide `build` */
+		}
+		.line .seg + .seg:nth-of-type(odd)::before {
+			margin-right: 11px;
+			margin-left: -11px;
+		}
 	}
 	@container chrome (max-width: 767px) {
 		.stats-panel {
@@ -242,6 +249,34 @@
 		}
 		.ident .who {
 			display: none;
+		}
+		.line .seg:nth-of-type(1),
+		.line .seg:nth-of-type(2) {
+			display: none; /* hide `vol` and `no` */
+		}
+		/* Only `net` remains as a visible .seg here; clear separator content so
+		   we don't end up with a dangling `▍` rendered before `net atproto`. */
+		.line .seg + .seg::before,
+		.line .seg + .seg:nth-of-type(odd)::before {
+			content: '';
+			margin: 0;
+		}
+		.dt-block .dt-year,
+		.dt-block .dt-sec {
+			display: none; /* drop year + seconds */
+		}
+		.dt-block {
+			margin-left: 0;
+		}
+	}
+
+	@container chrome (max-width: 479px) {
+		.line .seg:nth-of-type(3) {
+			display: none; /* hide `net atproto` */
+		}
+		.dt-block .dt-doy,
+		.dt-block .dt-mid {
+			display: none; /* drop DOY + middle separator → ⟨HH:MM⟩ */
 		}
 	}
 
