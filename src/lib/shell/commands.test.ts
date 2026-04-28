@@ -1,10 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
+import { get } from 'svelte/store';
 
 vi.mock('$app/navigation', () => ({ goto: vi.fn() }));
 vi.mock('./overlay', () => ({ openOverlay: vi.fn(), closeOverlay: vi.fn() }));
 
 import { commands } from './commands';
 import { sections, utilities } from './sections';
+import { themeDropdownOpen } from './theme-controls';
 
 describe('commands registry', () => {
 	it('contains a navigation command for every section', () => {
@@ -38,5 +40,14 @@ describe('commands registry', () => {
 		const expected = new Set([...sections.map((s) => s.hotkey), ...utilities.map((u) => u.hotkey)]);
 		const actual = new Set(commands.map((c) => c.hotkey));
 		expect(actual).toEqual(expected);
+	});
+
+	it('theme-picker.run toggles themeDropdownOpen', () => {
+		themeDropdownOpen.set(false);
+		const themeCmd = commands.find((c) => c.id === 'theme-picker')!;
+		themeCmd.run();
+		expect(get(themeDropdownOpen)).toBe(true);
+		themeCmd.run();
+		expect(get(themeDropdownOpen)).toBe(false);
 	});
 });

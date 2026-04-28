@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { sections } from './sections';
 import { openOverlay } from './overlay';
+import { themeDropdownOpen } from './theme-controls';
 
 export type CommandCategory = 'navigation' | 'theme' | 'help';
 
@@ -27,7 +28,7 @@ export const commands: Command[] = [
 		hotkey: 't',
 		label: 'theme picker',
 		category: 'theme',
-		run: () => openOverlay('theme')
+		run: () => themeDropdownOpen.update((v) => !v)
 	},
 	{
 		id: 'help',
