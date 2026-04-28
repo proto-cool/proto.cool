@@ -44,10 +44,9 @@ brackets around the clock and the italic-display `0xABCD` build value are the tw
 - Inside: **Departure Mono** 10px (matches the rest of the strip).
 - `D{nnn}` segment colored `--hal-cool` — same teal used on `atproto`, so the two
   cool accents echo each other across the row.
-- Time colons (`:`) blink at 1 Hz via a CSS `step-end` keyframe, toggling opacity
-  between 0.35 and 1. The animation is gated under
-  `@media (prefers-reduced-motion: no-preference)` so reduced-motion users see a
-  static colon.
+- Time colons (`:`) render statically — same color as the surrounding bone
+  digits. (Earlier draft included a 1 Hz blink; pulled because the shell
+  already has plenty of ambient motion and the blink read as gimmick.)
 - Subscribed to the existing `clock` store from `src/lib/shell/runtime.ts`; DOY is
   computed inline from the same `Date` value (`Math.floor((now - Jan1Local) / 86_400_000) + 1`).
   No changes to `runtime.ts`.
@@ -117,8 +116,7 @@ Add `src/lib/shell/stats-panel.test.ts`:
   `D118` and `14:32:08`.
 - Asserts `EST` and `MODE` strings are absent (regression guard for the deletions).
 - Asserts the lowercase keys (`vol`, `no`, `net`, `build`) render as written.
-- Asserts a colon `<span>` (or equivalent hook) exists inside the time so the blink
-  CSS has something to target.
+- (Colon-blink hook removed — colons render statically.)
 - Right-identity markup is unchanged; no new assertions there.
 
 DOY computation gets a small unit test alongside the component test (or inline):
@@ -127,9 +125,9 @@ verifies Jan 1 → `D1`, Apr 28 (non-leap year flow) → `D118`, Dec 31 of a lea
 
 ## Reduced motion
 
-The colon-blink keyframe is wrapped in `@media (prefers-reduced-motion: no-preference)`,
-matching the project's existing pattern (see `phosphor-green.css` `--glow-pulse`
-neutralization).
+No new motion is introduced by this change — colon stays static, no animations
+added. The existing `--glow-pulse` motion in `phosphor-green.css` already handles
+its own reduced-motion gating.
 
 ## Out of scope
 
