@@ -125,6 +125,12 @@
 		margin-left: -14px;
 		align-self: center;
 	}
+	.line .seg + .seg:nth-of-type(odd)::before {
+		content: '▍';
+		font-size: 9px;
+		margin-right: 13px;
+		margin-left: -13px;
+	}
 	.k {
 		color: var(--hal-dim);
 		text-transform: none;
