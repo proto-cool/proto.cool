@@ -14,12 +14,6 @@ describe('overlay store', () => {
 		expect(get(currentOverlay)).toBe('help');
 	});
 
-	it('opening a second overlay replaces the first', () => {
-		openOverlay('help');
-		openOverlay('theme');
-		expect(get(currentOverlay)).toBe('theme');
-	});
-
 	it('closeOverlay resets to null', () => {
 		openOverlay('help');
 		closeOverlay();

@@ -3,7 +3,6 @@
 	import { findCommand } from './commands';
 	import { currentOverlay, closeOverlay, type OverlayKind } from './overlay';
 	import HelpOverlay from './HelpOverlay.svelte';
-	import ThemePickerOverlay from './ThemePickerOverlay.svelte';
 
 	let openKind = $state<OverlayKind | null>(null);
 	$effect(() => currentOverlay.subscribe((v) => (openKind = v)));
@@ -42,6 +41,4 @@
 
 {#if openKind === 'help'}
 	<HelpOverlay />
-{:else if openKind === 'theme'}
-	<ThemePickerOverlay />
 {/if}
