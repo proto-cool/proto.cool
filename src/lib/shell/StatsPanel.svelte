@@ -8,8 +8,6 @@
 	// changes; tied to release rather than calendar.
 	const VOL = '02';
 	const ISSUE = '04';
-	const EST = 'MMXXVI';
-	const MODE_LABEL = 'ARCHIVE';
 </script>
 
 <footer class="stats-panel" aria-hidden="true">
@@ -24,14 +22,12 @@
 	<span class="line">
 		<span class="seg"><span class="k">vol</span><span class="v">{VOL}</span></span>
 		<span class="seg"><span class="k">no</span><span class="v">{ISSUE}</span></span>
-		<span class="seg"><span class="k">est</span><span class="v">{EST}</span></span>
 		<span class="seg"><span class="k">net</span><span class="v warm">atproto</span></span>
 		<span class="seg"
 			><span class="k">build</span><span class="v"
 				>0x{chrome.system.sig.toUpperCase().slice(0, 4)}</span
 			></span
 		>
-		<span class="seg"><span class="k">mode</span><span class="v">{MODE_LABEL}</span></span>
 	</span>
 
 	<span class="ident">
@@ -167,9 +163,6 @@
 			margin-right: 12px;
 			margin-left: -12px;
 		}
-		.line .seg:nth-child(n + 6) {
-			display: none;
-		}
 	}
 	@container chrome (max-width: 767px) {
 		.stats-panel {
@@ -186,9 +179,6 @@
 		.seg + .seg::before {
 			margin-right: 10px;
 			margin-left: -10px;
-		}
-		.line .seg:nth-child(n + 4) {
-			display: none;
 		}
 		.ident .who {
 			display: none;
