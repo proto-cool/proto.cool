@@ -4,7 +4,7 @@
 	interface Props {
 		line1: string;
 		line2: string;
-		emphasis?: string; // word inside line 1 to render NON-italic for emphasis (optional)
+		emphasis?: string; // word inside line 1 to render italic for emphasis (optional)
 		punct?: string; // trailing punctuation for line 2 (rendered hot, e.g. ".")
 		deck?: Snippet;
 	}
@@ -40,51 +40,53 @@
 		z-index: 2;
 		font-family: var(--font-display);
 		font-weight: 800;
-		font-style: italic;
+		font-style: normal;
 		line-height: 0.86;
 		letter-spacing: -0.04em;
 		color: var(--hal-bone);
 	}
 	.l1 {
 		display: block;
-		font-size: 140px;
+		font-size: 132px;
 		text-shadow:
-			0 0 1px rgba(226, 245, 207, 0.7),
-			0 0 14px rgba(184, 255, 90, 0.5),
-			0 0 56px rgba(184, 255, 90, 0.28);
+			0 0 1px rgba(226, 245, 207, 0.55),
+			0 0 18px rgba(184, 255, 90, 0.22);
 	}
 	.l1 em {
-		font-style: normal;
+		font-style: italic;
 	}
 	.l2 {
 		display: block;
-		font-size: 140px;
+		font-size: 132px;
 		color: transparent;
-		-webkit-text-stroke: 1.4px var(--hal-hot);
-		text-shadow: 0 0 26px rgba(184, 255, 90, 0.5);
+		-webkit-text-stroke: 1.2px var(--hal-warm);
+		text-shadow: 0 0 18px rgba(184, 255, 90, 0.18);
 	}
 	.l2 .punct {
 		color: var(--hal-hot);
 		-webkit-text-stroke: 0;
 		text-shadow:
-			0 0 10px rgba(184, 255, 90, 0.95),
-			0 0 26px rgba(130, 227, 75, 0.6);
+			0 0 8px rgba(184, 255, 90, 0.7),
+			0 0 18px rgba(130, 227, 75, 0.35);
 	}
 	.deck {
-		margin-top: 22px;
+		margin-top: 26px;
 		font-family: var(--font-sans);
-		font-weight: 400;
+		font-weight: 500;
 		font-style: normal;
 		font-size: var(--text-sm);
 		line-height: 1.55;
 		letter-spacing: 0;
-		color: #b9c8a8;
+		color: var(--hal-bone);
 		max-width: 480px;
-		text-shadow: none;
+		/* dark halo behind text to lift it off the bright dither below */
+		text-shadow:
+			0 0 6px rgba(6, 9, 6, 0.85),
+			0 0 14px rgba(6, 9, 6, 0.6);
 	}
 	.deck :global(b),
 	.deck :global(strong) {
-		color: var(--hal-bone);
+		color: var(--hal-ember);
 		font-weight: 700;
 	}
 	@container chrome (max-width: 767px) {
