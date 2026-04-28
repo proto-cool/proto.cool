@@ -274,7 +274,9 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		padding: 7px 10px;
+		padding: 0 10px;
+		min-height: 30px;
+		box-sizing: border-box;
 		font: inherit;
 		font-family: var(--font-mono);
 		font-size: var(--text-xs);
@@ -328,11 +330,11 @@
 		opacity: 0.7;
 	}
 
-	/* pip greeble — floating tag with tether */
+	/* pip greeble — floating tag, no tether, sits above-right of the button */
 	.pip {
 		position: absolute;
-		top: -14px;
-		right: 4px;
+		top: -10px;
+		right: 0;
 		padding: 0;
 		background: none;
 		border: none;
@@ -343,30 +345,13 @@
 		color: var(--hal-deep-dim);
 		transition: color 220ms ease;
 	}
-	.pip::after {
-		content: '';
-		position: absolute;
-		top: 100%;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 1px;
-		height: 6px;
-		background: var(--hal-edge);
-		transition: background 220ms ease;
-	}
 	.ctrl:hover .pip,
 	.ctrl:focus-visible .pip,
 	.ctrl.live .pip {
 		color: var(--hal-warm);
 	}
-	.ctrl:hover .pip::after,
-	.ctrl:focus-visible .pip::after,
-	.ctrl.live .pip::after {
-		background: var(--hal-warm);
-	}
 	@media (prefers-reduced-motion: reduce) {
-		.pip,
-		.pip::after {
+		.pip {
 			transition: none;
 		}
 	}

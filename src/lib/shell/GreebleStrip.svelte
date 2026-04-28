@@ -6,17 +6,12 @@
 
 	const cells: Cell[] = [
 		{ kind: 'tick', tall: true },
-		{ kind: 'tick', tall: false },
 		{ kind: 'pip-warm' },
-		{ kind: 'tick', tall: true },
 		{ kind: 'tick', tall: false },
 		{ kind: 'tick', tall: true },
-		{ kind: 'tick', tall: false },
 		{ kind: 'pip-cool' },
-		{ kind: 'tick', tall: true },
 		{ kind: 'tick', tall: false },
-		{ kind: 'tick', tall: true },
-		{ kind: 'tick', tall: false }
+		{ kind: 'tick', tall: true }
 	];
 </script>
 
@@ -36,8 +31,8 @@
 	.greeble {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		padding: 0 4px;
+		gap: 5px;
+		padding: 0 6px;
 		min-height: 14px;
 	}
 	.tick {

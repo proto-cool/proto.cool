@@ -21,8 +21,8 @@
 	<BrandBadge compact={scrolled} />
 	<span class="gap" aria-hidden="true"></span>
 	<ChannelPads />
-	<ThemeControls />
 	<GreebleStrip />
+	<ThemeControls />
 </header>
 
 <style>
@@ -47,7 +47,7 @@
 		will-change: padding;
 	}
 	.nav-panel.scrolled {
-		padding: 4px 28px;
+		padding: 12px 28px 4px;
 		gap: 14px;
 	}
 
