@@ -3,19 +3,20 @@ import { resolveTheme, resolveMode } from './resolve';
 
 describe('resolveTheme', () => {
 	it('returns a known theme id when valid', () => {
-		expect(resolveTheme('phosphor-green')).toBe('phosphor-green');
+		expect(resolveTheme('phosphor-green-dark')).toBe('phosphor-green-dark');
+		expect(resolveTheme('phosphor-green-light')).toBe('phosphor-green-light');
 	});
 
 	it('returns the default when the value is unknown', () => {
-		expect(resolveTheme('not-a-theme')).toBe('phosphor-green');
+		expect(resolveTheme('not-a-theme')).toBe('phosphor-green-dark');
 	});
 
 	it('returns the default when the value is undefined', () => {
-		expect(resolveTheme(undefined)).toBe('phosphor-green');
+		expect(resolveTheme(undefined)).toBe('phosphor-green-dark');
 	});
 
 	it('returns the default for empty string', () => {
-		expect(resolveTheme('')).toBe('phosphor-green');
+		expect(resolveTheme('')).toBe('phosphor-green-dark');
 	});
 });
 

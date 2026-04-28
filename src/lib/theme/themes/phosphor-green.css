@@ -5,7 +5,7 @@
  * out of scope for v1 (single block, no mode discriminator).
  */
 
-[data-theme='phosphor-green'] {
+[data-theme='phosphor-green-dark'] {
 	/* ---- halogen palette ---- */
 	--hal-anthra: #060906;
 	--hal-anthra-2: #0a0e0a;
@@ -50,7 +50,7 @@
 
 /* Reduced motion — neutralize the pulse */
 @media (prefers-reduced-motion: reduce) {
-	[data-theme='phosphor-green'] {
+	[data-theme='phosphor-green-dark'] {
 		--glow-pulse: none;
 	}
 }
