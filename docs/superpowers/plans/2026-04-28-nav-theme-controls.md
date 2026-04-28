@@ -20,12 +20,14 @@
 ## File map
 
 **New files**
+
 - `src/lib/shell/theme-controls.ts` — `themeDropdownOpen` writable, `resolveSysTheme()` resolver, `LAST_FAMILY_KEY` constant.
 - `src/lib/shell/theme-controls.test.ts` — store + resolver unit tests.
 - `src/lib/shell/ThemeControls.svelte` — sys button + theme button + dropdown.
 - `src/lib/shell/GreebleStrip.svelte` — tick rule + lit pips.
 
 **Modified files**
+
 - `package.json` — add `phosphor-svelte`.
 - `src/lib/theme/registry.ts` — add `phosphor-green-light`, restructure entries with `family`, `familyName`, `variant`, `palette`.
 - `src/lib/theme/resolve.test.ts` — update for new theme ids.
@@ -38,6 +40,7 @@
 - `src/lib/shell/KeyboardLayer.svelte` — drop `ThemePickerOverlay` import + `theme` branch.
 
 **Deleted files**
+
 - `src/lib/shell/ThemePickerOverlay.svelte`
 - `src/lib/shell/StatusStrip.svelte`
 
@@ -46,6 +49,7 @@
 ### Task 1: Add phosphor-svelte dependency
 
 **Files:**
+
 - Modify: `package.json` (dependencies block)
 
 - [ ] **Step 1: Install phosphor-svelte**
@@ -80,6 +84,7 @@ git commit -m "deps: add phosphor-svelte for nav icons"
 ### Task 2: Restructure theme registry
 
 **Files:**
+
 - Modify: `src/lib/theme/registry.ts`
 - Test: `src/lib/theme/registry.test.ts` (new)
 
@@ -286,6 +291,7 @@ git commit -m "theme: split registry by variant; add palette + family fields"
 ### Task 3: Theme controls store + sys-mode resolver
 
 **Files:**
+
 - Create: `src/lib/shell/theme-controls.ts`
 - Test: `src/lib/shell/theme-controls.test.ts`
 
@@ -415,6 +421,7 @@ git commit -m "shell: add theme-controls store and sys-mode resolver"
 ### Task 4: Rewire theme-picker command to the new store
 
 **Files:**
+
 - Modify: `src/lib/shell/commands.ts`
 - Modify: `src/lib/shell/commands.test.ts`
 
@@ -553,6 +560,7 @@ git commit -m "shell: rewire theme-picker command to dropdown store"
 ### Task 5: Drop 'theme' from OverlayKind
 
 **Files:**
+
 - Modify: `src/lib/shell/overlay.ts`
 - Modify: `src/lib/shell/overlay.test.ts`
 
@@ -701,6 +709,7 @@ git commit -m "shell: remove theme overlay; help is now the only overlay kind"
 ### Task 6: Add corner pip greeble to ChannelPads
 
 **Files:**
+
 - Modify: `src/lib/shell/ChannelPads.svelte`
 
 - [ ] **Step 1: Add the pip markup and styles**
@@ -835,6 +844,7 @@ git commit -m "shell: add corner-pip hotkey greeble to channel pads"
 ### Task 7: ThemeControls component
 
 **Files:**
+
 - Create: `src/lib/shell/ThemeControls.svelte`
 
 - [ ] **Step 1: Create the component**
@@ -1195,6 +1205,7 @@ git commit -m "shell: add ThemeControls (sys + dropdown swatch picker)"
 ### Task 8: GreebleStrip component
 
 **Files:**
+
 - Create: `src/lib/shell/GreebleStrip.svelte`
 
 - [ ] **Step 1: Create the component**
@@ -1296,6 +1307,7 @@ git commit -m "shell: add GreebleStrip (tick rule + indicator pips)"
 ### Task 9: Wire NavPanel to the new layout
 
 **Files:**
+
 - Modify: `src/lib/shell/NavPanel.svelte`
 
 - [ ] **Step 1: Rewrite NavPanel**
@@ -1441,6 +1453,7 @@ git commit -m "shell: nav layout — right cluster + GreebleStrip; drop StatusSt
 ### Task 10: Final verification + cleanup
 
 **Files:**
+
 - (read-only)
 
 - [ ] **Step 1: Confirm no stale references remain**

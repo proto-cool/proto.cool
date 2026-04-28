@@ -65,12 +65,14 @@ col 5: GreebleStrip     (auto, right cluster, hugs the right padding)
 Two buttons separated by a 1px vertical edge rule (`var(--hal-edge)`). Both buttons mirror the `.ch` styling from `ChannelPads.svelte` (border, padding, mono caps) so they visually rhyme with the channel pads.
 
 #### Sys button
+
 - Phosphor `Monitor` icon, ~14px, `var(--hal-dim)` default.
 - Active state when `mode === 'system'`: lamp lit, hot border, `.live` inset glow — same active treatment as a channel pad.
 - Click → `setMode('system')` if currently off, else `setMode(<resolvedVariant>)` to pin.
 - No corner pip (sys has no hotkey).
 
 #### Theme button
+
 - Body: 3-chip swatch trio drawn from the current theme's palette (see "Swatch trio" below) + Phosphor `CaretDown`.
 - Active state: same `.live` treatment when the dropdown is open.
 - Click → toggle dropdown.
@@ -117,19 +119,19 @@ The `clock` import and `chrome.system.sig` reference disappear from this compone
 
 ```ts
 export const themes = [
-  {
-    id: 'phosphor-green-dark',
-    family: 'phosphor-green',
-    familyName: 'Phosphor green',
-    variant: 'dark',
-    default: true
-  },
-  {
-    id: 'phosphor-green-light',
-    family: 'phosphor-green',
-    familyName: 'Phosphor green',
-    variant: 'light'
-  }
+	{
+		id: 'phosphor-green-dark',
+		family: 'phosphor-green',
+		familyName: 'Phosphor green',
+		variant: 'dark',
+		default: true
+	},
+	{
+		id: 'phosphor-green-light',
+		family: 'phosphor-green',
+		familyName: 'Phosphor green',
+		variant: 'light'
+	}
 ] as const;
 
 export type ThemeId = (typeof themes)[number]['id'];
@@ -186,21 +188,21 @@ export const themeDropdownOpen = writable(false);
 
 ## Files touched
 
-| File | Change |
-|------|--------|
-| `src/lib/shell/NavPanel.svelte` | grid: 5-col `auto 1fr auto auto auto`; mount `<ThemeControls />` and `<GreebleStrip />`; drop `<StatusStrip />` import; drop the `.channels { justify-self: center }` rule |
-| `src/lib/shell/ChannelPads.svelte` | render corner pip from `s.hotkey` |
-| `src/lib/shell/ThemeControls.svelte` | **new** — sys button, theme button, dropdown |
-| `src/lib/shell/theme-controls.ts` | **new** — `themeDropdownOpen` store |
-| `src/lib/shell/GreebleStrip.svelte` | **new** — tick rule + indicator pips |
-| `src/lib/shell/StatusStrip.svelte` | **delete** (no other consumers) |
-| `src/lib/shell/ThemePickerOverlay.svelte` | **delete** |
-| `src/lib/shell/KeyboardLayer.svelte` | drop `ThemePickerOverlay` import + `theme` branch |
-| `src/lib/shell/overlay.ts` | drop `'theme'` from `OverlayKind` |
-| `src/lib/shell/commands.ts` | `theme-picker.run()` toggles `themeDropdownOpen` |
-| `src/lib/theme/registry.ts` | add `phosphor-green-light`; export `family`, `familyName`, `variant`, `palette` |
-| `src/lib/theme/index.ts` | helpers for sys-mode resolution + `lastFamily` persistence |
-| `package.json` | `+ phosphor-svelte` |
+| File                                      | Change                                                                                                                                                                     |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/lib/shell/NavPanel.svelte`           | grid: 5-col `auto 1fr auto auto auto`; mount `<ThemeControls />` and `<GreebleStrip />`; drop `<StatusStrip />` import; drop the `.channels { justify-self: center }` rule |
+| `src/lib/shell/ChannelPads.svelte`        | render corner pip from `s.hotkey`                                                                                                                                          |
+| `src/lib/shell/ThemeControls.svelte`      | **new** — sys button, theme button, dropdown                                                                                                                               |
+| `src/lib/shell/theme-controls.ts`         | **new** — `themeDropdownOpen` store                                                                                                                                        |
+| `src/lib/shell/GreebleStrip.svelte`       | **new** — tick rule + indicator pips                                                                                                                                       |
+| `src/lib/shell/StatusStrip.svelte`        | **delete** (no other consumers)                                                                                                                                            |
+| `src/lib/shell/ThemePickerOverlay.svelte` | **delete**                                                                                                                                                                 |
+| `src/lib/shell/KeyboardLayer.svelte`      | drop `ThemePickerOverlay` import + `theme` branch                                                                                                                          |
+| `src/lib/shell/overlay.ts`                | drop `'theme'` from `OverlayKind`                                                                                                                                          |
+| `src/lib/shell/commands.ts`               | `theme-picker.run()` toggles `themeDropdownOpen`                                                                                                                           |
+| `src/lib/theme/registry.ts`               | add `phosphor-green-light`; export `family`, `familyName`, `variant`, `palette`                                                                                            |
+| `src/lib/theme/index.ts`                  | helpers for sys-mode resolution + `lastFamily` persistence                                                                                                                 |
+| `package.json`                            | `+ phosphor-svelte`                                                                                                                                                        |
 
 ## Edge cases
 
