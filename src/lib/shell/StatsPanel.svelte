@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { ChromeData } from './chrome';
+	import { clock, stardate } from './runtime';
 
 	const chrome = getContext<ChromeData>('chrome');
 
@@ -28,6 +29,18 @@
 				>0x{chrome.system.sig.toUpperCase().slice(0, 4)}</span
 			></span
 		>
+		<span class="dt-block">
+			<span class="bracket">⟨</span>
+			<span class="dt-year">{$stardate.year}·</span><span class="dt-doy"
+				>D{$stardate.doyLabel}</span
+			><span class="dt-mid"> · </span><span class="dt-time"
+				>{$clock.time.slice(0, 2)}<span class="colon">:</span>{$clock.time.slice(
+					3,
+					5
+				)}<span class="dt-sec"><span class="colon">:</span>{$clock.time.slice(6, 8)}</span></span
+			>
+			<span class="bracket">⟩</span>
+		</span>
 	</span>
 
 	<span class="ident">
@@ -151,6 +164,35 @@
 		text-transform: none;
 		line-height: 1;
 		transform: translateY(-0.5px);
+	}
+
+	.dt-block {
+		display: inline-flex;
+		align-items: center;
+		white-space: nowrap;
+		gap: 0;
+		margin-left: 4px;
+		color: var(--hal-bone);
+		letter-spacing: 0.16em;
+	}
+	.dt-block .bracket {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 400;
+		font-size: 13px;
+		line-height: 1;
+		color: var(--hal-warm);
+		margin: 0 6px;
+		transform: translateY(-0.5px);
+	}
+	.dt-block .dt-doy {
+		color: var(--hal-cool);
+	}
+	.dt-block .dt-mid {
+		color: var(--hal-deep-dim);
+	}
+	.dt-block .colon {
+		color: var(--hal-bone);
 	}
 
 	.ident {
