@@ -69,32 +69,45 @@
 			0 0 12px rgba(130, 227, 75, 0.7);
 	}
 
-	/* corner pip greeble — stamped serial in the top-right */
+	/* pip greeble — floating tag with tether */
 	.pip {
 		position: absolute;
-		top: -1px;
-		right: -1px;
-		padding: 1px 4px;
+		top: -14px;
+		right: 4px;
+		padding: 0;
+		background: none;
+		border: none;
 		font-family: var(--font-mono);
-		font-size: 9px;
+		font-size: 8px;
 		line-height: 1;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.06em;
 		color: var(--hal-deep-dim);
-		background: rgba(6, 9, 6, 0.7);
-		border-left: 1px solid var(--hal-edge);
-		border-bottom: 1px solid var(--hal-edge);
-		transition:
-			color 220ms ease,
-			text-shadow 220ms ease;
+		transition: color 220ms ease;
+	}
+	.pip::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 1px;
+		height: 6px;
+		background: var(--hal-edge);
+		transition: background 220ms ease;
 	}
 	.ch:hover .pip,
 	.ch:focus-visible .pip,
 	.ch.live .pip {
-		color: var(--hal-hot);
-		text-shadow: 0 0 8px rgba(184, 255, 90, 0.5);
+		color: var(--hal-warm);
+	}
+	.ch:hover .pip::after,
+	.ch:focus-visible .pip::after,
+	.ch.live .pip::after {
+		background: var(--hal-warm);
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.pip {
+		.pip,
+		.pip::after {
 			transition: none;
 		}
 	}
