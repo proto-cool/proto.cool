@@ -39,3 +39,25 @@ describe('clock + uptime', () => {
 		expect(value).toMatch(/^\d+d \d{2}h \d{2}m$/);
 	});
 });
+
+describe('dayOfYear', () => {
+	it('returns 1 for January 1', async () => {
+		const { dayOfYear } = await import('./runtime');
+		expect(dayOfYear(new Date(2026, 0, 1))).toBe(1);
+	});
+
+	it('returns 118 for April 28 in a non-leap year (2026)', async () => {
+		const { dayOfYear } = await import('./runtime');
+		expect(dayOfYear(new Date(2026, 3, 28))).toBe(118);
+	});
+
+	it('returns 366 for December 31 in a leap year (2024)', async () => {
+		const { dayOfYear } = await import('./runtime');
+		expect(dayOfYear(new Date(2024, 11, 31))).toBe(366);
+	});
+
+	it('returns 60 for March 1 in a leap year (2024)', async () => {
+		const { dayOfYear } = await import('./runtime');
+		expect(dayOfYear(new Date(2024, 2, 1))).toBe(61);
+	});
+});
