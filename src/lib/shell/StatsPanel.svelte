@@ -224,7 +224,7 @@
 			margin-left: -12px;
 		}
 		.line .seg:nth-of-type(4) {
-			display: none; /* hide `build` */
+			display: none; /* hide `build`; rhythm becomes vol ◆ no ▍ net — still alternates */
 		}
 		.line .seg + .seg:nth-of-type(odd)::before {
 			margin-right: 11px;
@@ -254,9 +254,8 @@
 		.line .seg:nth-of-type(2) {
 			display: none; /* hide `vol` and `no` */
 		}
-		/* Only `net` remains as a visible .seg here; clear separator content so
-		   we don't end up with a dangling `▍` rendered before `net atproto`. */
-		.line .seg + .seg::before,
+		/* Only `net` remains as a visible .seg here; clear its separator
+		   content so we don't end up with a dangling `▍` before `net atproto`. */
 		.line .seg + .seg:nth-of-type(odd)::before {
 			content: '';
 			margin: 0;

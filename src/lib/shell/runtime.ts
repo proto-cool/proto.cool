@@ -6,10 +6,11 @@ const SITE_ORIGIN = new Date('2026-04-24T00:00:00Z');
 // Local-time day-of-year (1–366). Operates on calendar fields rather than ms
 // arithmetic so DST transitions don't shift the result by a day.
 export function dayOfYear(d: Date): number {
-	const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	const yr = d.getFullYear();
 	const isLeap = (yr % 4 === 0 && yr % 100 !== 0) || yr % 400 === 0;
-	if (isLeap) monthDays[1] = 29;
+	const monthDays = isLeap
+		? [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+		: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	const m = d.getMonth();
 	let total = d.getDate();
 	for (let i = 0; i < m; i++) total += monthDays[i];
