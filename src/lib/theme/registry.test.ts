@@ -20,12 +20,12 @@ describe('theme registry', () => {
 	});
 
 	it('exactly one entry is marked default', () => {
-		const defaults = themes.filter((t) => t.default);
+		const defaults = themes.filter((t) => 'default' in t && t.default === true);
 		expect(defaults).toHaveLength(1);
 	});
 
 	it('DEFAULT_THEME points at the default entry', () => {
-		const def = themes.find((t) => t.default);
+		const def = themes.find((t) => 'default' in t && t.default === true);
 		expect(def?.id).toBe(DEFAULT_THEME);
 	});
 
