@@ -49,6 +49,20 @@ export const uptime: Readable<string> = derived(now, ($n) => {
 	return `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m`;
 });
 
+// Stardate readout: year + day-of-year, derived from `now` so it ticks alongside
+// the clock. `doyLabel` is zero-padded to 3 chars (always renders as `D###`).
+export const stardate: Readable<{ year: number; doy: number; doyLabel: string }> = derived(
+	now,
+	($n) => {
+		const doy = dayOfYear($n);
+		return {
+			year: $n.getFullYear(),
+			doy,
+			doyLabel: String(doy).padStart(3, '0')
+		};
+	}
+);
+
 // Derived from sections.ts so the registry stays the single source of truth.
 export function pwdForPath(pathname: string): string {
 	for (const s of sections) {

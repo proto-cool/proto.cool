@@ -61,3 +61,40 @@ describe('dayOfYear', () => {
 		expect(dayOfYear(new Date(2024, 2, 1))).toBe(61);
 	});
 });
+
+describe('stardate', () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date(2026, 3, 28, 14, 32, 8));
+	});
+	afterEach(() => vi.useRealTimers());
+
+	it('exposes year and DOY for the current local time', async () => {
+		vi.resetModules();
+		const { stardate } = await import('./runtime');
+		const value = get(stardate);
+		expect(value.year).toBe(2026);
+		expect(value.doy).toBe(118);
+	});
+
+	it('zero-pads DOY to 3 chars in `doyLabel`', async () => {
+		vi.resetModules();
+		const { stardate } = await import('./runtime');
+		expect(get(stardate).doyLabel).toBe('118');
+	});
+});
+
+describe('stardate (early year)', () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date(2026, 0, 5, 0, 0, 0));
+	});
+	afterEach(() => vi.useRealTimers());
+
+	it('zero-pads single-digit DOY (`5` → `005`)', async () => {
+		vi.resetModules();
+		const { stardate } = await import('./runtime');
+		expect(get(stardate).doy).toBe(5);
+		expect(get(stardate).doyLabel).toBe('005');
+	});
+});
