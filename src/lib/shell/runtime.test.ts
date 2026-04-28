@@ -56,7 +56,7 @@ describe('dayOfYear', () => {
 		expect(dayOfYear(new Date(2024, 11, 31))).toBe(366);
 	});
 
-	it('returns 60 for March 1 in a leap year (2024)', async () => {
+	it('returns 61 for March 1 in a leap year (2024)', async () => {
 		const { dayOfYear } = await import('./runtime');
 		expect(dayOfYear(new Date(2024, 2, 1))).toBe(61);
 	});
