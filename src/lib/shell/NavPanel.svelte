@@ -1,77 +1,95 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import BrandBadge from './BrandBadge.svelte';
 	import ChannelPads from './ChannelPads.svelte';
-	import StatusStrip from './StatusStrip.svelte';
+	import ThemeControls from './ThemeControls.svelte';
+	import GreebleStrip from './GreebleStrip.svelte';
+
+	let scrolled = $state(false);
+
+	onMount(() => {
+		const onScroll = () => {
+			scrolled = window.scrollY > 24;
+		};
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => window.removeEventListener('scroll', onScroll);
+	});
 </script>
 
-<header class="nav-panel">
-	<BrandBadge />
+<header class="nav-panel" class:scrolled>
+	<BrandBadge compact={scrolled} />
+	<span class="gap" aria-hidden="true"></span>
 	<ChannelPads />
-	<StatusStrip />
+	<ThemeControls />
+	<GreebleStrip />
 </header>
 
 <style>
 	.nav-panel {
-		position: relative;
-		z-index: 3;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 5;
 		display: grid;
-		grid-template-columns: auto 1fr auto;
+		grid-template-columns: auto 1fr auto auto auto;
 		align-items: center;
-		gap: 24px;
-		padding: 14px 28px;
-		background: linear-gradient(180deg, #0d130c 0%, var(--hal-anthra-3) 100%);
+		gap: 18px;
+		padding: 16px 28px;
+		background: rgba(6, 9, 6, 0.6);
 		border-bottom: 1px solid var(--hal-edge);
-		box-shadow:
-			inset 0 1px 0 rgba(184, 255, 90, 0.1),
-			inset 0 -1px 0 rgba(184, 255, 90, 0.05),
-			0 6px 22px rgba(0, 0, 0, 0.55);
+		-webkit-backdrop-filter: blur(8px) saturate(115%);
+		backdrop-filter: blur(8px) saturate(115%);
+		transition:
+			padding 380ms cubic-bezier(0.2, 0, 0, 1),
+			gap 380ms cubic-bezier(0.2, 0, 0, 1);
+		will-change: padding;
 	}
-	/* corner bracket marks at panel ends */
-	.nav-panel::before,
-	.nav-panel::after {
-		content: '';
-		position: absolute;
-		top: 6px;
-		width: 10px;
-		height: 10px;
-		border: 0 solid var(--hal-hot);
-		box-shadow: 0 0 4px rgba(184, 255, 90, 0.5);
-		opacity: 0.6;
-		pointer-events: none;
-	}
-	.nav-panel::before {
-		left: 8px;
-		border-top-width: 1.5px;
-		border-left-width: 1.5px;
-	}
-	.nav-panel::after {
-		right: 8px;
-		border-top-width: 1.5px;
-		border-right-width: 1.5px;
+	.nav-panel.scrolled {
+		padding: 4px 28px;
+		gap: 14px;
 	}
 
-	/* center the channel pads in the middle column */
-	.nav-panel :global(.channels) {
-		justify-self: center;
+	.nav-panel::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -1px;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent 0,
+			rgba(184, 255, 90, 0.18) 25%,
+			rgba(184, 255, 90, 0.32) 50%,
+			rgba(184, 255, 90, 0.18) 75%,
+			transparent 100%
+		);
+		opacity: 0.55;
+		transition: opacity 380ms ease;
+		will-change: opacity;
 	}
-	@container chrome (max-width: 767px) {
-		.nav-panel {
-			grid-template-columns: 1fr auto;
-			gap: 12px;
-			padding: 10px 16px;
-		}
-		.nav-panel :global(.channels) {
-			grid-column: 1 / -1;
-			grid-row: 2;
-			justify-self: stretch;
-			flex-wrap: wrap;
-		}
-		.nav-panel :global(.status) {
-			font-size: 10px;
-			gap: 8px;
-		}
-		.nav-panel :global(.status .cool) {
-			display: none; /* drop sig on small */
-		}
+	.nav-panel.scrolled::before {
+		opacity: 1;
+	}
+
+	.gap {
+		display: block;
+	}
+
+	/* right cluster scales together when scrolled (matches the old StatusStrip rhythm) */
+	.nav-panel :global(.channels),
+	.nav-panel :global(.theme-controls),
+	.nav-panel :global(.greeble) {
+		transform: scale(1) translateZ(0);
+		transform-origin: right center;
+		transition: transform 380ms cubic-bezier(0.2, 0, 0, 1);
+		will-change: transform;
+	}
+	.nav-panel.scrolled :global(.channels),
+	.nav-panel.scrolled :global(.theme-controls),
+	.nav-panel.scrolled :global(.greeble) {
+		transform: scale(0.92) translateZ(0);
 	}
 </style>
