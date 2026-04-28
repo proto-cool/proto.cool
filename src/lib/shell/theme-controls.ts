@@ -6,7 +6,8 @@ export const themeDropdownOpen = writable(false);
 export const LAST_FAMILY_KEY = 'proto-last-family';
 
 type ResolveArgs = {
-	prefersDark: boolean;
+	mode: 'dark' | 'light' | 'system';
+	prefersDark: boolean; // only consulted when mode === 'system'
 	lastFamily: string | null;
 	/** Override registry — used in tests. Defaults to the live registry. */
 	themes?: ReadonlyArray<{ id: string; family: string; variant: 'dark' | 'light' }>;
@@ -15,21 +16,24 @@ type ResolveArgs = {
 };
 
 /**
- * Pure: pick the concrete theme id for "system" mode.
+ * Pure: pick the concrete theme id for a given mode.
  *
  * Fallback chain:
  *  1. Use lastFamily if it matches a registered family; else use the default theme's family.
- *  2. Within that family, pick the variant matching the OS scheme (prefersDark → 'dark').
+ *  2. Pick variant: if mode is 'dark' or 'light', use that directly.
+ *     If mode is 'system', use prefersDark ? 'dark' : 'light'.
  *  3. If that variant isn't registered for the family, return the family's other variant.
  *  4. If the family has no entries at all (shouldn't happen with a valid registry), return defaultThemeId.
  */
-export function resolveSysTheme({
+export function resolveThemeFor({
+	mode,
 	prefersDark,
 	lastFamily,
 	themes = registryThemes,
 	defaultThemeId = DEFAULT_THEME
 }: ResolveArgs): string {
-	const want: 'dark' | 'light' = prefersDark ? 'dark' : 'light';
+	const want: 'dark' | 'light' =
+		mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
 
 	const defaultEntry = themes.find((t) => t.id === defaultThemeId);
 	const knownFamily = lastFamily && themes.some((t) => t.family === lastFamily) ? lastFamily : null;

@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { Monitor, CaretDown } from 'phosphor-svelte';
+	import { Moon, Sun, Monitor, CaretDown } from 'phosphor-svelte';
 	import { themes, setTheme, setMode, resolveTheme, resolveMode, type ThemeId } from '$lib/theme';
-	import { themeDropdownOpen, resolveSysTheme, LAST_FAMILY_KEY } from './theme-controls';
+	import { themeDropdownOpen, resolveThemeFor, LAST_FAMILY_KEY } from './theme-controls';
+	import type { Mode } from '$lib/theme';
 
 	let open = $state(false);
 	$effect(() => themeDropdownOpen.subscribe((v) => (open = v)));
 
 	let rootEl: HTMLDivElement;
 	let themeButtonEl: HTMLButtonElement;
+	let modeButtonEl: HTMLButtonElement | undefined = $state();
 	let dropdownEl: HTMLUListElement | undefined = $state();
 
 	let currentThemeId = $state<ThemeId>(
@@ -16,7 +18,7 @@
 			? resolveTheme(document.documentElement.dataset.theme)
 			: themes[0].id
 	);
-	let currentMode = $state(
+	let currentMode = $state<Mode>(
 		typeof document !== 'undefined'
 			? resolveMode(document.documentElement.dataset.mode)
 			: ('dark' as const)
@@ -40,44 +42,40 @@
 		}
 	}
 
-	function applyTheme(id: ThemeId, opts: { remember: boolean }) {
-		const entry = themes.find((t) => t.id === id);
-		if (!entry) return;
-		setTheme(id);
-		setMode(entry.variant);
-		currentThemeId = id;
-		currentMode = entry.variant;
-		if (opts.remember) writeLastFamily(entry.family);
+	/** Apply a new mode: resolve the effective theme, persist both, update state. */
+	function applyMode(nextMode: Mode) {
+		const resolved = resolveThemeFor({
+			mode: nextMode,
+			prefersDark: !!mql?.matches,
+			lastFamily: readLastFamily()
+		});
+		setMode(nextMode);
+		setTheme(resolved as ThemeId);
+		currentMode = nextMode;
+		currentThemeId = resolved as ThemeId;
 	}
 
-	function applySys() {
-		setMode('system');
-		currentMode = 'system';
-		const lastFamily = readLastFamily();
-		const resolved = resolveSysTheme({
+	/** Apply a new family (without changing mode). */
+	function applyFamily(family: string) {
+		writeLastFamily(family);
+		const resolved = resolveThemeFor({
+			mode: currentMode,
 			prefersDark: !!mql?.matches,
-			lastFamily
+			lastFamily: family
 		});
 		setTheme(resolved as ThemeId);
 		currentThemeId = resolved as ThemeId;
 	}
 
+	function cycleMode(): Mode {
+		if (currentMode === 'dark') return 'light';
+		if (currentMode === 'light') return 'system';
+		return 'dark';
+	}
+
 	function closeDropdown({ restoreFocus = false }: { restoreFocus?: boolean } = {}) {
 		themeDropdownOpen.set(false);
 		if (restoreFocus) themeButtonEl?.focus();
-	}
-
-	function pickRow(id: ThemeId) {
-		applyTheme(id, { remember: true });
-		closeDropdown();
-	}
-
-	function toggleSys() {
-		if (currentMode === 'system') {
-			applyTheme(currentThemeId, { remember: false });
-		} else {
-			applySys();
-		}
 	}
 
 	function toggleDropdown() {
@@ -125,14 +123,13 @@
 		}
 	}
 
+	// Auto-focus the active family row (or first row) when dropdown opens.
 	$effect(() => {
 		if (!open) return;
 		queueMicrotask(() => {
 			if (!dropdownEl) return;
 			const buttons = Array.from(dropdownEl.querySelectorAll<HTMLButtonElement>('button.row'));
-			const activeIdx = themes.findIndex(
-				(t) => t.id === currentThemeId && currentMode !== 'system'
-			);
+			const activeIdx = families.findIndex((f) => f.family === currentEntry.family);
 			const target = activeIdx >= 0 ? buttons[activeIdx] : buttons[0];
 			target?.focus();
 		});
@@ -141,7 +138,7 @@
 	onMount(() => {
 		mql = window.matchMedia('(prefers-color-scheme: dark)');
 		const onSchemeChange = () => {
-			if (currentMode === 'system') applySys();
+			if (currentMode === 'system') applyMode('system');
 		};
 		mql.addEventListener('change', onSchemeChange);
 		document.addEventListener('click', onDocClick);
@@ -155,35 +152,68 @@
 	});
 
 	onDestroy(() => {
-		// store-only side-effect: ensure dropdown closes if the component unmounts open
 		themeDropdownOpen.set(false);
 	});
 
 	let currentEntry = $derived(themes.find((t) => t.id === currentThemeId) ?? themes[0]);
-	let sysActive = $derived(currentMode === 'system');
+
+	// Deduplicated list of families with a resolved palette for the current mode.
+	let families = $derived(
+		Array.from(new Map(themes.map((t) => [t.family, t])).values()).map((rep) => {
+			// Find the best variant for the current effective mode.
+			const effectiveVariant: 'dark' | 'light' =
+				currentMode === 'system' ? (mql?.matches ? 'dark' : 'light') : currentMode;
+			const best =
+				themes.find((t) => t.family === rep.family && t.variant === effectiveVariant) ??
+				themes.find((t) => t.family === rep.family);
+			return {
+				family: rep.family,
+				familyName: rep.familyName,
+				palette: (best ?? rep).palette
+			};
+		})
+	);
+
+	// aria-label for mode button
+	let modeLabelCurrent = $derived(
+		currentMode === 'dark' ? 'dark' : currentMode === 'light' ? 'light' : 'system'
+	);
+	let modeLabelNext = $derived(
+		currentMode === 'dark' ? 'light' : currentMode === 'light' ? 'system' : 'dark'
+	);
+	let modeAriaLabel = $derived(`${modeLabelCurrent} mode (click for ${modeLabelNext})`);
 </script>
 
 <div class="theme-controls" bind:this={rootEl}>
+	<!-- Mode cycle button: dark → light → system → dark -->
 	<button
 		type="button"
-		class="ctrl sys"
-		class:live={sysActive}
-		aria-pressed={sysActive}
-		title="follow OS color scheme"
-		aria-label="follow OS color scheme"
-		onclick={toggleSys}
+		class="ctrl mode"
+		title={modeAriaLabel}
+		aria-label={modeAriaLabel}
+		bind:this={modeButtonEl}
+		onclick={() => applyMode(cycleMode())}
 	>
-		<span class="icon" aria-hidden="true"><Monitor size={14} weight="regular" /></span>
+		<span class="icon" aria-hidden="true">
+			{#if currentMode === 'dark'}
+				<Moon size={14} weight="regular" />
+			{:else if currentMode === 'light'}
+				<Sun size={14} weight="regular" />
+			{:else}
+				<Monitor size={14} weight="regular" />
+			{/if}
+		</span>
 	</button>
 
+	<!-- Theme family dropdown trigger -->
 	<button
 		type="button"
 		class="ctrl theme"
 		class:live={open}
 		aria-haspopup="listbox"
 		aria-expanded={open}
-		title={currentEntry.familyName + ' · ' + currentEntry.variant}
-		aria-label="theme"
+		title="color family"
+		aria-label="color family"
 		onclick={toggleDropdown}
 		bind:this={themeButtonEl}
 	>
@@ -200,12 +230,12 @@
 		<ul
 			class="dropdown"
 			role="listbox"
-			aria-label="theme"
+			aria-label="color family"
 			bind:this={dropdownEl}
 			onkeydown={onListboxKey}
 		>
-			{#each themes as t (t.id)}
-				{@const active = t.id === currentThemeId && currentMode !== 'system'}
+			{#each families as f (f.family)}
+				{@const active = f.family === currentEntry.family}
 				<li>
 					<button
 						type="button"
@@ -213,15 +243,17 @@
 						class:live={active}
 						role="option"
 						aria-selected={active}
-						onclick={() => pickRow(t.id)}
+						aria-label={f.familyName}
+						onclick={() => {
+							applyFamily(f.family);
+							closeDropdown();
+						}}
 					>
 						<span class="swatch" aria-hidden="true">
-							<i style="background:{t.palette.hot}"></i>
-							<i style="background:{t.palette.warm}"></i>
-							<i style="background:{t.palette.cool}"></i>
+							<i style="background:{f.palette.hot}"></i>
+							<i style="background:{f.palette.warm}"></i>
+							<i style="background:{f.palette.cool}"></i>
 						</span>
-						<span class="name">{t.familyName}</span>
-						<span class="tag">· {t.variant === 'dark' ? 'DK' : 'LT'}</span>
 					</button>
 				</li>
 			{/each}
@@ -296,32 +328,45 @@
 		opacity: 0.7;
 	}
 
-	/* corner pip — same treatment as ChannelPads */
+	/* pip greeble — floating tag with tether */
 	.pip {
 		position: absolute;
-		top: -1px;
-		right: -1px;
-		padding: 1px 4px;
+		top: -14px;
+		right: 4px;
+		padding: 0;
+		background: none;
+		border: none;
 		font-family: var(--font-mono);
-		font-size: 9px;
+		font-size: 8px;
 		line-height: 1;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.06em;
 		color: var(--hal-deep-dim);
-		background: rgba(6, 9, 6, 0.7);
-		border-left: 1px solid var(--hal-edge);
-		border-bottom: 1px solid var(--hal-edge);
-		transition:
-			color 220ms ease,
-			text-shadow 220ms ease;
+		transition: color 220ms ease;
+	}
+	.pip::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 1px;
+		height: 6px;
+		background: var(--hal-edge);
+		transition: background 220ms ease;
 	}
 	.ctrl:hover .pip,
 	.ctrl:focus-visible .pip,
 	.ctrl.live .pip {
-		color: var(--hal-hot);
-		text-shadow: 0 0 8px rgba(184, 255, 90, 0.5);
+		color: var(--hal-warm);
+	}
+	.ctrl:hover .pip::after,
+	.ctrl:focus-visible .pip::after,
+	.ctrl.live .pip::after {
+		background: var(--hal-warm);
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.pip {
+		.pip,
+		.pip::after {
 			transition: none;
 		}
 	}
@@ -334,7 +379,6 @@
 		margin: 0;
 		padding: 6px;
 		list-style: none;
-		min-width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
@@ -352,18 +396,11 @@
 		padding: 6px 8px;
 		width: 100%;
 		font: inherit;
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--hal-dim);
+		cursor: pointer;
 		background: transparent;
 		border: 1px solid transparent;
-		cursor: pointer;
-		text-align: left;
 	}
 	.row:hover {
-		color: var(--hal-bone);
 		border-color: var(--hal-edge);
 	}
 	.row:focus-visible {
@@ -371,15 +408,8 @@
 		outline-offset: 2px;
 	}
 	.row.live {
-		color: var(--hal-bone);
 		border-color: var(--hal-hot);
 		background: linear-gradient(180deg, rgba(184, 255, 90, 0.18), rgba(184, 255, 90, 0.04));
 		box-shadow: inset 0 0 12px rgba(184, 255, 90, 0.16);
-	}
-	.row .name {
-		color: inherit;
-	}
-	.row .tag {
-		color: var(--hal-cool);
 	}
 </style>
