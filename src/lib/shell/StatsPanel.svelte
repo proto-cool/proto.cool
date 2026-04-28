@@ -24,7 +24,7 @@
 		<span class="seg"><span class="k">no</span><span class="v">{ISSUE}</span></span>
 		<span class="seg"><span class="k">net</span><span class="v warm">atproto</span></span>
 		<span class="seg"
-			><span class="k">build</span><span class="v"
+			><span class="k">build</span><span class="v build-hex"
 				>0x{chrome.system.sig.toUpperCase().slice(0, 4)}</span
 			></span
 		>
@@ -135,6 +135,16 @@
 	}
 	.v.warm {
 		color: var(--hal-cool);
+	}
+	.v.build-hex {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 400;
+		font-size: 12px;
+		letter-spacing: 0.02em;
+		text-transform: none;
+		line-height: 1;
+		transform: translateY(-0.5px);
 	}
 
 	.ident {
