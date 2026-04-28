@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { themes as registryThemes, DEFAULT_THEME, type ThemeId } from '$lib/theme';
+import { themes as registryThemes, DEFAULT_THEME } from '$lib/theme';
 
 export const themeDropdownOpen = writable(false);
 
@@ -32,8 +32,7 @@ export function resolveSysTheme({
 	const want: 'dark' | 'light' = prefersDark ? 'dark' : 'light';
 
 	const defaultEntry = themes.find((t) => t.id === defaultThemeId);
-	const knownFamily =
-		lastFamily && themes.some((t) => t.family === lastFamily) ? lastFamily : null;
+	const knownFamily = lastFamily && themes.some((t) => t.family === lastFamily) ? lastFamily : null;
 	const family = knownFamily ?? defaultEntry?.family;
 
 	if (!family) return defaultThemeId;
