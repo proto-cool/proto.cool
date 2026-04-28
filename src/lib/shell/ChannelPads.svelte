@@ -74,13 +74,13 @@
 	/* pip greeble — floating tag, no tether, sits above-right of the button */
 	.pip {
 		position: absolute;
-		top: -10px;
+		top: -12px;
 		right: 0;
 		padding: 0;
 		background: none;
 		border: none;
 		font-family: var(--font-mono);
-		font-size: 8px;
+		font-size: 10px;
 		line-height: 1;
 		letter-spacing: 0.06em;
 		color: var(--hal-deep-dim);

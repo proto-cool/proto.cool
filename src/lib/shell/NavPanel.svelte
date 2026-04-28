@@ -47,7 +47,7 @@
 		will-change: padding;
 	}
 	.nav-panel.scrolled {
-		padding: 12px 28px 4px;
+		padding: 14px 28px 4px;
 		gap: 14px;
 	}
 
