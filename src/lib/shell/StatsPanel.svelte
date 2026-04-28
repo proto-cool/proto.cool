@@ -244,4 +244,21 @@
 			display: none;
 		}
 	}
+
+	@keyframes dt-colon-blink {
+		0%,
+		49% {
+			opacity: 1;
+		}
+		50%,
+		100% {
+			opacity: 0.35;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.dt-block .colon {
+			animation: dt-colon-blink 1s steps(1, end) infinite;
+		}
+	}
 </style>
