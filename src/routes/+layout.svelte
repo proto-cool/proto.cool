@@ -13,6 +13,10 @@
 		'chrome',
 		untrack(() => data.chrome)
 	);
+	setContext(
+		'system',
+		untrack(() => data.system)
+	);
 
 	onMount(() => {
 		startRuntimeTicks();
