@@ -3,6 +3,7 @@
 @import './lib/theme/themes/halogen.css' layer(themes);
 @import './lib/theme/themes/outrun.css' layer(themes);
 @import './lib/theme/themes/sodium.css' layer(themes);
+@import './lib/theme/themes/frost.css' layer(themes);
 @import './lib/theme/base.css' layer(base);
 @import './lib/theme/utilities.css' layer(utilities);
 @import './lib/shell/phosphor-shell.css' layer(shell);
