@@ -20,6 +20,12 @@ describe('theme registry', () => {
 		expect(ids).toContain('sodium-light');
 	});
 
+	it('contains both frost variants', () => {
+		const ids = themes.map((t) => t.id);
+		expect(ids).toContain('frost-dark');
+		expect(ids).toContain('frost-light');
+	});
+
 	it('every entry has family, familyName, variant, palette', () => {
 		for (const t of themes) {
 			expect(t.family).toBeTruthy();
