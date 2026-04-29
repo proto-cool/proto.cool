@@ -1,5 +1,6 @@
 import { collectionsForSource, type Source } from './config';
-import type { Cursor } from './cursor';
+import { encodeCursor, type Cursor } from './cursor';
+import type { DB } from './db';
 
 export type EngagementSummary = {
 	likeCount: number;
@@ -158,6 +159,28 @@ function parseEngagement(
 function parseValue(raw: string | null): unknown {
 	if (raw === null) return null;
 	return JSON.parse(raw);
+}
+
+export function getFeed(
+	db: DB,
+	filter: FeedFilter
+): { items: FeedItem[]; nextCursor: string | null } {
+	const { sql, params } = buildFeedQuery(filter);
+	const rows = db.prepare(sql).all(...params) as FeedRow[];
+	const items = rows.map(hydrateRow);
+
+	const requested =
+		typeof filter.limit === 'number' && filter.limit > 0
+			? Math.min(filter.limit, MAX_LIMIT)
+			: DEFAULT_LIMIT;
+
+	let nextCursor: string | null = null;
+	if (items.length === requested && items.length > 0) {
+		const last = items.at(-1)!;
+		nextCursor = encodeCursor({ ts: last.createdAt, uri: last.uri });
+	}
+
+	return { items, nextCursor };
 }
 
 export function hydrateRow(row: FeedRow): FeedItem {
