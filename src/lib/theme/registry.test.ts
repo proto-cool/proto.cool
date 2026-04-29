@@ -8,6 +8,12 @@ describe('theme registry', () => {
 		expect(ids).toContain('phosphor-green-light');
 	});
 
+	it('contains both synthwave variants', () => {
+		const ids = themes.map((t) => t.id);
+		expect(ids).toContain('synthwave-dark');
+		expect(ids).toContain('synthwave-light');
+	});
+
 	it('every entry has family, familyName, variant, palette', () => {
 		for (const t of themes) {
 			expect(t.family).toBeTruthy();
