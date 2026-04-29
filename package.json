@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"@atcute/client": "^4.2.1",
-		"better-sqlite3": "^11.5.0",
+		"better-sqlite3": "^12.9.0",
 		"phosphor-svelte": "^3.1.0",
 		"zod": "^3.23.8"
 	},
