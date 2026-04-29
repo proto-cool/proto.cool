@@ -36,6 +36,17 @@ describe('getSystemSnapshot', () => {
 		expect(snap.firehose.lastSeq).toBe(12345);
 	});
 
+	it('treats unparseable firehose.last_seq as null instead of NaN', () => {
+		const db = openDatabase(':memory:');
+		runMigrations(db);
+		db.prepare(
+			`INSERT INTO state (key, value, updated_at) VALUES (?, ?, ?)`
+		).run('firehose.last_seq', 'not-a-number', '2026-04-01T00:00:00.000Z');
+
+		const snap = getSystemSnapshot(db);
+		expect(snap.firehose.lastSeq).toBe(null);
+	});
+
 	it('reports DB row counts and pending count', () => {
 		const db = openDatabase(':memory:');
 		runMigrations(db);

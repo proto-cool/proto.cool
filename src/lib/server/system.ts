@@ -68,7 +68,8 @@ declare const __BUILD_SHA__: string;
 
 export function getSystemSnapshot(db: DB): SystemSnapshot {
 	const lastSeqRaw = readState(db, 'firehose.last_seq');
-	const lastSeq = lastSeqRaw !== null ? Number(lastSeqRaw) : null;
+	const parsedSeq = lastSeqRaw !== null ? Number(lastSeqRaw) : null;
+	const lastSeq = parsedSeq !== null && Number.isFinite(parsedSeq) ? parsedSeq : null;
 
 	const counts = db
 		.prepare(
