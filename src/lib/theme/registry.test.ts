@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { themes, DEFAULT_THEME, DEFAULT_MODE } from './registry';
 
 describe('theme registry', () => {
-	it('contains both phosphor-green variants', () => {
+	it('contains both halogen variants', () => {
 		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('phosphor-green-dark');
-		expect(ids).toContain('phosphor-green-light');
+		expect(ids).toContain('halogen-dark');
+		expect(ids).toContain('halogen-light');
 	});
 
 	it('contains both synthwave variants', () => {

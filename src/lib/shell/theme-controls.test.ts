@@ -21,27 +21,27 @@ describe('resolveThemeFor', () => {
 	// --- system mode (OS scheme consulted) ---
 
 	it('system: returns dark variant of last family when OS prefers dark (live registry)', () => {
-		const id = resolveThemeFor({ mode: 'system', prefersDark: true, lastFamily: 'phosphor-green' });
-		expect(id).toBe('phosphor-green-dark');
+		const id = resolveThemeFor({ mode: 'system', prefersDark: true, lastFamily: 'halogen' });
+		expect(id).toBe('halogen-dark');
 	});
 
 	it('system: returns light variant of last family when OS prefers light (live registry)', () => {
 		const id = resolveThemeFor({
 			mode: 'system',
 			prefersDark: false,
-			lastFamily: 'phosphor-green'
+			lastFamily: 'halogen'
 		});
-		expect(id).toBe('phosphor-green-light');
+		expect(id).toBe('halogen-light');
 	});
 
 	it('system: falls back to default family when lastFamily is null (live registry)', () => {
 		const id = resolveThemeFor({ mode: 'system', prefersDark: true, lastFamily: null });
-		expect(id).toBe('phosphor-green-dark');
+		expect(id).toBe('halogen-dark');
 	});
 
 	it('system: falls back to default family when lastFamily is unknown (live registry)', () => {
 		const id = resolveThemeFor({ mode: 'system', prefersDark: true, lastFamily: 'acid-yellow' });
-		expect(id).toBe('phosphor-green-dark');
+		expect(id).toBe('halogen-dark');
 	});
 
 	// --- explicit dark mode ---
@@ -50,14 +50,14 @@ describe('resolveThemeFor', () => {
 		const id = resolveThemeFor({
 			mode: 'dark',
 			prefersDark: false,
-			lastFamily: 'phosphor-green'
+			lastFamily: 'halogen'
 		});
-		expect(id).toBe('phosphor-green-dark');
+		expect(id).toBe('halogen-dark');
 	});
 
 	it('dark: falls back to default family when lastFamily is null', () => {
 		const id = resolveThemeFor({ mode: 'dark', prefersDark: false, lastFamily: null });
-		expect(id).toBe('phosphor-green-dark');
+		expect(id).toBe('halogen-dark');
 	});
 
 	// --- explicit light mode ---
@@ -66,14 +66,14 @@ describe('resolveThemeFor', () => {
 		const id = resolveThemeFor({
 			mode: 'light',
 			prefersDark: true,
-			lastFamily: 'phosphor-green'
+			lastFamily: 'halogen'
 		});
-		expect(id).toBe('phosphor-green-light');
+		expect(id).toBe('halogen-light');
 	});
 
 	it('light: falls back to default family when lastFamily is null', () => {
 		const id = resolveThemeFor({ mode: 'light', prefersDark: true, lastFamily: null });
-		expect(id).toBe('phosphor-green-light');
+		expect(id).toBe('halogen-light');
 	});
 
 	// --- fallback when variant is missing ---
@@ -120,9 +120,9 @@ describe('resolveThemeFor', () => {
 			prefersDark: true,
 			lastFamily: null,
 			themes: [],
-			defaultThemeId: 'phosphor-green-dark'
+			defaultThemeId: 'halogen-dark'
 		});
-		expect(id).toBe('phosphor-green-dark');
+		expect(id).toBe('halogen-dark');
 	});
 
 	it('exposes a stable localStorage key', () => {

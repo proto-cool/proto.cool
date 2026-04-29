@@ -1,0 +1,110 @@
+/* src/lib/theme/themes/halogen.css
+ * Default theme. Sci-fi halogen / phosphor-CRT energy.
+ * Dark variant: bone text on near-black green-anthracite, hot lime
+ * accents, cool teal as a rare secondary.
+ * Light variant: deep greens on bone-paper — same family, inverted
+ * polarity. Glows dial back to quiet halos so they read on paper
+ * without going full skeuomorph.
+ */
+
+[data-theme='halogen-dark'] {
+	/* ---- halogen palette ---- */
+	--hal-anthra: #060906;
+	--hal-anthra-2: #0a0e0a;
+	--hal-anthra-3: #0e1310;
+	--hal-edge: #1d2c1a;
+	--hal-warm: #82e34b;
+	--hal-hot: #b8ff5a;
+	--hal-ember: #d4ff80;
+	--hal-bone: #e2f5cf;
+	--hal-dim: #6e8a5c;
+	--hal-deep-dim: #2c3a26;
+	--hal-cool: #4ad29c;
+
+	/* ---- legacy aliases (so existing color-* consumers keep working) ---- */
+	--color-bg: var(--hal-anthra);
+	--color-surface: var(--hal-anthra-2);
+	--color-surface-2: var(--hal-anthra-3);
+	--color-edge: var(--hal-edge);
+	--color-fg: var(--hal-bone);
+	--color-fg-dim: var(--hal-dim);
+	--color-fg-mute: var(--hal-deep-dim);
+	--color-accent: var(--hal-hot);
+	--color-accent-2: var(--hal-cool);
+	--color-on-accent: var(--hal-anthra);
+	--color-link: var(--hal-bone);
+	--color-link-visited: var(--hal-dim);
+	--color-focus: var(--hal-hot);
+
+	/* ---- glow tokens (halogen vocabulary) ---- */
+	--glow-text:
+		0 0 1px rgba(226, 245, 207, 0.95), 0 0 6px rgba(184, 255, 90, 0.55),
+		0 0 22px rgba(184, 255, 90, 0.3);
+	--glow-edge:
+		0 0 0 1px rgba(184, 255, 90, 1), 0 0 12px rgba(184, 255, 90, 0.45),
+		0 0 4px rgba(184, 255, 90, 0.55);
+	--glow-panel: inset 0 1px 0 rgba(184, 255, 90, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
+	--glow-pip: 0 0 6px var(--hal-hot), 0 0 16px rgba(130, 227, 75, 0.7);
+	--glow-focus:
+		0 0 0 1px var(--hal-hot), 0 0 0 3px rgba(184, 255, 90, 0.4), 0 0 14px rgba(184, 255, 90, 0.55);
+	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
+
+	/* ---- shell veils — translucent backdrops for fixed strips ---- */
+	--shell-veil: rgba(6, 9, 6, 0.6);
+	--shell-veil-strong: rgba(6, 9, 6, 0.72);
+}
+
+[data-theme='halogen-light'] {
+	/* ---- halogen palette, inverted to paper.
+	   Warm sage stock — dialed down from flashbang-white so the eyes can rest. */
+	--hal-anthra: #e2e7d6;
+	--hal-anthra-2: #d8dec9;
+	--hal-anthra-3: #ced4bd;
+	--hal-edge: #a8b893;
+	--hal-warm: #5a8a20;
+	--hal-hot: #3d6614;
+	--hal-ember: #2a4a0c;
+	--hal-bone: #0e1408;
+	--hal-dim: #5e7048;
+	--hal-deep-dim: #98a786;
+	--hal-cool: #1c8060;
+
+	/* ---- legacy aliases ---- */
+	--color-bg: var(--hal-anthra);
+	--color-surface: var(--hal-anthra-2);
+	--color-surface-2: var(--hal-anthra-3);
+	--color-edge: var(--hal-edge);
+	--color-fg: var(--hal-bone);
+	--color-fg-dim: var(--hal-dim);
+	--color-fg-mute: var(--hal-deep-dim);
+	--color-accent: var(--hal-hot);
+	--color-accent-2: var(--hal-cool);
+	--color-on-accent: var(--hal-anthra);
+	--color-link: var(--hal-bone);
+	--color-link-visited: var(--hal-dim);
+	--color-focus: var(--hal-hot);
+
+	/* ---- glow tokens — punch-through, no halos on paper ---- */
+	--glow-text: none;
+	--glow-edge: 0 0 0 1px var(--hal-hot);
+	--glow-panel: 0 1px 0 var(--hal-edge);
+	--glow-pip: none;
+	--glow-focus: 0 0 0 2px var(--hal-hot), 0 0 0 4px rgba(255, 255, 255, 0.95);
+	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
+
+	/* ---- shell veils — paper, not anthracite ---- */
+	--shell-veil: rgba(226, 231, 214, 0.88);
+	--shell-veil-strong: rgba(226, 231, 214, 0.94);
+
+	/* ---- dither tiles — deep-green ink for paper (multiply blend) ---- */
+	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%233d6614'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%233d6614'/%3E%3C/svg%3E");
+	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%233d6614'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%233d6614'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%233d6614'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%233d6614'/%3E%3C/svg%3E");
+	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%233d6614'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%233d6614'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%233d6614'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%233d6614'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%233d6614'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%233d6614'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%233d6614'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%233d6614'/%3E%3C/svg%3E");
+}
+
+/* Reduced motion — neutralize the pulse for both variants */
+@media (prefers-reduced-motion: reduce) {
+	[data-theme^='halogen-'] {
+		--glow-pulse: none;
+	}
+}

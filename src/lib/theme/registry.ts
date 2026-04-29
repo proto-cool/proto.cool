@@ -18,9 +18,9 @@ export type ThemeEntry = {
 
 export const themes = [
 	{
-		id: 'phosphor-green-dark',
-		family: 'phosphor-green',
-		familyName: 'Phosphor green',
+		id: 'halogen-dark',
+		family: 'halogen',
+		familyName: 'Halogen',
 		variant: 'dark',
 		palette: {
 			hot: '#b8ff5a',
@@ -30,9 +30,9 @@ export const themes = [
 		default: true
 	},
 	{
-		id: 'phosphor-green-light',
-		family: 'phosphor-green',
-		familyName: 'Phosphor green',
+		id: 'halogen-light',
+		family: 'halogen',
+		familyName: 'Halogen',
 		variant: 'light',
 		palette: {
 			hot: '#3d6614',
@@ -88,5 +88,5 @@ export const themes = [
 
 export type ThemeId = (typeof themes)[number]['id'];
 
-export const DEFAULT_THEME: ThemeId = 'phosphor-green-dark';
+export const DEFAULT_THEME: ThemeId = 'halogen-dark';
 export const DEFAULT_MODE: Mode = 'dark';
