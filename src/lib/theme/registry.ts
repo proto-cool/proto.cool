@@ -83,6 +83,28 @@ export const themes = [
 			warm: '#8b1c0a',
 			cool: '#aa7700'
 		}
+	},
+	{
+		id: 'frost-dark',
+		family: 'frost',
+		familyName: 'Frost',
+		variant: 'dark',
+		palette: {
+			hot: '#a3d5e8',
+			warm: '#5e81ac',
+			cool: '#a3be8c'
+		}
+	},
+	{
+		id: 'frost-light',
+		family: 'frost',
+		familyName: 'Frost',
+		variant: 'light',
+		palette: {
+			hot: '#2e4564',
+			warm: '#4a6485',
+			cool: '#5d7548'
+		}
 	}
 ] as const satisfies readonly ThemeEntry[];
 
