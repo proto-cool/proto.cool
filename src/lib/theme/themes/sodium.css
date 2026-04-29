@@ -1,4 +1,4 @@
-/* src/lib/theme/themes/hazardpunk.css
+/* src/lib/theme/themes/sodium.css
  * Third family. HEV-suit / radiation-sign vibe.
  * Dark variant: hazard orange + blood-rust + caution yellow on
  * warm-tinted black. The trio is ALL-WARM by design — no cool color
@@ -8,7 +8,7 @@
  * Glows punch through on paper, like the other light variants.
  */
 
-[data-theme='hazardpunk-dark'] {
+[data-theme='sodium-dark'] {
 	/* ---- halogen palette (orange-dominant, all-warm) ---- */
 	--hal-anthra: #0a0604;
 	--hal-anthra-2: #120a06;
@@ -63,8 +63,8 @@
 	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23ff6b1a'/%3E%3C/svg%3E");
 }
 
-[data-theme='hazardpunk-light'] {
-	/* ---- daylight hazardpunk — construction-manual ink on coated paper. ---- */
+[data-theme='sodium-light'] {
+	/* ---- daylight sodium — construction-manual ink on coated paper. ---- */
 	--hal-anthra: #fff5e8;
 	--hal-anthra-2: #ffebd6;
 	--hal-anthra-3: #ffe1c4;
@@ -112,7 +112,7 @@
 
 /* Reduced motion — neutralize the pulse for both variants */
 @media (prefers-reduced-motion: reduce) {
-	[data-theme^='hazardpunk-'] {
+	[data-theme^='sodium-'] {
 		--glow-pulse: none;
 	}
 }

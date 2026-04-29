@@ -14,10 +14,10 @@ describe('theme registry', () => {
 		expect(ids).toContain('outrun-light');
 	});
 
-	it('contains both hazardpunk variants', () => {
+	it('contains both sodium variants', () => {
 		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('hazardpunk-dark');
-		expect(ids).toContain('hazardpunk-light');
+		expect(ids).toContain('sodium-dark');
+		expect(ids).toContain('sodium-light');
 	});
 
 	it('every entry has family, familyName, variant, palette', () => {

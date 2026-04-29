@@ -63,9 +63,9 @@ export const themes = [
 		}
 	},
 	{
-		id: 'hazardpunk-dark',
-		family: 'hazardpunk',
-		familyName: 'Hazardpunk',
+		id: 'sodium-dark',
+		family: 'sodium',
+		familyName: 'Sodium',
 		variant: 'dark',
 		palette: {
 			hot: '#ff6b1a',
@@ -74,9 +74,9 @@ export const themes = [
 		}
 	},
 	{
-		id: 'hazardpunk-light',
-		family: 'hazardpunk',
-		familyName: 'Hazardpunk',
+		id: 'sodium-light',
+		family: 'sodium',
+		familyName: 'Sodium',
 		variant: 'light',
 		palette: {
 			hot: '#cc4400',
