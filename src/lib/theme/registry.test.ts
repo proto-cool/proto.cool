@@ -8,10 +8,10 @@ describe('theme registry', () => {
 		expect(ids).toContain('halogen-light');
 	});
 
-	it('contains both synthwave variants', () => {
+	it('contains both outrun variants', () => {
 		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('synthwave-dark');
-		expect(ids).toContain('synthwave-light');
+		expect(ids).toContain('outrun-dark');
+		expect(ids).toContain('outrun-light');
 	});
 
 	it('contains both hazardpunk variants', () => {

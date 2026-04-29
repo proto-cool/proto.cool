@@ -41,9 +41,9 @@ export const themes = [
 		}
 	},
 	{
-		id: 'synthwave-dark',
-		family: 'synthwave',
-		familyName: 'Synthwave',
+		id: 'outrun-dark',
+		family: 'outrun',
+		familyName: 'Outrun',
 		variant: 'dark',
 		palette: {
 			hot: '#ff2bd6',
@@ -52,9 +52,9 @@ export const themes = [
 		}
 	},
 	{
-		id: 'synthwave-light',
-		family: 'synthwave',
-		familyName: 'Synthwave',
+		id: 'outrun-light',
+		family: 'outrun',
+		familyName: 'Outrun',
 		variant: 'light',
 		palette: {
 			hot: '#c41a8f',

@@ -1,4 +1,4 @@
-/* src/lib/theme/themes/synthwave.css
+/* src/lib/theme/themes/outrun.css
  * Second family. Miami / outrun energy.
  * Dark variant: hot magenta + electric cyan on deep indigo.
  * Light variant: a daylight reinterpretation — sherbet pastels on
@@ -6,7 +6,7 @@
  * on paper, like halogen's light variant.
  */
 
-[data-theme='synthwave-dark'] {
+[data-theme='outrun-dark'] {
 	/* ---- halogen palette (magenta-dominant) ---- */
 	--hal-anthra: #0c0420;
 	--hal-anthra-2: #140832;
@@ -61,8 +61,8 @@
 	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23ff2bd6'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23ff2bd6'/%3E%3C/svg%3E");
 }
 
-[data-theme='synthwave-light'] {
-	/* ---- daylight synthwave — sherbet pastels on near-white. ---- */
+[data-theme='outrun-light'] {
+	/* ---- daylight outrun — sherbet pastels on near-white. ---- */
 	--hal-anthra: #fff4f9;
 	--hal-anthra-2: #ffe9f3;
 	--hal-anthra-3: #ffdcec;
@@ -110,7 +110,7 @@
 
 /* Reduced motion — neutralize the pulse for both variants */
 @media (prefers-reduced-motion: reduce) {
-	[data-theme^='synthwave-'] {
+	[data-theme^='outrun-'] {
 		--glow-pulse: none;
 	}
 }

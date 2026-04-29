@@ -1,7 +1,7 @@
 @import './lib/theme/tokens.css' layer(tokens);
 @import './lib/theme/glow-keyframes.css';
 @import './lib/theme/themes/halogen.css' layer(themes);
-@import './lib/theme/themes/synthwave.css' layer(themes);
+@import './lib/theme/themes/outrun.css' layer(themes);
 @import './lib/theme/themes/hazardpunk.css' layer(themes);
 @import './lib/theme/base.css' layer(base);
 @import './lib/theme/utilities.css' layer(utilities);
