@@ -1,5 +1,3 @@
-PRAGMA foreign_keys = ON;
-
 CREATE TABLE records (
   uri          TEXT PRIMARY KEY,
   did          TEXT NOT NULL,

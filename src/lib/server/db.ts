@@ -38,7 +38,8 @@ export function runMigrations(db: DB): void {
 		insertApplied.run(m.version, m.name, new Date().toISOString());
 	});
 
-	for (const m of MIGRATIONS) {
+	const ordered = [...MIGRATIONS].sort((a, b) => a.version - b.version);
+	for (const m of ordered) {
 		if (applied.has(m.version)) continue;
 		apply(m);
 	}
