@@ -1,4 +1,5 @@
 import { Client, simpleFetchHandler } from '@atcute/client';
+import type { ActorIdentifier, Handle, Nsid } from '@atcute/lexicons';
 import type {} from '@atcute/atproto';
 import type {} from '@atcute/bluesky';
 
@@ -26,8 +27,17 @@ export function createAtpClient(service: string): AtpClient {
 
 	return {
 		async listRecords({ repo, collection, cursor, limit }) {
+			// @atcute lexicons type repo/collection as branded template-literal types
+			// (ActorIdentifier = Did | Handle, Nsid = a.b.c). The public AtpClient
+			// interface accepts plain strings and trusts the caller to pass valid
+			// values; we narrow at the lexicon edge here.
 			const response = await rpc.get('com.atproto.repo.listRecords', {
-				params: { repo: repo as any, collection: collection as any, cursor, limit: limit ?? 100 }
+				params: {
+					repo: repo as ActorIdentifier,
+					collection: collection as Nsid,
+					cursor,
+					limit: limit ?? 100
+				}
 			});
 			if (!response.ok) {
 				throw new Error(
@@ -46,7 +56,7 @@ export function createAtpClient(service: string): AtpClient {
 
 		async resolveHandle(handle) {
 			const response = await rpc.get('com.atproto.identity.resolveHandle', {
-				params: { handle: handle as any }
+				params: { handle: handle as Handle }
 			});
 			if (!response.ok) {
 				throw new Error(

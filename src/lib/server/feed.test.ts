@@ -104,7 +104,7 @@ describe('hydrateRow', () => {
 		const row = {
 			uri: 'at://did:plc:abc/app.bsky.feed.post/1',
 			collection: 'app.bsky.feed.post',
-			kind: 'owned',
+			kind: 'owned' as const,
 			subject_uri: null,
 			created_at: '2026-04-01T12:00:00.000Z',
 			value: '{"$type":"app.bsky.feed.post","text":"hi","createdAt":"2026-04-01T12:00:00.000Z"}',
@@ -146,7 +146,7 @@ describe('hydrateRow', () => {
 		const row = {
 			uri: 'at://did:plc:abc/blog.pckt.entry/1',
 			collection: 'blog.pckt.entry',
-			kind: 'owned',
+			kind: 'owned' as const,
 			subject_uri: null,
 			created_at: '2026-04-01T12:00:00.000Z',
 			value: '{"$type":"blog.pckt.entry","title":"hi"}',
@@ -174,7 +174,7 @@ describe('hydrateRow', () => {
 		const row = {
 			uri: 'at://did:plc:abc/app.bsky.feed.repost/1',
 			collection: 'app.bsky.feed.repost',
-			kind: 'owned',
+			kind: 'owned' as const,
 			subject_uri: 'at://did:plc:other/app.bsky.feed.post/abc',
 			created_at: '2026-04-02T12:00:00.000Z',
 			value: '{"$type":"app.bsky.feed.repost","subject":{"uri":"at://did:plc:other/app.bsky.feed.post/abc","cid":"bafy"}}',
@@ -185,7 +185,7 @@ describe('hydrateRow', () => {
 			engagement_source: null,
 			subject_uri_resolved: 'at://did:plc:other/app.bsky.feed.post/abc',
 			subject_collection: 'app.bsky.feed.post',
-			subject_kind: 'external',
+			subject_kind: 'external' as const,
 			subject_created_at: '2026-04-01T08:00:00.000Z',
 			subject_value: '{"$type":"app.bsky.feed.post","text":"original"}',
 			subject_like_count: 12,
@@ -207,7 +207,7 @@ describe('hydrateRow', () => {
 		const row = {
 			uri: 'at://did:plc:abc/app.bsky.feed.repost/2',
 			collection: 'app.bsky.feed.repost',
-			kind: 'owned',
+			kind: 'owned' as const,
 			subject_uri: 'at://did:plc:other/app.bsky.feed.post/gone',
 			created_at: '2026-04-02T12:00:00.000Z',
 			value: '{}',
