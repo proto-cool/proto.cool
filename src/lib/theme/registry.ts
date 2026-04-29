@@ -61,6 +61,28 @@ export const themes = [
 			warm: '#e0438f',
 			cool: '#0e8fa3'
 		}
+	},
+	{
+		id: 'hazardpunk-dark',
+		family: 'hazardpunk',
+		familyName: 'Hazardpunk',
+		variant: 'dark',
+		palette: {
+			hot: '#ff6b1a',
+			warm: '#c2330d',
+			cool: '#ffcc00'
+		}
+	},
+	{
+		id: 'hazardpunk-light',
+		family: 'hazardpunk',
+		familyName: 'Hazardpunk',
+		variant: 'light',
+		palette: {
+			hot: '#cc4400',
+			warm: '#8b1c0a',
+			cool: '#aa7700'
+		}
 	}
 ] as const satisfies readonly ThemeEntry[];
 
