@@ -20,9 +20,13 @@ export type FeedItem = {
 };
 
 export type FeedFilter = {
+	// undefined or [] both mean "no source filter" — return all sources.
+	// A source whose NSIDs aren't wired up yet (pckt/standard/grain in v1) is
+	// silently dropped from the IN clause; if that's the only source, the
+	// query reduces to `1 = 0` (zero rows).
 	sources?: Source[];
-	from?: string; // ISO
-	to?: string;   // ISO
+	from?: string; // ISO 8601 — inclusive lower bound (>=)
+	to?: string;   // ISO 8601 — exclusive upper bound (<)
 	cursor?: Cursor;
 	limit?: number;
 	order?: 'desc' | 'asc';

@@ -44,6 +44,21 @@ describe('buildFeedQuery', () => {
 		expect(sql).not.toContain('r.collection IN');
 	});
 
+	it('emits 1=0 when the only requested source has no NSIDs wired up', () => {
+		const { sql } = buildFeedQuery({ sources: ['pckt'] });
+		expect(sql).toContain('1 = 0');
+		expect(sql).not.toContain('r.collection IN');
+	});
+
+	it('drops unwired sources silently when at least one source has NSIDs', () => {
+		const { sql, params } = buildFeedQuery({ sources: ['bsky', 'pckt'] });
+		// Only bsky's two NSIDs make the IN clause; pckt vanishes.
+		expect(sql).toMatch(/r\.collection IN \(\?\s*,\s*\?\)/);
+		expect(sql).not.toContain('1 = 0');
+		expect(params).toContain('app.bsky.feed.post');
+		expect(params).toContain('app.bsky.feed.repost');
+	});
+
 	it('emits date-range BETWEEN when from and to are provided', () => {
 		const filter: FeedFilter = {
 			from: '2026-01-01T00:00:00.000Z',
