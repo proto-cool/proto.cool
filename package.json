@@ -13,14 +13,18 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "npm run test:unit -- --run",
+		"backfill": "tsx scripts/backfill.ts"
 	},
 	"devDependencies": {
+		"@atcute/atproto": "^3.1.10",
+		"@atcute/bluesky": "^3.2.14",
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"@types/better-sqlite3": "^7.6.11",
 		"@types/node": "^24",
 		"eslint": "^10.2.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -30,6 +34,7 @@
 		"prettier-plugin-svelte": "^3.5.1",
 		"svelte": "^5.55.2",
 		"svelte-check": "^4.4.6",
+		"tsx": "^4.19.2",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.1",
 		"vite": "^8.0.7",
@@ -37,6 +42,8 @@
 	},
 	"dependencies": {
 		"@atcute/client": "^4.2.1",
-		"phosphor-svelte": "^3.1.0"
+		"better-sqlite3": "^11.5.0",
+		"phosphor-svelte": "^3.1.0",
+		"zod": "^3.23.8"
 	}
 }
