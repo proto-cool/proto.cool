@@ -45,5 +45,10 @@
 		"better-sqlite3": "^11.5.0",
 		"phosphor-svelte": "^3.1.0",
 		"zod": "^3.23.8"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"better-sqlite3"
+		]
 	}
 }
