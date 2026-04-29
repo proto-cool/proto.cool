@@ -14,6 +14,12 @@ describe('theme registry', () => {
 		expect(ids).toContain('synthwave-light');
 	});
 
+	it('contains both hazardpunk variants', () => {
+		const ids = themes.map((t) => t.id);
+		expect(ids).toContain('hazardpunk-dark');
+		expect(ids).toContain('hazardpunk-light');
+	});
+
 	it('every entry has family, familyName, variant, palette', () => {
 		for (const t of themes) {
 			expect(t.family).toBeTruthy();
