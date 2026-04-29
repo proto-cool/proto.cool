@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { ChromeData } from './chrome';
+	import type { SystemSnapshot } from '$lib/server/system';
 	import { clock, stardate } from './runtime';
 
 	const chrome = getContext<ChromeData>('chrome');
+	const system = getContext<SystemSnapshot | undefined>('system');
 
 	// VOL is cosmetic (issue / volume motif). Bumped when the visual identity
 	// changes; tied to release rather than calendar.
@@ -26,7 +28,7 @@
 		<span class="seg"><span class="k">net</span><span class="v warm">atproto</span></span>
 		<span class="seg"
 			><span class="k">build</span><span class="v build-hex"
-				>0x{chrome.system.sig.toUpperCase().slice(0, 4)}</span
+				>0x{system?.buildSig ?? chrome.system.sig.toUpperCase().slice(0, 4)}</span
 			></span
 		>
 		<span class="dt-block">
