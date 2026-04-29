@@ -1,3 +1,11 @@
+// Schema is held as a string constant rather than a `.sql` file so the
+// migration registry resolves identically in every runtime: SvelteKit's vite
+// bundler (production server build), vitest under the same vite config, and
+// the bare `tsx` runtime used by `scripts/backfill.ts`. A `?raw` import would
+// require vite plugins; an `fs.readFileSync(import.meta.url)` would break
+// when bundled. A plain TS export sidesteps both.
+
+export const sql = `
 CREATE TABLE records (
   uri          TEXT PRIMARY KEY,
   did          TEXT NOT NULL,
@@ -33,3 +41,4 @@ CREATE TABLE state (
   value      TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
+`;
