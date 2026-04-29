@@ -114,3 +114,93 @@ export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
 
 	return { sql, params };
 }
+
+type FeedRow = {
+	uri: string;
+	collection: string;
+	kind: 'owned' | 'external';
+	subject_uri: string | null;
+	created_at: string;
+	value: string | null;
+	like_count: number | null;
+	repost_count: number | null;
+	reply_count: number | null;
+	reactor_sample: string | null;
+	engagement_source: string | null;
+	subject_uri_resolved: string | null;
+	subject_collection: string | null;
+	subject_kind: 'owned' | 'external' | null;
+	subject_created_at: string | null;
+	subject_value: string | null;
+	subject_like_count: number | null;
+	subject_repost_count: number | null;
+	subject_reply_count: number | null;
+	subject_reactor_sample: string | null;
+	subject_engagement_source: string | null;
+};
+
+function parseEngagement(
+	likeCount: number | null,
+	repostCount: number | null,
+	replyCount: number | null,
+	reactorSample: string | null,
+	engagementSource: string | null
+): EngagementSummary | undefined {
+	if (engagementSource === null) return undefined;
+	return {
+		likeCount: likeCount ?? 0,
+		repostCount: repostCount ?? 0,
+		replyCount: replyCount ?? 0,
+		reactorSample: reactorSample ? JSON.parse(reactorSample) : []
+	};
+}
+
+function parseValue(raw: string | null): unknown {
+	if (raw === null) return null;
+	return JSON.parse(raw);
+}
+
+export function hydrateRow(row: FeedRow): FeedItem {
+	const item: FeedItem = {
+		uri: row.uri,
+		collection: row.collection,
+		kind: row.kind,
+		subjectUri: row.subject_uri,
+		createdAt: row.created_at,
+		value: parseValue(row.value),
+		engagement: parseEngagement(
+			row.like_count,
+			row.repost_count,
+			row.reply_count,
+			row.reactor_sample,
+			row.engagement_source
+		)
+	};
+
+	if (row.subject_uri) {
+		if (row.subject_uri_resolved) {
+			item.subject = {
+				uri: row.subject_uri_resolved,
+				collection: row.subject_collection!,
+				kind: row.subject_kind!,
+				subjectUri: null,
+				createdAt: row.subject_created_at!,
+				value: parseValue(row.subject_value),
+				engagement: parseEngagement(
+					row.subject_like_count,
+					row.subject_repost_count,
+					row.subject_reply_count,
+					row.subject_reactor_sample,
+					row.subject_engagement_source
+				),
+				subject: null
+			};
+		} else {
+			item.subject = null; // referenced but not (yet) cached / deleted
+		}
+	} else {
+		item.subject = null;
+	}
+
+	return item;
+}
