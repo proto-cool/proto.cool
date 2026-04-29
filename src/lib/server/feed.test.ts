@@ -97,6 +97,17 @@ describe('buildFeedQuery', () => {
 		expect(sql).toMatch(/LEFT JOIN engagement e ON e\.uri = r\.uri/);
 		expect(sql).toMatch(/LEFT JOIN records s ON s\.uri = r\.subject_uri AND s\.status = 'ok'/);
 	});
+
+	it('emits a reply-exclusion predicate by default', () => {
+		const { sql } = buildFeedQuery({});
+		expect(sql).toMatch(/json_extract\(r\.value, '\$\.reply'\) IS NULL/);
+		expect(sql).toContain(`r.collection != 'app.bsky.feed.post'`);
+	});
+
+	it('omits the reply predicate when includeReplies is true', () => {
+		const { sql } = buildFeedQuery({ includeReplies: true });
+		expect(sql).not.toContain('json_extract');
+	});
 });
 
 describe('hydrateRow', () => {
@@ -386,6 +397,61 @@ describe('getFeed', () => {
 		const result = getFeed(db, { limit: 5 });
 		expect(result.items.length).toBe(1);
 		expect(result.nextCursor).toBe(null);
+	});
+
+	it('excludes reply posts by default (mirrors bsky "Posts" tab)', () => {
+		const db = setup();
+		seed(db, [
+			{
+				uri: 'at://x/app.bsky.feed.post/original',
+				collection: 'app.bsky.feed.post',
+				value: '{"text":"hello world","createdAt":"2026-04-01T00:00:00.000Z"}',
+				created_at: '2026-04-01T00:00:00.000Z'
+			},
+			{
+				uri: 'at://x/app.bsky.feed.post/reply',
+				collection: 'app.bsky.feed.post',
+				value:
+					'{"text":"replying","reply":{"root":{"uri":"at://other","cid":"c"},"parent":{"uri":"at://other","cid":"c"}}}',
+				created_at: '2026-04-02T00:00:00.000Z'
+			},
+			{
+				uri: 'at://x/app.bsky.feed.repost/r1',
+				collection: 'app.bsky.feed.repost',
+				value: '{"subject":{"uri":"at://other/app.bsky.feed.post/x","cid":"c"}}',
+				created_at: '2026-04-03T00:00:00.000Z'
+			}
+		]);
+		const result = getFeed(db, {});
+		const uris = result.items.map((i) => i.uri).sort();
+		expect(uris).toEqual([
+			'at://x/app.bsky.feed.post/original',
+			'at://x/app.bsky.feed.repost/r1'
+		]);
+	});
+
+	it('includes reply posts when includeReplies is true', () => {
+		const db = setup();
+		seed(db, [
+			{
+				uri: 'at://x/app.bsky.feed.post/original',
+				collection: 'app.bsky.feed.post',
+				value: '{"text":"hello"}',
+				created_at: '2026-04-01T00:00:00.000Z'
+			},
+			{
+				uri: 'at://x/app.bsky.feed.post/reply',
+				collection: 'app.bsky.feed.post',
+				value:
+					'{"text":"replying","reply":{"root":{"uri":"at://other","cid":"c"},"parent":{"uri":"at://other","cid":"c"}}}',
+				created_at: '2026-04-02T00:00:00.000Z'
+			}
+		]);
+		const result = getFeed(db, { includeReplies: true });
+		expect(result.items.map((i) => i.uri).sort()).toEqual([
+			'at://x/app.bsky.feed.post/original',
+			'at://x/app.bsky.feed.post/reply'
+		]);
 	});
 
 	it('inlines a resolved subject for a repost', () => {

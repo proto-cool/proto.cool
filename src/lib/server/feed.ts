@@ -31,6 +31,10 @@ export type FeedFilter = {
 	cursor?: Cursor;
 	limit?: number;
 	order?: 'desc' | 'asc';
+	// Default false — replies (app.bsky.feed.post records with a non-null
+	// `reply` field) are excluded from the feed, matching bsky.app's default
+	// "Posts" tab. Set true for a "Posts & Replies"-style view.
+	includeReplies?: boolean;
 };
 
 const DEFAULT_LIMIT = 20;
@@ -77,6 +81,15 @@ export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
 	if (filter.cursor) {
 		wheres.push(`(r.created_at, r.uri) ${cmpOp} (?, ?)`);
 		params.push(filter.cursor.ts, filter.cursor.uri);
+	}
+
+	if (!filter.includeReplies) {
+		// Reply posts have a non-null `reply` field on the record value.
+		// Reposts (app.bsky.feed.repost) don't carry that field, so the
+		// collection guard keeps them in the result regardless.
+		wheres.push(
+			`(r.collection != 'app.bsky.feed.post' OR json_extract(r.value, '$.reply') IS NULL)`
+		);
 	}
 
 	params.push(limit);
