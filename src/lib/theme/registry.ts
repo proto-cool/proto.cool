@@ -39,6 +39,28 @@ export const themes = [
 			warm: '#5a8a20',
 			cool: '#1c8060'
 		}
+	},
+	{
+		id: 'synthwave-dark',
+		family: 'synthwave',
+		familyName: 'Synthwave',
+		variant: 'dark',
+		palette: {
+			hot: '#ff2bd6',
+			warm: '#ff5fa8',
+			cool: '#21f0ff'
+		}
+	},
+	{
+		id: 'synthwave-light',
+		family: 'synthwave',
+		familyName: 'Synthwave',
+		variant: 'light',
+		palette: {
+			hot: '#c41a8f',
+			warm: '#e0438f',
+			cool: '#0e8fa3'
+		}
 	}
 ] as const satisfies readonly ThemeEntry[];
 
