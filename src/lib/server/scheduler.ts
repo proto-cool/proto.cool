@@ -194,4 +194,46 @@ function writeStateKv(db: DB, k: string, v: string) {
 	).run(k, v, new Date().toISOString());
 }
 
-// startScheduler is added in Task 8.
+const TICK_INTERVAL_MS = 60_000;
+
+export type SchedulerHandle = {
+	stop: () => void;
+};
+
+export function startScheduler(
+	db: DB,
+	adapters: AdapterRegistry,
+	breaker: Breaker
+): SchedulerHandle {
+	let isRunning = false;
+	let stopped = false;
+
+	const runOnce = async () => {
+		if (isRunning || stopped) return;
+		isRunning = true;
+		try {
+			const result = await tick(db, adapters, breaker, new Date().toISOString());
+			if (result.errors.length > 0) {
+				for (const e of result.errors) {
+					console.warn(`[scheduler] ${e.phase}/${e.source}: ${e.message}`);
+				}
+			}
+		} catch (err) {
+			console.error('[scheduler] tick threw — investigate', err);
+		} finally {
+			isRunning = false;
+		}
+	};
+
+	// Fire one immediately on boot so the system snapshot reflects activity
+	// without waiting a full minute, then settle into the cadence.
+	void runOnce();
+	const handle = setInterval(runOnce, TICK_INTERVAL_MS);
+
+	return {
+		stop() {
+			stopped = true;
+			clearInterval(handle);
+		}
+	};
+}
