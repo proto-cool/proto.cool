@@ -80,45 +80,55 @@ export function startFirehose(args: {
 			console.info('[firehose] connected');
 		});
 
-		ws.on('message', async (raw: Buffer) => {
-			try {
-				const frame = parseFrame(raw);
-				STATE.lastEventAtMs = Date.now();
+		async function handleMessage(raw: Buffer): Promise<void> {
+				let advanceSeq: number | null = null;
+				try {
+					const frame = parseFrame(raw);
+					STATE.lastEventAtMs = Date.now();
 
-				if (frame === null) return;
-				if (frame.t !== '#commit') {
-					// #identity, #account, #sync, #info — advance cursor and skip.
-					const seq = frame.body.seq;
-					if (typeof seq === 'number') {
-						cursor = seq;
+					if (frame === null) return;
+
+					if (frame.t !== '#commit') {
+						// #identity, #account, #sync, #info — advance cursor and skip.
+						if ('seq' in frame.body && typeof frame.body.seq === 'number') {
+							advanceSeq = frame.body.seq;
+						}
+						return;
+					}
+
+					const commitBody = frame.body as RawCommitBody;
+					advanceSeq = commitBody.seq;
+
+					if (commitBody.repo !== args.ownerDid) {
+						return;
+					}
+
+					const ops = await materializeOps(args.client, commitBody);
+					const applied: AppliedCommit = {
+						seq: commitBody.seq,
+						repo: commitBody.repo,
+						ops
+					};
+					applyCommit(args.db, applied, args.ownerDid, new Date().toISOString());
+				} catch (err) {
+					console.warn('[firehose] decode/apply failed; skipping frame', err);
+					// advanceSeq captures the seq if parseFrame succeeded; if it
+					// didn't, we have nothing safe to advance to and will retry the
+					// bad frame on next connect (correct — may be transient corruption).
+				} finally {
+					if (advanceSeq !== null) {
+						cursor = advanceSeq;
 						STATE.lastSeq = cursor;
 						writeLastSeq.run(String(cursor), new Date().toISOString());
 					}
-					return;
 				}
-
-				const commitBody = frame.body as RawCommitBody;
-
-				if (commitBody.repo !== args.ownerDid) {
-					cursor = commitBody.seq;
-					STATE.lastSeq = cursor;
-					writeLastSeq.run(String(cursor), new Date().toISOString());
-					return;
-				}
-
-				const ops = await materializeOps(args.client, commitBody);
-				const applied: AppliedCommit = {
-					seq: commitBody.seq,
-					repo: commitBody.repo,
-					ops
-				};
-				applyCommit(args.db, applied, args.ownerDid, new Date().toISOString());
-				cursor = commitBody.seq;
-				STATE.lastSeq = cursor;
-				writeLastSeq.run(String(cursor), new Date().toISOString());
-			} catch (err) {
-				console.warn('[firehose] decode/apply failed; skipping op', err);
 			}
+
+		let handlerTail: Promise<void> = Promise.resolve();
+		ws.on('message', (raw: Buffer) => {
+			handlerTail = handlerTail.then(() => handleMessage(raw)).catch((err) => {
+				console.warn('[firehose] handler queue caught error', err);
+			});
 		});
 
 		ws.on('close', () => {

@@ -100,9 +100,13 @@ export function createAtpClient(service: string): AtpClient {
 					`getRecord failed: ${response.data.error}: ${response.data.message ?? ''}`
 				);
 			}
+			const responseCid = response.data.cid;
+			if (typeof responseCid !== 'string' || responseCid.length === 0) {
+				throw new Error(`getRecord: missing cid for ${repo}/${collection}/${rkey}`);
+			}
 			return {
 				uri: response.data.uri,
-				cid: response.data.cid ?? '',
+				cid: responseCid,
 				value: response.data.value as Record<string, unknown>
 			};
 		},
