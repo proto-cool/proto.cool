@@ -1,5 +1,12 @@
 import { Client, simpleFetchHandler } from '@atcute/client';
-import type { ActorIdentifier, Handle, Nsid, ResourceUri } from '@atcute/lexicons';
+import type {
+	ActorIdentifier,
+	Cid,
+	Handle,
+	Nsid,
+	RecordKey,
+	ResourceUri
+} from '@atcute/lexicons';
 import type {} from '@atcute/atproto';
 import type {} from '@atcute/bluesky';
 
@@ -12,6 +19,12 @@ export type ListRecordsResult = {
 	cursor: string | null;
 };
 
+export type GetRecordResult = {
+	uri: string;
+	cid: string;
+	value: Record<string, unknown>;
+};
+
 export interface AtpClient {
 	listRecords(args: {
 		repo: string;
@@ -19,6 +32,12 @@ export interface AtpClient {
 		cursor?: string;
 		limit?: number;
 	}): Promise<ListRecordsResult>;
+	getRecord(args: {
+		repo: string;
+		collection: string;
+		rkey: string;
+		cid?: string;
+	}): Promise<GetRecordResult>;
 	resolveHandle(handle: string): Promise<{ did: string }>;
 	getPosts(uris: string[]): Promise<{
 		posts: Array<{
@@ -61,6 +80,30 @@ export function createAtpClient(service: string): AtpClient {
 					value: r.value as Record<string, unknown>
 				})),
 				cursor: response.data.cursor ?? null
+			};
+		},
+
+		async getRecord({ repo, collection, rkey, cid }) {
+			// com.atproto.repo.getRecord returns parsed JSON ({uri, cid, value}),
+			// unlike com.atproto.sync.getRecord which returns a CAR. We use the
+			// repo variant so callers don't need a CAR decoder.
+			const response = await rpc.get('com.atproto.repo.getRecord', {
+				params: {
+					repo: repo as ActorIdentifier,
+					collection: collection as Nsid,
+					rkey: rkey as RecordKey,
+					cid: cid as Cid | undefined
+				}
+			});
+			if (!response.ok) {
+				throw new Error(
+					`getRecord failed: ${response.data.error}: ${response.data.message ?? ''}`
+				);
+			}
+			return {
+				uri: response.data.uri,
+				cid: response.data.cid ?? '',
+				value: response.data.value as Record<string, unknown>
 			};
 		},
 

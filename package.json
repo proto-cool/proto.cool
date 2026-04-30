@@ -27,6 +27,7 @@
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@types/better-sqlite3": "^7.6.11",
 		"@types/node": "^24",
+		"@types/ws": "^8.18.1",
 		"eslint": "^10.2.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.17.0",
@@ -43,8 +44,11 @@
 	},
 	"dependencies": {
 		"@atcute/client": "^4.2.1",
+		"@ipld/dag-cbor": "^9.2.6",
 		"better-sqlite3": "^12.9.0",
+		"cborg": "^5.1.1",
 		"phosphor-svelte": "^3.1.0",
+		"ws": "^8.20.0",
 		"zod": "^3.23.8"
 	},
 	"pnpm": {

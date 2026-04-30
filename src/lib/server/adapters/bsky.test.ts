@@ -7,6 +7,7 @@ type PostsPayload = Awaited<ReturnType<AtpClient['getPosts']>>['posts'];
 function fakeClient(posts: PostsPayload): AtpClient {
 	return {
 		async listRecords() { throw new Error('not used'); },
+		async getRecord() { throw new Error('not used'); },
 		async resolveHandle() { throw new Error('not used'); },
 		async getPosts() { return { posts }; }
 	};
@@ -64,6 +65,7 @@ describe('bskyAdapter.fetchEngagement', () => {
 		const calls: string[][] = [];
 		const client: AtpClient = {
 			async listRecords() { throw new Error('not used'); },
+			async getRecord() { throw new Error('not used'); },
 			async resolveHandle() { throw new Error('not used'); },
 			async getPosts(uris) {
 				calls.push(uris);

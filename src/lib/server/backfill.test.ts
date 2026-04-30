@@ -18,6 +18,9 @@ function makeMockClient(
 			const page = list[idx] ?? { records: [], cursor: null };
 			return page;
 		},
+		async getRecord() {
+			throw new Error('not used');
+		},
 		async resolveHandle() {
 			throw new Error('not used');
 		},
