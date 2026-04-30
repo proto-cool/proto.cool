@@ -77,32 +77,29 @@
 	--z-toast: 1000;
 
 	/* Status colors — shared across themes for accessibility recognition.
-	 * Theme files MAY override inside their own selectors but v1 themes do not. */
-	--color-ok: #4ade80;
-	--color-warn: #ffb800;
-	--color-error: #ff4444;
-	--color-info: #50a0ff;
+	 * Namespaced --status-* so they don't collide with palette --color-warm. */
+	--status-ok: #4ade80;
+	--status-warn: #ffb800;
+	--status-error: #ff4444;
+	--status-info: #50a0ff;
+
+	/* Bayer dither masks — black fill (only alpha matters). Used by
+	 * .dither-* utility classes via mask-image; theme color comes from
+	 * background-color: var(--color-hot). Single source per density. */
+	--dither-mask-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+	--dither-mask-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+	--dither-mask-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23000'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23000'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
 }
 
-/* ==========================================================================
-   Halogen tokens — shared dither tile URLs (per-theme palette overrides
-   the actual fill colors via theme files).
-   The dither tiles below are LIME by default; theme files may override
-   the --dither-* custom properties to recolor.
-   ========================================================================== */
-
-:root {
-	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3C/svg%3E");
-	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3C/svg%3E");
-	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23b8ff5a'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23b8ff5a'/%3E%3C/svg%3E");
-}
-
-/* Reduced motion — neutralize all durations */
+/* Reduced motion — neutralize all durations + theme pulse. */
 @media (prefers-reduced-motion: reduce) {
 	:root {
 		--duration-instant: 0ms;
 		--duration-fast: 0ms;
 		--duration-base: 0ms;
 		--duration-slow: 0ms;
+	}
+	[data-theme] {
+		--glow-pulse: none;
 	}
 }

@@ -53,10 +53,10 @@
 		background: rgba(0, 0, 0, 0.92);
 		display: flex; align-items: center; justify-content: center;
 		flex-direction: column;
-		z-index: 100;
-		padding: 32px;
+		z-index: var(--z-toast, 1000);
+		padding: 24px;
 	}
-	img { max-width: 100%; max-height: calc(100vh - 120px); object-fit: contain; border: 1px solid var(--color-edge); }
+	img { max-width: 95vw; max-height: 90dvh; object-fit: contain; border: 1px solid var(--color-edge); }
 	.alt {
 		max-width: 80ch;
 		margin: 16px 0 0;

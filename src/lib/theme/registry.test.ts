@@ -1,29 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { themes, DEFAULT_THEME, DEFAULT_MODE } from './registry';
 
+const FAMILIES = ['halogen', 'outrun', 'sodium', 'frost', 'mono'] as const;
+
 describe('theme registry', () => {
-	it('contains both halogen variants', () => {
+	it.each(FAMILIES)('contains both %s variants', (family) => {
 		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('halogen-dark');
-		expect(ids).toContain('halogen-light');
-	});
-
-	it('contains both outrun variants', () => {
-		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('outrun-dark');
-		expect(ids).toContain('outrun-light');
-	});
-
-	it('contains both sodium variants', () => {
-		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('sodium-dark');
-		expect(ids).toContain('sodium-light');
-	});
-
-	it('contains both frost variants', () => {
-		const ids = themes.map((t) => t.id);
-		expect(ids).toContain('frost-dark');
-		expect(ids).toContain('frost-light');
+		expect(ids).toContain(`${family}-dark`);
+		expect(ids).toContain(`${family}-light`);
 	});
 
 	it('every entry has family, familyName, variant, palette', () => {

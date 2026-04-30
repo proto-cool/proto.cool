@@ -4,6 +4,9 @@
 	// hot accent dot, blocky cursor, and a stacked mono greeble panel.
 	// Compact mode (driven by parent scroll state) shrinks for the sticky header.
 	let { compact = false }: { compact?: boolean } = $props();
+
+	const LIT_BARS = 5;
+	const bars = Array.from({ length: 7 }, (_, i) => i < LIT_BARS);
 </script>
 
 <a class="badge" class:compact href="/" aria-label="proto.cool — home">
@@ -24,9 +27,9 @@
 		</span>
 		<span class="meta-row bot">
 			<span class="bars">
-				<i class="b on"></i><i class="b on"></i><i class="b on"></i><i class="b on"></i><i
-					class="b on"
-				></i><i class="b"></i><i class="b"></i>
+				{#each bars as on, i (i)}
+					<i class="b" class:on></i>
+				{/each}
 			</span>
 			<span class="lab">live</span>
 		</span>
@@ -48,11 +51,11 @@
 	}
 	.badge:hover .word.fill {
 		text-shadow:
-			0 0 1px rgba(226, 245, 207, 0.85),
-			0 0 18px rgba(184, 255, 90, 0.55);
+			0 0 1px color-mix(in srgb, var(--color-fg) 85%, transparent),
+			0 0 18px color-mix(in srgb, var(--color-hot) 55%, transparent);
 	}
 	.badge:focus-visible {
-		outline: 2px solid var(--hal-hot);
+		outline: 2px solid var(--color-hot);
 		outline-offset: 4px;
 	}
 
@@ -60,10 +63,10 @@
 	.rail {
 		width: 4px;
 		align-self: stretch;
-		background: var(--hal-warm);
+		background: var(--color-warm);
 		box-shadow:
-			0 0 4px rgba(184, 255, 90, 0.35),
-			0 0 12px rgba(130, 227, 75, 0.18);
+			0 0 4px color-mix(in srgb, var(--color-hot) 35%, transparent),
+			0 0 12px color-mix(in srgb, var(--color-warm) 18%, transparent);
 	}
 
 	/* [●] boot bracket */
@@ -93,17 +96,17 @@
 		height: 8px;
 	}
 	.boot .bk {
-		color: var(--hal-warm);
-		text-shadow: 0 0 6px rgba(184, 255, 90, 0.45);
+		color: var(--color-warm);
+		text-shadow: 0 0 6px color-mix(in srgb, var(--color-hot) 45%, transparent);
 	}
 	.boot .lamp {
 		width: 11px;
 		height: 11px;
 		border-radius: 999px;
-		background: var(--hal-ember);
+		background: var(--color-ember);
 		box-shadow:
-			0 0 8px var(--hal-hot),
-			0 0 22px rgba(184, 255, 90, 0.85);
+			0 0 8px var(--color-hot),
+			0 0 22px color-mix(in srgb, var(--color-hot) 85%, transparent);
 		animation: var(--glow-pulse, none);
 	}
 
@@ -126,21 +129,21 @@
 		letter-spacing: -0.03em;
 	}
 	.word.fill {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 		text-shadow:
-			0 0 1px rgba(226, 245, 207, 0.55),
-			0 0 14px rgba(184, 255, 90, 0.18);
+			0 0 1px color-mix(in srgb, var(--color-fg) 55%, transparent),
+			0 0 14px color-mix(in srgb, var(--color-hot) 18%, transparent);
 	}
 	.word.outline {
 		color: transparent;
-		-webkit-text-stroke: 1.2px var(--hal-warm);
-		text-shadow: 0 0 14px rgba(184, 255, 90, 0.18);
+		-webkit-text-stroke: 1.2px var(--color-warm);
+		text-shadow: 0 0 14px color-mix(in srgb, var(--color-hot) 18%, transparent);
 	}
 	.dot {
-		color: var(--hal-hot);
+		color: var(--color-hot);
 		text-shadow:
-			0 0 6px rgba(184, 255, 90, 0.7),
-			0 0 16px rgba(130, 227, 75, 0.35);
+			0 0 6px color-mix(in srgb, var(--color-hot) 70%, transparent),
+			0 0 16px color-mix(in srgb, var(--color-warm) 35%, transparent);
 	}
 	.cursor {
 		display: inline-block;
@@ -148,10 +151,10 @@
 		margin-left: 8px;
 		width: 0.4em;
 		height: 0.78em;
-		background: var(--hal-warm);
+		background: var(--color-cool);
 		box-shadow:
-			0 0 6px rgba(184, 255, 90, 0.45),
-			0 0 12px rgba(130, 227, 75, 0.22);
+			0 0 6px color-mix(in srgb, var(--color-cool) 55%, transparent),
+			0 0 12px color-mix(in srgb, var(--color-warm) 22%, transparent);
 		animation: cursor-blink 1.1s steps(1, end) infinite;
 	}
 
@@ -162,7 +165,7 @@
 		justify-content: center;
 		gap: 6px;
 		padding-left: 16px;
-		border-left: 1px solid var(--hal-edge);
+		border-left: 1px solid var(--color-edge);
 		font-family: var(--font-mono);
 		font-size: 11px;
 		line-height: 1;
@@ -185,20 +188,20 @@
 		gap: 8px;
 	}
 	.meta .chip {
-		color: var(--hal-anthra);
-		background: var(--hal-hot);
+		color: var(--color-bg);
+		background: var(--color-hot);
 		padding: 3px 6px 2px;
 		font-weight: 400;
-		box-shadow: 0 0 8px rgba(184, 255, 90, 0.5);
+		box-shadow: 0 0 8px color-mix(in srgb, var(--color-hot) 50%, transparent);
 	}
 	.meta .sep {
 		display: inline-block;
 		width: 16px;
 		height: 1px;
-		background: var(--hal-edge);
+		background: var(--color-edge);
 	}
 	.meta .tag {
-		color: var(--hal-warm);
+		color: var(--color-warm);
 	}
 	.meta .bars {
 		display: inline-flex;
@@ -209,14 +212,14 @@
 		display: inline-block;
 		width: 5px;
 		height: 9px;
-		background: var(--hal-deep-dim);
+		background: var(--color-fg-mute);
 	}
 	.meta .bars .b.on {
-		background: var(--hal-hot);
-		box-shadow: 0 0 4px rgba(184, 255, 90, 0.65);
+		background: var(--color-hot);
+		box-shadow: 0 0 4px color-mix(in srgb, var(--color-hot) 65%, transparent);
 	}
 	.meta .lab {
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 	}
 
 	@keyframes cursor-blink {
@@ -233,6 +236,25 @@
 		.cursor {
 			animation: none;
 		}
+	}
+
+	/* Light mode — punch through. Solid color, no halos. */
+	:global([data-theme$='-light']) .badge:hover .word.fill {
+		text-shadow: none;
+	}
+	:global([data-theme$='-light']) .rail {
+		box-shadow: none;
+	}
+	:global([data-theme$='-light']) .boot .bk,
+	:global([data-theme$='-light']) .word.fill,
+	:global([data-theme$='-light']) .word.outline,
+	:global([data-theme$='-light']) .dot {
+		text-shadow: none;
+	}
+	:global([data-theme$='-light']) .boot .lamp,
+	:global([data-theme$='-light']) .meta .chip,
+	:global([data-theme$='-light']) .meta .bars .b.on {
+		box-shadow: none;
 	}
 
 	@container chrome (max-width: 1199px) {

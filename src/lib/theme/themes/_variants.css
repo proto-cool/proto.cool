@@ -1,0 +1,26 @@
+/* src/lib/theme/themes/_variants.css
+ * Shared variant defaults — what every dark / every light theme has in common.
+ * Imported BEFORE per-theme files so individual themes can still override.
+ *
+ * Dark: shell veils at 60% / 72% of the theme bg.
+ * Light: shell veils at 88% / 94% of the theme bg, plus the punch-through
+ * glow vocabulary (no halos on paper) — currently every light variant uses
+ * exactly these values.
+ */
+
+[data-theme$='-dark'] {
+	--shell-veil: color-mix(in srgb, var(--color-bg) 60%, transparent);
+	--shell-veil-strong: color-mix(in srgb, var(--color-bg) 72%, transparent);
+}
+
+[data-theme$='-light'] {
+	--shell-veil: color-mix(in srgb, var(--color-bg) 88%, transparent);
+	--shell-veil-strong: color-mix(in srgb, var(--color-bg) 94%, transparent);
+
+	--glow-text: none;
+	--glow-edge: 0 0 0 1px var(--color-hot);
+	--glow-panel: 0 1px 0 var(--color-edge);
+	--glow-pip: none;
+	--glow-focus: 0 0 0 2px var(--color-hot), 0 0 0 4px rgba(255, 255, 255, 0.95);
+	--glow-pulse: pulse-glow 2.4s var(--ease-in-out) infinite;
+}

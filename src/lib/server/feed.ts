@@ -34,7 +34,11 @@ export type FeedFilter = {
 	to?: string;   // ISO 8601 — exclusive upper bound (<)
 	cursor?: Cursor;
 	limit?: number;
-	order?: 'desc' | 'asc';
+	// 'desc' / 'asc' sort by created_at. 'popular' sorts by a weighted
+	// engagement score (likes + 2×reposts + replies) with created_at as a
+	// tiebreaker. Cursor pagination is only valid for time-based orders;
+	// 'popular' relies on offset pagination via getFeedPage.
+	order?: 'desc' | 'asc' | 'popular';
 	// Default false — replies (app.bsky.feed.post records with a non-null
 	// `reply` field) are excluded from the feed, matching bsky.app's default
 	// "Posts" tab. Set true for a "Posts & Replies"-style view.
@@ -57,7 +61,8 @@ export type BuiltQuery = {
 };
 
 export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
-	const order: 'asc' | 'desc' = filter.order === 'asc' ? 'asc' : 'desc';
+	const order: 'asc' | 'desc' | 'popular' =
+		filter.order === 'asc' ? 'asc' : filter.order === 'popular' ? 'popular' : 'desc';
 	const dirSql = order === 'asc' ? 'ASC' : 'DESC';
 	const cmpOp = order === 'asc' ? '>' : '<';
 
@@ -94,8 +99,18 @@ export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
 		params.push(filter.to);
 	}
 	if (filter.cursor) {
-		wheres.push(`(r.created_at, r.uri) ${cmpOp} (?, ?)`);
-		params.push(filter.cursor.ts, filter.cursor.uri);
+		if (order === 'popular') {
+			// Score is computed inline (no aliased column reference allowed in
+			// WHERE). The score expression must match the one used in ORDER BY
+			// below — keep them in sync if either changes.
+			wheres.push(
+				`((COALESCE(e.like_count, 0) + 2 * COALESCE(e.repost_count, 0) + COALESCE(e.reply_count, 0)), r.created_at, r.uri) < (?, ?, ?)`
+			);
+			params.push(filter.cursor.score ?? 0, filter.cursor.ts, filter.cursor.uri);
+		} else {
+			wheres.push(`(r.created_at, r.uri) ${cmpOp} (?, ?)`);
+			params.push(filter.cursor.ts, filter.cursor.uri);
+		}
 	}
 
 	if (!filter.includeReplies) {
@@ -152,7 +167,11 @@ export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
 		LEFT JOIN records s ON s.uri = r.subject_uri AND s.status = 'ok'
 		LEFT JOIN engagement se ON se.uri = s.uri
 		WHERE ${wheres.join(' AND ')}
-		ORDER BY r.created_at ${dirSql}, r.uri ${dirSql}
+		ORDER BY ${
+			order === 'popular'
+				? '(COALESCE(e.like_count, 0) + 2 * COALESCE(e.repost_count, 0) + COALESCE(e.reply_count, 0)) DESC, r.created_at DESC, r.uri DESC'
+				: `r.created_at ${dirSql}, r.uri ${dirSql}`
+		}
 		LIMIT ?
 	`;
 
@@ -263,7 +282,13 @@ export function getFeed(
 	let nextCursor: string | null = null;
 	if (items.length === requested && items.length > 0) {
 		const last = items.at(-1)!;
-		nextCursor = encodeCursor({ ts: last.createdAt, uri: last.uri });
+		if (filter.order === 'popular') {
+			const e = last.engagement;
+			const score = e ? e.likeCount + 2 * e.repostCount + e.replyCount : 0;
+			nextCursor = encodeCursor({ ts: last.createdAt, uri: last.uri, score });
+		} else {
+			nextCursor = encodeCursor({ ts: last.createdAt, uri: last.uri });
+		}
 	}
 
 	return { items, nextCursor };

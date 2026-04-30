@@ -18,9 +18,9 @@ describe('sections', () => {
 });
 
 describe('utilities', () => {
-	it('exposes themes (t) and help (?)', () => {
-		expect(utilities.map((u) => u.id)).toEqual(['themes', 'help']);
-		expect(utilities.map((u) => u.hotkey)).toEqual(['t', '?']);
+	it('exposes themes (t), mode (m), and help (?)', () => {
+		expect(utilities.map((u) => u.id)).toEqual(['themes', 'mode', 'help']);
+		expect(utilities.map((u) => u.hotkey)).toEqual(['t', 'm', '?']);
 	});
 });
 

@@ -34,7 +34,7 @@
 	.cat {
 		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 		letter-spacing: 0.12em;
 		margin: 0 0 8px;
 		text-transform: uppercase;
@@ -53,10 +53,10 @@
 		gap: 12px;
 	}
 	.hk {
-		color: var(--hal-hot);
-		text-shadow: 0 0 8px rgba(184, 255, 90, 0.5);
+		color: var(--color-hot);
+		text-shadow: 0 0 8px color-mix(in srgb, var(--color-hot) 50%, transparent);
 	}
 	.lbl {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 </style>

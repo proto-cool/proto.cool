@@ -3,11 +3,16 @@ import { z } from 'zod';
 export type Cursor = {
 	ts: string;
 	uri: string;
+	// Populated only when the feed is sorted by popularity. Used as the
+	// primary tuple component in the WHERE/ORDER BY of cursor pagination
+	// for that sort. Time-based sorts ignore it.
+	score?: number;
 };
 
 const CursorSchema = z.object({
 	ts: z.string().min(1),
-	uri: z.string().min(1)
+	uri: z.string().min(1),
+	score: z.number().optional()
 });
 
 function toBase64Url(s: string): string {

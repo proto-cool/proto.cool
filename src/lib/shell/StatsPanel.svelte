@@ -11,15 +11,16 @@
 	// changes; tied to release rather than calendar.
 	const VOL = '02';
 	const ISSUE = '04';
+
+	// 5-shape greeble; first 3 are filled hot squares.
+	const shapes = Array.from({ length: 5 }, (_, i) => i < 3);
 </script>
 
 <footer class="stats-panel" aria-hidden="true">
 	<span class="shapes shapes-l">
-		<span class="sq fill"></span>
-		<span class="sq fill"></span>
-		<span class="sq fill"></span>
-		<span class="sq"></span>
-		<span class="sq"></span>
+		{#each shapes as fill, i (i)}
+			<span class="sq" class:fill></span>
+		{/each}
 	</span>
 
 	<span class="line">
@@ -66,11 +67,11 @@
 		font-size: 10px;
 		letter-spacing: 0.2em;
 		text-transform: uppercase;
-		color: var(--hal-dim);
-		background: rgba(6, 9, 6, 0.72);
+		color: var(--color-fg-dim);
+		background: var(--shell-veil-strong);
 		backdrop-filter: blur(8px);
 		-webkit-backdrop-filter: blur(8px);
-		border-top: 1px solid var(--hal-edge);
+		border-top: 1px solid var(--color-edge);
 		padding: 5px 18px;
 		min-height: 24px;
 		pointer-events: none;
@@ -88,12 +89,12 @@
 		background: linear-gradient(
 			90deg,
 			transparent 0,
-			rgba(184, 255, 90, 0.35) 20%,
-			rgba(184, 255, 90, 0.6) 50%,
-			rgba(184, 255, 90, 0.35) 80%,
+			color-mix(in srgb, var(--color-hot) 35%, transparent) 20%,
+			color-mix(in srgb, var(--color-hot) 60%, transparent) 50%,
+			color-mix(in srgb, var(--color-hot) 35%, transparent) 80%,
 			transparent 100%
 		);
-		box-shadow: 0 0 6px rgba(184, 255, 90, 0.35);
+		box-shadow: 0 0 6px color-mix(in srgb, var(--color-hot) 35%, transparent);
 		pointer-events: none;
 	}
 
@@ -107,12 +108,12 @@
 		width: 7px;
 		height: 7px;
 		background: transparent;
-		border: 1px solid var(--hal-edge);
+		border: 1px solid var(--color-edge);
 	}
 	.sq.fill {
-		background: var(--hal-hot);
-		border-color: var(--hal-hot);
-		box-shadow: 0 0 4px rgba(184, 255, 90, 0.6);
+		background: var(--color-hot);
+		border-color: var(--color-hot);
+		box-shadow: 0 0 4px color-mix(in srgb, var(--color-hot) 60%, transparent);
 	}
 
 	.line {
@@ -133,7 +134,7 @@
 	}
 	.seg + .seg::before {
 		content: '◆';
-		color: var(--hal-deep-dim);
+		color: var(--color-fg-mute);
 		font-size: 7px;
 		line-height: 1;
 		margin-right: 14px;
@@ -147,15 +148,15 @@
 		margin-left: -13px;
 	}
 	.k {
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 		text-transform: none;
 		letter-spacing: 0.16em;
 	}
 	.v {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 	.v.warm {
-		color: var(--hal-cool);
+		color: var(--color-cool);
 	}
 	.v.build-hex {
 		font-family: var(--font-display);
@@ -174,7 +175,7 @@
 		white-space: nowrap;
 		gap: 0;
 		margin-left: 4px;
-		color: var(--hal-bone);
+		color: var(--color-fg);
 		letter-spacing: 0.16em;
 	}
 	.dt-block .bracket {
@@ -183,18 +184,18 @@
 		font-weight: 400;
 		font-size: 13px;
 		line-height: 1;
-		color: var(--hal-warm);
+		color: var(--color-warm);
 		margin: 0 6px;
 		transform: translateY(-0.5px);
 	}
 	.dt-block .dt-doy {
-		color: var(--hal-cool);
+		color: var(--color-cool);
 	}
 	.dt-block .dt-mid {
-		color: var(--hal-deep-dim);
+		color: var(--color-fg-mute);
 	}
 	.dt-block .colon {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 
 	.ident {
@@ -204,13 +205,13 @@
 		white-space: nowrap;
 	}
 	.tri {
-		color: var(--hal-hot);
+		color: var(--color-hot);
 		font-size: 9px;
 		line-height: 1;
-		text-shadow: 0 0 4px rgba(184, 255, 90, 0.6);
+		text-shadow: 0 0 4px color-mix(in srgb, var(--color-hot) 60%, transparent);
 	}
 	.who {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 
 	@container chrome (max-width: 1023px) {

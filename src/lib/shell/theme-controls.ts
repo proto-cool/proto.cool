@@ -3,6 +3,17 @@ import { themes as registryThemes, DEFAULT_THEME } from '$lib/theme';
 
 export const themeDropdownOpen = writable(false);
 
+/**
+ * Signal store: increments to request a theme-mode cycle.
+ * ThemeControls.svelte owns the actual cycle logic (it has the live mode
+ * state + system-pref MediaQueryList); commands.ts pokes this store from
+ * the keyboard layer to trigger it.
+ */
+export const cycleModeRequest = writable(0);
+export function requestCycleMode() {
+	cycleModeRequest.update((n) => n + 1);
+}
+
 export const LAST_FAMILY_KEY = 'proto-last-family';
 
 type ResolveArgs = {

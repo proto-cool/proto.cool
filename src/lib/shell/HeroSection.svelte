@@ -48,6 +48,8 @@
 			after: line1.slice(i + emphasis.length)
 		};
 	});
+
+	const AVATAR_CORNERS = ['tl', 'tr', 'bl', 'br'] as const;
 </script>
 
 <section
@@ -60,7 +62,7 @@
 
 	{#if mark}
 		<span class="bg-mark" aria-hidden="true"
-			><span class="bg-num">{mark}</span><span class="bg-no">N°</span></span
+			><span class="bg-no">N°</span><span class="bg-num">{mark}</span></span
 		>
 	{/if}
 
@@ -92,8 +94,6 @@
 		<span class="hf-bar"></span>
 		<span class="hf-label">// {sectionName}{#if mark} · {mark}{/if}</span>
 		<span class="hf-rule"></span>
-		<span class="hf-tick hf-tick-1"></span>
-		<span class="hf-tick hf-tick-2"></span>
 		<span class="hf-block"></span>
 	</div>
 
@@ -106,21 +106,25 @@
 						<span class="av-rec-box">✓</span>
 						OK
 					</span>
-					<span class="av-cb av-cb-tl" aria-hidden="true"></span>
-					<span class="av-cb av-cb-tr" aria-hidden="true"></span>
-					<span class="av-cb av-cb-bl" aria-hidden="true"></span>
-					<span class="av-cb av-cb-br" aria-hidden="true"></span>
+					{#each AVATAR_CORNERS as pos (pos)}
+						<span class="av-cb" data-pos={pos} aria-hidden="true"></span>
+					{/each}
 					<div class="av-frame">
 						<img src={avatar} alt={avatarAlt} />
 						<span class="av-scan" aria-hidden="true"></span>
 						<span class="av-grid" aria-hidden="true"></span>
 					</div>
+					<figcaption class="av-data" aria-hidden="true">
+						<dl>
+							<dt>// subject</dt>
+							<dd>{avatarLabel}</dd>
+							<dt>// id</dt>
+							<dd class="warm">{avatarId}</dd>
+							<dt>// status</dt>
+							<dd>operational</dd>
+						</dl>
+					</figcaption>
 				</figure>
-				<ul class="av-data" aria-hidden="true">
-					<li><span class="av-dl">// subject</span><span class="av-dv">{avatarLabel}</span></li>
-					<li><span class="av-dl">// id</span><span class="av-dv warm">{avatarId}</span></li>
-					<li><span class="av-dl">// status</span><span class="av-dv">operational</span></li>
-				</ul>
 			{:else}
 				<InstrumentCluster />
 			{/if}
@@ -143,6 +147,35 @@
 		height: 480px;
 		padding: 56px 40px 56px;
 	}
+	/* Gradient hairline along the bottom of the hero — mirrors the
+	   .nav-panel border + ::before gradient at the bottom of the header.
+	   Layered: solid var(--color-edge) underneath (so the line stays
+	   visible edge-to-edge), phosphor-hot gradient on top (peaks in the
+	   middle, fades to transparent at the edges). Alpha is baked into
+	   the gradient color-mix percentages instead of using element
+	   opacity, so the solid edge backing reads at full strength. Spans
+	   the full chrome width via 100cqw, like the halo. */
+	.intro::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		width: 100cqw;
+		transform: translateX(-50%);
+		bottom: 0;
+		height: 1px;
+		background:
+			linear-gradient(
+				90deg,
+				transparent 0,
+				color-mix(in srgb, var(--color-hot) 10%, transparent) 25%,
+				color-mix(in srgb, var(--color-hot) 18%, transparent) 50%,
+				color-mix(in srgb, var(--color-hot) 10%, transparent) 75%,
+				transparent 100%
+			),
+			var(--color-edge);
+		pointer-events: none;
+		z-index: 1;
+	}
 
 	.intro-meta {
 		grid-column: 1;
@@ -156,23 +189,23 @@
 		line-height: 1;
 		letter-spacing: 0.18em;
 		text-transform: uppercase;
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 	}
 	.meta-tick {
 		display: inline-block;
 		width: 18px;
 		height: 1px;
-		background: var(--hal-warm);
-		box-shadow: 0 0 4px rgba(184, 255, 90, 0.4);
+		background: var(--color-warm);
+		box-shadow: 0 0 4px color-mix(in srgb, var(--color-hot) 40%, transparent);
 	}
 	.meta-tag {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 	.meta-tag.warm {
-		color: var(--hal-warm);
+		color: var(--color-warm);
 	}
 	.meta-div {
-		color: var(--hal-deep-dim);
+		color: var(--color-fg-mute);
 	}
 
 	.intro-lockup {
@@ -185,7 +218,7 @@
 		font-style: normal;
 		line-height: 1.02;
 		letter-spacing: -0.035em;
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 	.lk-line {
 		display: block;
@@ -194,23 +227,23 @@
 	}
 	.lk-l1 {
 		text-shadow:
-			0 0 1px rgba(226, 245, 207, 0.55),
-			0 0 18px rgba(184, 255, 90, 0.22);
+			0 0 1px color-mix(in srgb, var(--color-fg) 55%, transparent),
+			0 0 18px color-mix(in srgb, var(--color-hot) 22%, transparent);
 	}
 	.lk-l1 em {
 		font-style: italic;
 	}
 	.lk-l2 {
 		color: transparent;
-		-webkit-text-stroke: 1.2px var(--hal-warm);
-		text-shadow: 0 0 18px rgba(184, 255, 90, 0.18);
+		-webkit-text-stroke: 1.2px var(--color-cool);
+		text-shadow: 0 0 18px color-mix(in srgb, var(--color-cool) 22%, transparent);
 	}
 	.lk-dot {
-		color: var(--hal-hot);
+		color: var(--color-hot);
 		-webkit-text-stroke: 0;
 		text-shadow:
-			0 0 8px rgba(184, 255, 90, 0.7),
-			0 0 18px rgba(130, 227, 75, 0.35);
+			0 0 8px color-mix(in srgb, var(--color-hot) 70%, transparent),
+			0 0 18px color-mix(in srgb, var(--color-warm) 35%, transparent);
 	}
 
 	.intro-deck {
@@ -222,15 +255,39 @@
 		font-weight: 500;
 		font-size: var(--text-sm);
 		line-height: 1.55;
-		color: var(--hal-bone);
+		color: var(--color-fg);
 		text-shadow:
-			0 0 6px rgba(6, 9, 6, 0.85),
-			0 0 14px rgba(6, 9, 6, 0.6);
+			0 0 6px color-mix(in srgb, var(--color-bg) 85%, transparent),
+			0 0 14px color-mix(in srgb, var(--color-bg) 60%, transparent);
 	}
 	.intro-deck :global(b),
 	.intro-deck :global(strong) {
-		color: var(--hal-ember);
+		color: var(--color-ember);
 		font-weight: 700;
+	}
+
+	/* Light mode — punch through, no halos. Drop every text-shadow on the
+	   hero copy so dark text sits cleanly on paper instead of smudging. */
+	:global([data-theme$='-light']) .lk-l1,
+	:global([data-theme$='-light']) .lk-l2,
+	:global([data-theme$='-light']) .lk-dot,
+	:global([data-theme$='-light']) .intro-deck {
+		text-shadow: none;
+	}
+	:global([data-theme$='-light']) .meta-tick {
+		box-shadow: none;
+	}
+	/* Big background numeral — restore presence on paper. The light
+	   alphas above vanish on a warm sage bg; deeper cool strokes
+	   stamp through. */
+	:global([data-theme$='-light']) .intro .bg-mark {
+		-webkit-text-stroke: 1.2px color-mix(in srgb, var(--color-cool) 65%, transparent);
+	}
+	:global([data-theme$='-light']) .bg-num {
+		background-image: linear-gradient(color-mix(in srgb, var(--color-cool) 14%, transparent), color-mix(in srgb, var(--color-cool) 14%, transparent));
+	}
+	:global([data-theme$='-light']) .bg-no {
+		color: color-mix(in srgb, var(--color-cool) 65%, transparent);
 	}
 
 	.intro-aside {
@@ -258,8 +315,8 @@
 	}
 	.av-frame {
 		position: relative;
-		border: 1px solid var(--hal-edge);
-		background: var(--hal-anthra);
+		border: 1px solid var(--color-edge);
+		background: var(--color-bg);
 		overflow: hidden;
 	}
 	.av-frame img {
@@ -267,9 +324,8 @@
 		width: 100%;
 		aspect-ratio: 1;
 		object-fit: cover;
-		/* phosphor tint */
-		filter: grayscale(70%) brightness(0.82) contrast(1.12) sepia(45%) hue-rotate(58deg)
-			saturate(1.4);
+		/* neutral grayscale — theme tint comes from the grid overlay above */
+		filter: grayscale(100%) brightness(0.85) contrast(1.12);
 	}
 	/* CRT scanlines */
 	.av-scan {
@@ -290,8 +346,8 @@
 		position: absolute;
 		inset: 0;
 		background-image:
-			linear-gradient(to right, rgba(184, 255, 90, 0.05) 1px, transparent 1px),
-			linear-gradient(to bottom, rgba(184, 255, 90, 0.05) 1px, transparent 1px);
+			linear-gradient(to right, color-mix(in srgb, var(--color-hot) 5%, transparent) 1px, transparent 1px),
+			linear-gradient(to bottom, color-mix(in srgb, var(--color-hot) 5%, transparent) 1px, transparent 1px);
 		background-size: 24px 24px;
 		mix-blend-mode: screen;
 		pointer-events: none;
@@ -306,12 +362,12 @@
 		align-items: center;
 		gap: 5px;
 		padding: 3px 6px;
-		background: rgba(6, 9, 6, 0.78);
-		border: 1px solid var(--hal-warm);
+		background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+		border: 1px solid var(--color-warm);
 		font-family: var(--font-mono);
 		font-size: 9px;
 		letter-spacing: 0.22em;
-		color: var(--hal-warm);
+		color: var(--color-warm);
 	}
 	.av-rec-box {
 		display: inline-flex;
@@ -319,80 +375,82 @@
 		justify-content: center;
 		width: 9px;
 		height: 9px;
-		border: 1px solid var(--hal-warm);
-		background: rgba(184, 255, 90, 0.16);
-		color: var(--hal-warm);
+		border: 1px solid var(--color-warm);
+		background: color-mix(in srgb, var(--color-hot) 16%, transparent);
+		color: var(--color-warm);
 		font-size: 8px;
 		line-height: 1;
 		letter-spacing: 0;
 	}
-	/* corner brackets */
+	/* corner brackets — one element per corner, anchored via [data-pos] */
 	.av-cb {
 		position: absolute;
 		width: 14px;
 		height: 14px;
-		border: 0 solid var(--hal-hot);
+		border: 0 solid var(--color-hot);
 		pointer-events: none;
 		z-index: 2;
 	}
-	.av-cb-tl {
+	.av-cb[data-pos='tl'] {
 		top: -1px;
 		left: -1px;
 		border-top-width: 2px;
 		border-left-width: 2px;
 	}
-	.av-cb-tr {
+	.av-cb[data-pos='tr'] {
 		top: -1px;
 		right: -1px;
 		border-top-width: 2px;
 		border-right-width: 2px;
 	}
-	.av-cb-bl {
+	.av-cb[data-pos='bl'] {
 		bottom: -1px;
 		left: -1px;
 		border-bottom-width: 2px;
 		border-left-width: 2px;
 	}
-	.av-cb-br {
+	.av-cb[data-pos='br'] {
 		bottom: -1px;
 		right: -1px;
 		border-bottom-width: 2px;
 		border-right-width: 2px;
 	}
-	/* datasheet — multi-row mono readout below the photo */
+	/* datasheet — multi-row mono readout below the photo. Definition list
+	   so dt/dd carry the name/value semantics for free. */
 	.av-data {
-		list-style: none;
 		margin: 0;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		border: 1px solid var(--hal-edge);
+		border: 1px solid var(--color-edge);
 		border-top: 0;
-		background: linear-gradient(180deg, rgba(184, 255, 90, 0.04), rgba(0, 0, 0, 0));
+		background: linear-gradient(180deg, color-mix(in srgb, var(--color-hot) 4%, transparent), rgba(0, 0, 0, 0));
 	}
-	.av-data li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 12px;
-		padding: 5px 10px;
-		border-bottom: 1px dotted var(--hal-edge);
+	.av-data dl {
+		margin: 0;
+		display: grid;
+		grid-template-columns: auto 1fr;
 		font-family: var(--font-mono);
 		font-size: 10px;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 	}
-	.av-data li:last-child {
+	.av-data dt,
+	.av-data dd {
+		padding: 5px 10px;
+		border-bottom: 1px dotted var(--color-edge);
+	}
+	.av-data dt {
+		color: var(--color-fg-dim);
+	}
+	.av-data dd {
+		margin: 0;
+		text-align: right;
+		color: var(--color-fg);
+	}
+	.av-data dd.warm {
+		color: var(--color-warm);
+	}
+	.av-data dt:last-of-type,
+	.av-data dd:last-of-type {
 		border-bottom: 0;
-	}
-	.av-dl {
-		color: var(--hal-dim);
-	}
-	.av-dv {
-		color: var(--hal-bone);
-	}
-	.av-dv.warm {
-		color: var(--hal-warm);
 	}
 
 	/* vertical mono rail running up the right edge of the photo */
@@ -406,7 +464,7 @@
 		font-size: 9px;
 		letter-spacing: 0.32em;
 		text-transform: uppercase;
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 		white-space: nowrap;
 		pointer-events: none;
 	}
@@ -466,7 +524,7 @@
 		z-index: 3;
 	}
 	.intro.variant-large .av-data {
-		border: 1px solid var(--hal-edge);
+		border: 1px solid var(--color-edge);
 	}
 
 	/* huge outline numeral — anchored top-left, peeks above the lockup.
@@ -477,30 +535,57 @@
 		left: calc(-32px - max(0px, (100cqw - 1200px) / 2));
 		display: inline-flex;
 		align-items: flex-start;
-		gap: 14px;
+		gap: 8px;
 		font-family: var(--font-display);
 		font-weight: 800;
 		font-style: italic;
 		line-height: 0.78;
 		letter-spacing: -0.06em;
 		color: transparent;
-		-webkit-text-stroke: 1px rgba(184, 255, 90, 0.08);
+		-webkit-text-stroke: 1.2px color-mix(in srgb, var(--color-cool) 32%, transparent);
 		pointer-events: none;
 		z-index: 0;
 		white-space: nowrap;
 	}
 	.bg-num {
 		font-size: clamp(160px, 20vw, 320px);
+		/* shift only the numeral up + left, leaving the N° label anchored */
+		margin-top: -56px;
+		margin-left: -68px;
+		/* Faint solid phosphor fill, clipped to the glyph shape; the
+		   outline stroke (from .bg-mark) sits above.
+
+		   inline-block with line-height:1 + slight padding ensures the
+		   background area covers the full glyph extent — the italic
+		   slant overhangs the inline box on the right and the display
+		   font's ascenders/descenders overhang vertically when the parent
+		   line-height is 0.78. */
+		display: inline-block;
+		line-height: 1;
+		padding: 0.05em 0.22em 0.05em 0.06em;
+		background-image: linear-gradient(
+			color-mix(in srgb, var(--color-cool) 7%, transparent),
+			color-mix(in srgb, var(--color-cool) 7%, transparent)
+		);
+		background-repeat: no-repeat;
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
+	/* N° set in the pixel font, sitting to the left of the numeral.
+	   Plain text — no chip, no pip, no border. Reads as a small terminal
+	   label flanking the big italic numeral. */
 	.bg-no {
 		font-family: var(--font-mono);
-		font-size: 16px;
-		letter-spacing: 0.1em;
+		font-weight: 300;
 		font-style: normal;
-		line-height: 1.2;
-		color: rgba(184, 255, 90, 0.16);
+		font-size: clamp(28px, 3.2vw, 52px);
+		line-height: 1;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: color-mix(in srgb, var(--color-cool) 32%, transparent);
 		-webkit-text-stroke: 0;
-		margin-top: 14px;
+		-webkit-text-fill-color: currentColor;
 	}
 
 	/* ============================================================
@@ -523,8 +608,8 @@
 		flex: 0 0 auto;
 		width: 96px;
 		height: 4px;
-		background: var(--hal-warm);
-		box-shadow: 0 0 10px rgba(184, 255, 90, 0.5);
+		background: var(--color-warm);
+		box-shadow: 0 0 10px color-mix(in srgb, var(--color-hot) 50%, transparent);
 	}
 	.hf-label {
 		flex: 0 0 auto;
@@ -532,48 +617,51 @@
 		font-size: 9px;
 		letter-spacing: 0.32em;
 		text-transform: uppercase;
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 		line-height: 1;
 		white-space: nowrap;
 	}
 	.hf-rule {
+		position: relative;
 		flex: 1 1 auto;
 		min-width: 0;
 		height: 1px;
 		background: linear-gradient(
 			90deg,
-			rgba(184, 255, 90, 0.42) 0,
-			rgba(184, 255, 90, 0.28) 18%,
+			color-mix(in srgb, var(--color-hot) 42%, transparent) 0,
+			color-mix(in srgb, var(--color-hot) 28%, transparent) 18%,
 			transparent 35%,
 			transparent 41%,
-			rgba(184, 255, 90, 0.18) 44%,
-			rgba(184, 255, 90, 0.34) 90%,
-			rgba(184, 255, 90, 0.55) 100%
+			color-mix(in srgb, var(--color-hot) 18%, transparent) 44%,
+			color-mix(in srgb, var(--color-hot) 34%, transparent) 90%,
+			color-mix(in srgb, var(--color-hot) 55%, transparent) 100%
 		);
 	}
-	.hf-tick {
+	.hf-rule::before,
+	.hf-rule::after {
+		content: '';
 		position: absolute;
-		bottom: 50%;
+		bottom: 0;
 		width: 1px;
-		background: rgba(184, 255, 90, 0.5);
+		background: color-mix(in srgb, var(--color-hot) 50%, transparent);
 	}
-	.hf-tick-1 {
-		left: 48%;
+	.hf-rule::before {
+		left: 45%;
 		height: 8px;
 	}
-	.hf-tick-2 {
-		left: 64%;
+	.hf-rule::after {
+		left: 60%;
 		height: 14px;
-		background: rgba(184, 255, 90, 0.65);
-		box-shadow: 0 0 4px rgba(184, 255, 90, 0.35);
+		background: color-mix(in srgb, var(--color-hot) 65%, transparent);
+		box-shadow: 0 0 4px color-mix(in srgb, var(--color-hot) 35%, transparent);
 	}
 	.hf-block {
 		flex: 0 0 auto;
 		width: 16px;
 		height: 9px;
-		background: var(--hal-warm);
+		background: var(--color-warm);
 		opacity: 0.9;
-		box-shadow: 0 0 6px rgba(184, 255, 90, 0.45);
+		box-shadow: 0 0 6px color-mix(in srgb, var(--color-hot) 45%, transparent);
 	}
 
 	/* ============================================================
@@ -669,8 +757,11 @@
 		}
 
 		/* halo-foot collapses to bar + rule + block at narrow widths */
-		.halo-foot .hf-label,
-		.halo-foot .hf-tick {
+		.halo-foot .hf-label {
+			display: none;
+		}
+		.halo-foot .hf-rule::before,
+		.halo-foot .hf-rule::after {
 			display: none;
 		}
 	}

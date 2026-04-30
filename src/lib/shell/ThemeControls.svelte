@@ -2,11 +2,29 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { Moon, Sun, Monitor, CaretDown } from 'phosphor-svelte';
 	import { themes, setTheme, setMode, resolveTheme, resolveMode, type ThemeId } from '$lib/theme';
-	import { themeDropdownOpen, resolveThemeFor, LAST_FAMILY_KEY } from './theme-controls';
+	import {
+		themeDropdownOpen,
+		cycleModeRequest,
+		resolveThemeFor,
+		LAST_FAMILY_KEY
+	} from './theme-controls';
 	import type { Mode } from '$lib/theme';
 
 	let open = $state(false);
 	$effect(() => themeDropdownOpen.subscribe((v) => (open = v)));
+
+	// External `m` hotkey pokes the request store; first emission is the
+	// store's initial value, so skip it.
+	let cycleSubscribed = false;
+	$effect(() =>
+		cycleModeRequest.subscribe(() => {
+			if (!cycleSubscribed) {
+				cycleSubscribed = true;
+				return;
+			}
+			applyMode(cycleMode());
+		})
+	);
 
 	let rootEl: HTMLDivElement;
 	let themeButtonEl: HTMLButtonElement;
@@ -188,7 +206,7 @@
 	<!-- Mode cycle button: dark → light → system → dark -->
 	<button
 		type="button"
-		class="ctrl mode"
+		class="hud-btn ctrl mode"
 		title={modeAriaLabel}
 		aria-label={modeAriaLabel}
 		bind:this={modeButtonEl}
@@ -203,12 +221,13 @@
 				<Monitor size={14} weight="regular" />
 			{/if}
 		</span>
+		<span class="hud-pip" aria-hidden="true">[m]</span>
 	</button>
 
 	<!-- Theme family dropdown trigger -->
 	<button
 		type="button"
-		class="ctrl theme"
+		class="hud-btn ctrl theme"
 		class:live={open}
 		aria-haspopup="listbox"
 		aria-expanded={open}
@@ -223,7 +242,7 @@
 			<i style="background:{currentEntry.palette.cool}"></i>
 		</span>
 		<span class="caret" aria-hidden="true"><CaretDown size={12} weight="bold" /></span>
-		<span class="pip" aria-hidden="true">[t]</span>
+		<span class="hud-pip" aria-hidden="true">[t]</span>
 	</button>
 
 	{#if open}
@@ -254,6 +273,7 @@
 							<i style="background:{f.palette.warm}"></i>
 							<i style="background:{f.palette.cool}"></i>
 						</span>
+						<span class="row-name">{f.familyName}</span>
 					</button>
 				</li>
 			{/each}
@@ -270,41 +290,18 @@
 	}
 
 	.ctrl {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
 		gap: 6px;
 		padding: 0 10px;
-		min-height: 30px;
-		box-sizing: border-box;
-		font: inherit;
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--hal-dim);
-		background: rgba(0, 0, 0, 0.25);
-		border: 1px solid var(--hal-edge);
-		cursor: pointer;
 	}
 	.ctrl + .ctrl {
-		border-left: none; /* shared edge with sibling — single rule between buttons */
+		margin-left: -1px; /* collapse adjacent borders into a single shared rule */
 	}
-	.ctrl:hover {
-		color: var(--hal-bone);
-	}
-	.ctrl:focus-visible {
-		outline: 2px solid var(--hal-hot);
-		outline-offset: 2px;
-		z-index: 1;
-	}
+	/* Lift hover/active/focus/live above sibling so the border highlight isn't clipped. */
+	.ctrl:hover,
+	.ctrl:focus-visible,
+	.ctrl:active,
 	.ctrl.live {
-		color: var(--hal-bone);
-		border-color: var(--hal-hot);
-		background: linear-gradient(180deg, rgba(184, 255, 90, 0.18), rgba(184, 255, 90, 0.04));
-		box-shadow:
-			inset 0 0 16px rgba(184, 255, 90, 0.18),
-			0 0 8px rgba(184, 255, 90, 0.18);
+		z-index: 1;
 	}
 
 	.icon {
@@ -330,32 +327,6 @@
 		opacity: 0.7;
 	}
 
-	/* pip greeble — floating tag, no tether, sits above-right of the button */
-	.pip {
-		position: absolute;
-		top: -12px;
-		right: 0;
-		padding: 0;
-		background: none;
-		border: none;
-		font-family: var(--font-mono);
-		font-size: 10px;
-		line-height: 1;
-		letter-spacing: 0.06em;
-		color: var(--hal-deep-dim);
-		transition: color 220ms ease;
-	}
-	.ctrl:hover .pip,
-	.ctrl:focus-visible .pip,
-	.ctrl.live .pip {
-		color: var(--hal-warm);
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.pip {
-			transition: none;
-		}
-	}
-
 	/* dropdown */
 	.dropdown {
 		position: absolute;
@@ -367,34 +338,94 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
-		background: rgba(6, 9, 6, 0.94);
-		border: 1px solid var(--hal-edge);
+		background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+		border: 1px solid var(--color-edge);
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 		z-index: 4;
 		-webkit-backdrop-filter: blur(6px) saturate(115%);
 		backdrop-filter: blur(6px) saturate(115%);
+		transform-origin: top right;
+		animation: dropdown-in 140ms cubic-bezier(0.2, 0, 0, 1);
+	}
+	@keyframes dropdown-in {
+		from {
+			opacity: 0;
+			transform: translateY(-4px) scaleY(0.92);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scaleY(1);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.dropdown {
+			animation: none;
+		}
 	}
 	.row {
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
+		gap: 10px;
 		padding: 6px 8px;
 		width: 100%;
 		font: inherit;
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-fg-dim);
 		cursor: pointer;
 		background: transparent;
 		border: 1px solid transparent;
+		white-space: nowrap;
+		transition:
+			color 120ms ease,
+			border-color 120ms ease,
+			background-color 120ms ease,
+			box-shadow 120ms ease,
+			transform 80ms ease;
+	}
+	.row-name {
+		flex: 1 1 auto;
+		text-align: left;
 	}
 	.row:hover {
-		border-color: var(--hal-edge);
+		color: var(--color-fg);
+		border-color: var(--color-edge);
+	}
+	.row:active {
+		transform: translateY(1px);
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
 	}
 	.row:focus-visible {
-		outline: 2px solid var(--hal-hot);
+		outline: 2px solid var(--color-hot);
 		outline-offset: 2px;
 	}
 	.row.live {
-		border-color: var(--hal-hot);
-		background: linear-gradient(180deg, rgba(184, 255, 90, 0.18), rgba(184, 255, 90, 0.04));
-		box-shadow: inset 0 0 12px rgba(184, 255, 90, 0.16);
+		color: var(--color-fg);
+		border-color: var(--color-hot);
+		background: linear-gradient(180deg, color-mix(in srgb, var(--color-hot) 18%, transparent), color-mix(in srgb, var(--color-hot) 4%, transparent));
+		box-shadow: inset 0 0 12px color-mix(in srgb, var(--color-hot) 16%, transparent);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.row {
+			transition: none;
+		}
+		.row:active {
+			transform: none;
+		}
+	}
+
+	/* Light mode — punch through. No dark veils, no lime halos. */
+	:global([data-theme$='-light']) .swatch i {
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+	}
+	:global([data-theme$='-light']) .dropdown {
+		background: var(--color-bg);
+		box-shadow: 0 8px 24px color-mix(in srgb, var(--color-fg) 18%, transparent);
+	}
+	:global([data-theme$='-light']) .row.live {
+		background: var(--color-hot);
+		box-shadow: none;
 	}
 </style>

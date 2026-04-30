@@ -16,31 +16,36 @@
 			0deg,
 			transparent 0,
 			transparent 2px,
-			var(--color-accent) 2px,
-			var(--color-accent) 3px
+			var(--color-hot) 2px,
+			var(--color-hot) 3px
 		);
 		opacity: var(--scanline-opacity, 0.012);
 	}
 
 	/* ------------------------------------------------------------------
-	   Bayer dither tiles. Use as background-image; tiles at 4px so the
-	   pattern reads as 1-bit dither at viewing distance. Theme files may
-	   override the --dither-* custom properties to recolor.
+	   Bayer dither tiles. Single SVG mask per density (lives in tokens.css);
+	   theme color comes from --color-hot via background-color. Tiles at 4px
+	   so the pattern reads as 1-bit dither at viewing distance.
 	   ------------------------------------------------------------------ */
 	.dither-sparse,
 	.dither-medium,
 	.dither-dense {
-		background-repeat: repeat;
-		background-size: 4px 4px;
-		image-rendering: pixelated;
+		background-color: var(--color-hot);
+		-webkit-mask-repeat: repeat;
+		mask-repeat: repeat;
+		-webkit-mask-size: 4px 4px;
+		mask-size: 4px 4px;
 	}
 	.dither-sparse {
-		background-image: var(--dither-sparse);
+		-webkit-mask-image: var(--dither-mask-sparse);
+		mask-image: var(--dither-mask-sparse);
 	}
 	.dither-medium {
-		background-image: var(--dither-medium);
+		-webkit-mask-image: var(--dither-mask-medium);
+		mask-image: var(--dither-mask-medium);
 	}
 	.dither-dense {
-		background-image: var(--dither-dense);
+		-webkit-mask-image: var(--dither-mask-dense);
+		mask-image: var(--dither-mask-dense);
 	}
 }

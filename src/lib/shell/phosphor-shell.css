@@ -3,6 +3,101 @@
  */
 
 @layer shell {
+	/* ------------------------------------------------------------------
+	   .hud-btn — shared button skin for the nav-panel cluster
+	   (ChannelPads .ch, ThemeControls .ctrl). Mono pill with edge
+	   border, dark veil, hot-glow active state. Light theme strips
+	   the veil and inverts the active state to a solid hot fill.
+	   ------------------------------------------------------------------ */
+	.hud-btn {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		min-height: 30px;
+		box-sizing: border-box;
+		font: inherit;
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-fg-dim);
+		background: rgba(0, 0, 0, 0.25);
+		border: 1px solid var(--color-edge);
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			color 120ms ease,
+			border-color 120ms ease,
+			background-color 120ms ease,
+			box-shadow 120ms ease,
+			transform 80ms ease;
+	}
+	.hud-btn:hover {
+		color: var(--color-fg);
+		border-color: var(--color-warm);
+	}
+	.hud-btn:active {
+		transform: translateY(1px);
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.45);
+	}
+	.hud-btn:focus-visible {
+		outline: 2px solid var(--color-hot);
+		outline-offset: 2px;
+	}
+	.hud-btn.live {
+		color: var(--color-fg);
+		border-color: var(--color-hot);
+		background: linear-gradient(
+			180deg,
+			color-mix(in srgb, var(--color-hot) 18%, transparent),
+			color-mix(in srgb, var(--color-hot) 4%, transparent)
+		);
+		box-shadow:
+			inset 0 0 16px color-mix(in srgb, var(--color-hot) 18%, transparent),
+			0 0 8px color-mix(in srgb, var(--color-hot) 18%, transparent);
+	}
+	.hud-btn.live:active {
+		transform: none;
+	}
+
+	/* Floating hotkey label that hangs above the button's top-right corner. */
+	.hud-pip {
+		position: absolute;
+		top: -12px;
+		right: 0;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		line-height: 1;
+		letter-spacing: 0.06em;
+		color: var(--color-fg-mute);
+		transition: color 220ms ease;
+	}
+	.hud-btn:hover .hud-pip,
+	.hud-btn:focus-visible .hud-pip,
+	.hud-btn.live .hud-pip {
+		color: var(--color-warm);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hud-btn,
+		.hud-pip {
+			transition: none;
+		}
+		.hud-btn:active {
+			transform: none;
+		}
+	}
+
+	/* Light mode — drop the dark veil; .live becomes a solid hot fill. */
+	[data-theme$='-light'] .hud-btn {
+		background: transparent;
+	}
+	[data-theme$='-light'] .hud-btn.live {
+		background: var(--color-hot);
+		color: var(--color-bg);
+		box-shadow: none;
+	}
+
 	/* Reduced motion — global guarantee that no animation runs in the shell.
 	 * Per-component pulse animations already read --glow-pulse (set to none in
 	 * the theme's reduced-motion block); this is a belt-and-suspenders stop. */

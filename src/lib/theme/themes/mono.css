@@ -1,0 +1,46 @@
+/* src/lib/theme/themes/mono.css
+ * Fifth family. Pure monochrome — no hue, just luminance.
+ * Dark variant: white phosphor on true black; greys carry the
+ * warm/cool slots since there's no hue to vary.
+ * Light variant: pressroom black on paper white.
+ */
+
+[data-theme='mono-dark'] {
+	--color-bg: #000000;
+	--color-surface: #0a0a0a;
+	--color-edge: #2a2a2a;
+	--color-fg: #ffffff;
+	--color-fg-dim: #707070;
+	--color-fg-mute: #2a2a2a;
+	--color-hot: #ffffff;
+	--color-warm: #888888;
+	--color-cool: #b8b8b8;
+	--color-ember: #d4d4d4;
+
+	--glow-text:
+		0 0 1px rgba(255, 255, 255, 0.95), 0 0 6px rgba(255, 255, 255, 0.55),
+		0 0 22px rgba(255, 255, 255, 0.3);
+	--glow-edge:
+		0 0 0 1px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.45),
+		0 0 4px rgba(255, 255, 255, 0.55);
+	--glow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
+	--glow-pip: 0 0 6px var(--color-hot), 0 0 16px rgba(212, 212, 212, 0.7);
+	--glow-focus:
+		0 0 0 1px var(--color-hot), 0 0 0 3px rgba(255, 255, 255, 0.4),
+		0 0 14px rgba(255, 255, 255, 0.55);
+	--glow-pulse: pulse-glow 2.4s var(--ease-in-out) infinite;
+}
+
+[data-theme='mono-light'] {
+	/* Pressroom black on paper white. */
+	--color-bg: #ffffff;
+	--color-surface: #f4f4f4;
+	--color-edge: #b0b0b0;
+	--color-fg: #000000;
+	--color-fg-dim: #6a6a6a;
+	--color-fg-mute: #c8c8c8;
+	--color-hot: #000000;
+	--color-warm: #4a4a4a;
+	--color-cool: #2a2a2a;
+	--color-ember: #1a1a1a;
+}

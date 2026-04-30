@@ -38,7 +38,7 @@
 	.tick {
 		display: inline-block;
 		width: 1px;
-		background: var(--hal-deep-dim);
+		background: var(--color-fg-mute);
 	}
 	.tick.tall {
 		height: 12px;
@@ -53,17 +53,17 @@
 		border-radius: 999px;
 	}
 	.pip.warm {
-		background: var(--hal-warm);
+		background: var(--color-warm);
 		box-shadow:
-			0 0 4px var(--hal-warm),
-			0 0 10px rgba(130, 227, 75, 0.55);
+			0 0 4px var(--color-warm),
+			0 0 10px color-mix(in srgb, var(--color-warm) 55%, transparent);
 		animation: var(--glow-pulse, none);
 	}
 	.pip.cool {
-		background: var(--hal-cool);
+		background: var(--color-cool);
 		box-shadow:
-			0 0 4px var(--hal-cool),
-			0 0 10px rgba(74, 210, 156, 0.45);
+			0 0 4px var(--color-cool),
+			0 0 10px color-mix(in srgb, var(--color-cool) 45%, transparent);
 		animation: var(--glow-pulse, none);
 	}
 </style>

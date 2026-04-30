@@ -57,7 +57,7 @@
 				<span class="icon"><SteamLogo size={24} weight="regular" /></span>
 				<span class="label">steam</span>
 			</a>
-			<a class="cell" href="https://atproto-browser.vercel.app/at/proto.cool" target="_blank" rel="noopener noreferrer">
+			<a class="cell" href="https://pdsls.dev/at://proto.cool" target="_blank" rel="noopener noreferrer">
 				<span class="icon icon-text">at://</span>
 				<span class="label">atp</span>
 			</a>

@@ -39,14 +39,14 @@
 	}
 
 	a {
-		color: var(--color-link);
-		text-decoration-color: var(--color-accent);
+		color: var(--color-fg);
+		text-decoration-color: var(--color-hot);
 		text-decoration-thickness: 2px;
 		text-underline-offset: 3px;
 	}
 
 	a:visited {
-		color: var(--color-link-visited);
+		color: var(--color-fg-dim);
 	}
 
 	a:hover {
@@ -64,8 +64,8 @@
 	}
 
 	::selection {
-		background: var(--color-accent);
-		color: var(--color-on-accent);
+		background: var(--color-hot);
+		color: var(--color-bg);
 	}
 
 	hr {

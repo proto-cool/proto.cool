@@ -1,43 +1,24 @@
 /* src/lib/theme/themes/sodium.css
  * Third family. HEV-suit / radiation-sign vibe.
  * Dark variant: hazard orange + blood-rust + caution yellow on
- * warm-tinted black. The trio is ALL-WARM by design — no cool color
- * in the palette, the "cool slot" is caution yellow.
- * Light variant: a daylight reinterpretation — construction-manual
- * ink (deep rust, oxblood, dark amber) on coated cream paper.
- * Glows punch through on paper, like the other light variants.
+ * warm-tinted black. The trio is ALL-WARM by design — the "cool slot"
+ * is caution yellow.
+ * Light variant: construction-manual ink (deep rust, oxblood, dark
+ * amber) on coated cream paper.
  */
 
 [data-theme='sodium-dark'] {
-	/* ---- halogen palette (orange-dominant, all-warm) ---- */
-	--hal-anthra: #0a0604;
-	--hal-anthra-2: #120a06;
-	--hal-anthra-3: #1a0e07;
-	--hal-edge: #3d251a;
-	--hal-warm: #c2330d;
-	--hal-hot: #ff6b1a;
-	--hal-ember: #ff9a4d;
-	--hal-bone: #ffe8d0;
-	--hal-dim: #a87858;
-	--hal-deep-dim: #3d2a1d;
-	--hal-cool: #ffcc00;
+	--color-bg: #0a0604;
+	--color-surface: #120a06;
+	--color-edge: #3d251a;
+	--color-fg: #ffe8d0;
+	--color-fg-dim: #a87858;
+	--color-fg-mute: #3d2a1d;
+	--color-hot: #ff6b1a;
+	--color-warm: #c2330d;
+	--color-cool: #ffcc00;
+	--color-ember: #ff9a4d;
 
-	/* ---- legacy aliases (so existing color-* consumers keep working) ---- */
-	--color-bg: var(--hal-anthra);
-	--color-surface: var(--hal-anthra-2);
-	--color-surface-2: var(--hal-anthra-3);
-	--color-edge: var(--hal-edge);
-	--color-fg: var(--hal-bone);
-	--color-fg-dim: var(--hal-dim);
-	--color-fg-mute: var(--hal-deep-dim);
-	--color-accent: var(--hal-hot);
-	--color-accent-2: var(--hal-cool);
-	--color-on-accent: var(--hal-anthra);
-	--color-link: var(--hal-bone);
-	--color-link-visited: var(--hal-dim);
-	--color-focus: var(--hal-hot);
-
-	/* ---- glow tokens (orange vocabulary) ---- */
 	--glow-text:
 		0 0 1px rgba(255, 232, 208, 0.95), 0 0 6px rgba(255, 107, 26, 0.55),
 		0 0 22px rgba(255, 107, 26, 0.3);
@@ -45,74 +26,23 @@
 		0 0 0 1px rgba(255, 107, 26, 1), 0 0 12px rgba(255, 107, 26, 0.45),
 		0 0 4px rgba(255, 107, 26, 0.55);
 	--glow-panel: inset 0 1px 0 rgba(255, 107, 26, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
-	--glow-pip: 0 0 6px var(--hal-hot), 0 0 16px rgba(194, 51, 13, 0.7);
+	--glow-pip: 0 0 6px var(--color-hot), 0 0 16px rgba(194, 51, 13, 0.7);
 	--glow-focus:
-		0 0 0 1px var(--hal-hot), 0 0 0 3px rgba(255, 107, 26, 0.4),
+		0 0 0 1px var(--color-hot), 0 0 0 3px rgba(255, 107, 26, 0.4),
 		0 0 14px rgba(255, 107, 26, 0.55);
-	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
-
-	/* ---- shell veils — translucent backdrops for fixed strips ---- */
-	--shell-veil: rgba(10, 6, 4, 0.6);
-	--shell-veil-strong: rgba(10, 6, 4, 0.72);
-
-	/* ---- dither tiles — hazard-orange override.
-       Defaults in tokens.css are lime, which would bleed through onto
-       the orange surfaces in InstrumentCluster and Halo. ---- */
-	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3C/svg%3E");
-	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3C/svg%3E");
-	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23ff6b1a'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23ff6b1a'/%3E%3C/svg%3E");
+	--glow-pulse: pulse-glow 2.4s var(--ease-in-out) infinite;
 }
 
 [data-theme='sodium-light'] {
-	/* ---- daylight sodium — construction-manual ink on coated paper. ---- */
-	--hal-anthra: #fff5e8;
-	--hal-anthra-2: #ffebd6;
-	--hal-anthra-3: #ffe1c4;
-	--hal-edge: #d99c6e;
-	--hal-warm: #8b1c0a;
-	--hal-hot: #cc4400;
-	--hal-ember: #7a2200;
-	--hal-bone: #2a0e02;
-	--hal-dim: #9c5d3a;
-	--hal-deep-dim: #d4a78a;
-	--hal-cool: #aa7700;
-
-	/* ---- legacy aliases ---- */
-	--color-bg: var(--hal-anthra);
-	--color-surface: var(--hal-anthra-2);
-	--color-surface-2: var(--hal-anthra-3);
-	--color-edge: var(--hal-edge);
-	--color-fg: var(--hal-bone);
-	--color-fg-dim: var(--hal-dim);
-	--color-fg-mute: var(--hal-deep-dim);
-	--color-accent: var(--hal-hot);
-	--color-accent-2: var(--hal-cool);
-	--color-on-accent: var(--hal-anthra);
-	--color-link: var(--hal-bone);
-	--color-link-visited: var(--hal-dim);
-	--color-focus: var(--hal-hot);
-
-	/* ---- glow tokens — punch-through, no halos on paper ---- */
-	--glow-text: none;
-	--glow-edge: 0 0 0 1px var(--hal-hot);
-	--glow-panel: 0 1px 0 var(--hal-edge);
-	--glow-pip: none;
-	--glow-focus: 0 0 0 2px var(--hal-hot), 0 0 0 4px rgba(255, 255, 255, 0.95);
-	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
-
-	/* ---- shell veils — paper, not anthracite ---- */
-	--shell-veil: rgba(255, 245, 232, 0.88);
-	--shell-veil-strong: rgba(255, 245, 232, 0.94);
-
-	/* ---- dither tiles — deep rust ink for paper (multiply blend) ---- */
-	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23cc4400'/%3E%3C/svg%3E");
-	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23cc4400'/%3E%3C/svg%3E");
-	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23cc4400'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23cc4400'/%3E%3C/svg%3E");
-}
-
-/* Reduced motion — neutralize the pulse for both variants */
-@media (prefers-reduced-motion: reduce) {
-	[data-theme^='sodium-'] {
-		--glow-pulse: none;
-	}
+	/* Daylight sodium — construction-manual ink on coated paper. */
+	--color-bg: #fff5e8;
+	--color-surface: #ffebd6;
+	--color-edge: #d99c6e;
+	--color-fg: #2a0e02;
+	--color-fg-dim: #9c5d3a;
+	--color-fg-mute: #d4a78a;
+	--color-hot: #cc4400;
+	--color-warm: #8b1c0a;
+	--color-cool: #aa7700;
+	--color-ember: #7a2200;
 }

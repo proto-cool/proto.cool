@@ -37,17 +37,16 @@
 		align-items: center;
 		gap: 18px;
 		padding: 16px 28px;
-		background: rgba(6, 9, 6, 0.6);
-		border-bottom: 1px solid var(--hal-edge);
+		background: var(--shell-veil);
+		border-bottom: 1px solid var(--color-edge);
 		-webkit-backdrop-filter: blur(8px) saturate(115%);
 		backdrop-filter: blur(8px) saturate(115%);
 		transition:
 			padding 380ms cubic-bezier(0.2, 0, 0, 1),
 			gap 380ms cubic-bezier(0.2, 0, 0, 1);
-		will-change: padding;
 	}
 	.nav-panel.scrolled {
-		padding: 14px 28px 4px;
+		padding: 9px 28px;
 		gap: 14px;
 	}
 
@@ -61,14 +60,13 @@
 		background: linear-gradient(
 			90deg,
 			transparent 0,
-			rgba(184, 255, 90, 0.18) 25%,
-			rgba(184, 255, 90, 0.32) 50%,
-			rgba(184, 255, 90, 0.18) 75%,
+			color-mix(in srgb, var(--color-hot) 18%, transparent) 25%,
+			color-mix(in srgb, var(--color-hot) 32%, transparent) 50%,
+			color-mix(in srgb, var(--color-hot) 18%, transparent) 75%,
 			transparent 100%
 		);
 		opacity: 0.55;
 		transition: opacity 380ms ease;
-		will-change: opacity;
 	}
 	.nav-panel.scrolled::before {
 		opacity: 1;

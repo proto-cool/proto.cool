@@ -3,41 +3,21 @@
  * Dark variant: bright frost-ice on deep night fjord; the cool slot
  * is sage aurora green so the trio doesn't blur into a single blue
  * blob in the dropdown.
- * Light variant: snowfield at noon — deep fjord ink on cool off-white,
- * with deeper aurora-sage as the secondary. Glows punch through on
- * paper, like the other light variants.
+ * Light variant: snowfield at noon — deep fjord ink on cool off-white.
  */
 
 [data-theme='frost-dark'] {
-	/* ---- halogen palette (ice-dominant, aurora-accented) ---- */
-	--hal-anthra: #0e1620;
-	--hal-anthra-2: #141f2c;
-	--hal-anthra-3: #1b2838;
-	--hal-edge: #2c3e52;
-	--hal-warm: #5e81ac;
-	--hal-hot: #a3d5e8;
-	--hal-ember: #c8e0eb;
-	--hal-bone: #eceff4;
-	--hal-dim: #6e8093;
-	--hal-deep-dim: #2a3a4d;
-	--hal-cool: #a3be8c;
+	--color-bg: #0e1620;
+	--color-surface: #141f2c;
+	--color-edge: #2c3e52;
+	--color-fg: #eceff4;
+	--color-fg-dim: #6e8093;
+	--color-fg-mute: #2a3a4d;
+	--color-hot: #a3d5e8;
+	--color-warm: #5e81ac;
+	--color-cool: #a3be8c;
+	--color-ember: #c8e0eb;
 
-	/* ---- legacy aliases ---- */
-	--color-bg: var(--hal-anthra);
-	--color-surface: var(--hal-anthra-2);
-	--color-surface-2: var(--hal-anthra-3);
-	--color-edge: var(--hal-edge);
-	--color-fg: var(--hal-bone);
-	--color-fg-dim: var(--hal-dim);
-	--color-fg-mute: var(--hal-deep-dim);
-	--color-accent: var(--hal-hot);
-	--color-accent-2: var(--hal-cool);
-	--color-on-accent: var(--hal-anthra);
-	--color-link: var(--hal-bone);
-	--color-link-visited: var(--hal-dim);
-	--color-focus: var(--hal-hot);
-
-	/* ---- glow tokens (ice-blue vocabulary) ---- */
 	--glow-text:
 		0 0 1px rgba(236, 239, 244, 0.95), 0 0 6px rgba(163, 213, 232, 0.55),
 		0 0 22px rgba(163, 213, 232, 0.3);
@@ -45,74 +25,23 @@
 		0 0 0 1px rgba(163, 213, 232, 1), 0 0 12px rgba(163, 213, 232, 0.45),
 		0 0 4px rgba(163, 213, 232, 0.55);
 	--glow-panel: inset 0 1px 0 rgba(163, 213, 232, 0.1), 0 6px 22px rgba(0, 0, 0, 0.55);
-	--glow-pip: 0 0 6px var(--hal-hot), 0 0 16px rgba(94, 129, 172, 0.7);
+	--glow-pip: 0 0 6px var(--color-hot), 0 0 16px rgba(94, 129, 172, 0.7);
 	--glow-focus:
-		0 0 0 1px var(--hal-hot), 0 0 0 3px rgba(163, 213, 232, 0.4),
+		0 0 0 1px var(--color-hot), 0 0 0 3px rgba(163, 213, 232, 0.4),
 		0 0 14px rgba(163, 213, 232, 0.55);
-	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
-
-	/* ---- shell veils — translucent backdrops for fixed strips ---- */
-	--shell-veil: rgba(14, 22, 32, 0.6);
-	--shell-veil-strong: rgba(14, 22, 32, 0.72);
-
-	/* ---- dither tiles — frost-ice override.
-       Defaults in tokens.css are lime, which would bleed through onto
-       the ice-blue surfaces in InstrumentCluster and Halo. ---- */
-	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%2388c0d0'/%3E%3C/svg%3E");
-	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%2388c0d0'/%3E%3C/svg%3E");
-	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%2388c0d0'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%2388c0d0'/%3E%3C/svg%3E");
+	--glow-pulse: pulse-glow 2.4s var(--ease-in-out) infinite;
 }
 
 [data-theme='frost-light'] {
-	/* ---- snowfield at noon — deep fjord ink on cool off-white. ---- */
-	--hal-anthra: #f4f6f9;
-	--hal-anthra-2: #e9eef4;
-	--hal-anthra-3: #dee5ed;
-	--hal-edge: #9aaabd;
-	--hal-warm: #4a6485;
-	--hal-hot: #2e4564;
-	--hal-ember: #1a2940;
-	--hal-bone: #0e1a2e;
-	--hal-dim: #7a8a9e;
-	--hal-deep-dim: #bfcbd9;
-	--hal-cool: #5d7548;
-
-	/* ---- legacy aliases ---- */
-	--color-bg: var(--hal-anthra);
-	--color-surface: var(--hal-anthra-2);
-	--color-surface-2: var(--hal-anthra-3);
-	--color-edge: var(--hal-edge);
-	--color-fg: var(--hal-bone);
-	--color-fg-dim: var(--hal-dim);
-	--color-fg-mute: var(--hal-deep-dim);
-	--color-accent: var(--hal-hot);
-	--color-accent-2: var(--hal-cool);
-	--color-on-accent: var(--hal-anthra);
-	--color-link: var(--hal-bone);
-	--color-link-visited: var(--hal-dim);
-	--color-focus: var(--hal-hot);
-
-	/* ---- glow tokens — punch-through, no halos on paper ---- */
-	--glow-text: none;
-	--glow-edge: 0 0 0 1px var(--hal-hot);
-	--glow-panel: 0 1px 0 var(--hal-edge);
-	--glow-pip: none;
-	--glow-focus: 0 0 0 2px var(--hal-hot), 0 0 0 4px rgba(255, 255, 255, 0.95);
-	--glow-pulse: pulse-phosphor 2.4s var(--ease-in-out) infinite;
-
-	/* ---- shell veils — paper, not anthracite ---- */
-	--shell-veil: rgba(244, 246, 249, 0.88);
-	--shell-veil-strong: rgba(244, 246, 249, 0.94);
-
-	/* ---- dither tiles — deep fjord ink for paper (multiply blend) ---- */
-	--dither-sparse: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%232e4564'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%232e4564'/%3E%3C/svg%3E");
-	--dither-medium: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%232e4564'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%232e4564'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%232e4564'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%232e4564'/%3E%3C/svg%3E");
-	--dither-dense: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%232e4564'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%232e4564'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%232e4564'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%232e4564'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%232e4564'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%232e4564'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%232e4564'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%232e4564'/%3E%3C/svg%3E");
-}
-
-/* Reduced motion — neutralize the pulse for both variants */
-@media (prefers-reduced-motion: reduce) {
-	[data-theme^='frost-'] {
-		--glow-pulse: none;
-	}
+	/* Snowfield at noon — deep fjord ink on cool off-white. */
+	--color-bg: #f4f6f9;
+	--color-surface: #e9eef4;
+	--color-edge: #9aaabd;
+	--color-fg: #0e1a2e;
+	--color-fg-dim: #7a8a9e;
+	--color-fg-mute: #bfcbd9;
+	--color-hot: #2e4564;
+	--color-warm: #4a6485;
+	--color-cool: #5d7548;
+	--color-ember: #1a2940;
 }

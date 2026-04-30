@@ -6,6 +6,7 @@ export const sections = [
 
 export const utilities = [
 	{ id: 'themes', label: 'themes', hotkey: 't' },
+	{ id: 'mode', label: 'mode', hotkey: 'm' },
 	{ id: 'help', label: 'help', hotkey: '?' }
 ] as const;
 

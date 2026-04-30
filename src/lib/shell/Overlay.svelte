@@ -89,15 +89,15 @@
 		max-height: 80vh;
 		overflow: auto;
 		background: var(--color-surface);
-		border: 1px solid var(--color-accent);
+		border: 1px solid var(--color-hot);
 		box-shadow: var(--glow-edge);
 		font-family: var(--font-mono);
 		font-size: var(--text-sm);
 	}
 	.dialog-header {
 		padding: 8px 12px;
-		background: color-mix(in srgb, var(--color-accent) 15%, transparent);
-		border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+		background: color-mix(in srgb, var(--color-hot) 15%, transparent);
+		border-bottom: 1px solid color-mix(in srgb, var(--color-hot) 35%, transparent);
 		color: var(--color-fg);
 		letter-spacing: var(--tracking-wide);
 	}

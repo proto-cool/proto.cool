@@ -22,24 +22,15 @@
 		container-type: inline-size;
 		container-name: chrome;
 		min-height: 100dvh;
-		background: var(--hal-anthra);
-		color: var(--hal-bone);
+		background: var(--color-bg);
+		color: var(--color-fg);
 		font-family: var(--font-sans);
 		display: flex;
 		flex-direction: column;
-		overflow: hidden;
-	}
-	/* ambient screen-blended dither — sits below panels, above bg */
-	.stage::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='1' height='1' fill='%2382e34b' fill-opacity='0.45'/%3E%3C/svg%3E");
-		background-size: 4px 4px;
-		opacity: 0.045;
-		pointer-events: none;
-		mix-blend-mode: screen;
-		z-index: 0;
+		/* clip-path instead of overflow:hidden — both clip the halo, but
+		   overflow:hidden establishes a non-scrolling scroll container that
+		   breaks position:sticky for descendants (e.g. the home sidebar). */
+		clip-path: inset(0);
 	}
 	.hero {
 		position: relative;
@@ -72,9 +63,9 @@
 		background: linear-gradient(
 			90deg,
 			transparent 0,
-			rgba(184, 255, 90, 0.1) 25%,
-			rgba(184, 255, 90, 0.18) 50%,
-			rgba(184, 255, 90, 0.1) 75%,
+			color-mix(in srgb, var(--color-hot) 10%, transparent) 25%,
+			color-mix(in srgb, var(--color-hot) 18%, transparent) 50%,
+			color-mix(in srgb, var(--color-hot) 10%, transparent) 75%,
 			transparent 100%
 		);
 	}
@@ -89,8 +80,8 @@
 			90deg,
 			transparent 0,
 			transparent 63px,
-			rgba(184, 255, 90, 0.16) 63px,
-			rgba(184, 255, 90, 0.16) 64px,
+			color-mix(in srgb, var(--color-hot) 16%, transparent) 63px,
+			color-mix(in srgb, var(--color-hot) 16%, transparent) 64px,
 			transparent 64px,
 			transparent 128px
 		);

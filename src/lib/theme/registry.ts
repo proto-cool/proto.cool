@@ -105,6 +105,28 @@ export const themes = [
 			warm: '#4a6485',
 			cool: '#5d7548'
 		}
+	},
+	{
+		id: 'mono-dark',
+		family: 'mono',
+		familyName: 'Mono',
+		variant: 'dark',
+		palette: {
+			hot: '#ffffff',
+			warm: '#888888',
+			cool: '#b8b8b8'
+		}
+	},
+	{
+		id: 'mono-light',
+		family: 'mono',
+		familyName: 'Mono',
+		variant: 'light',
+		palette: {
+			hot: '#000000',
+			warm: '#4a4a4a',
+			cool: '#2a2a2a'
+		}
 	}
 ] as const satisfies readonly ThemeEntry[];
 

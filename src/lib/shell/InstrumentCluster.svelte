@@ -7,6 +7,20 @@
 	const chrome = getContext<ChromeData>('chrome');
 	let up = $derived($uptime);
 	let spark = $derived($signalSparkline);
+
+	// 6 lit segments → peak → 1 medium-dither overflow → 2 sparse-dither overflow
+	const meterSegs = [
+		'lit',
+		'lit',
+		'lit',
+		'lit',
+		'lit',
+		'lit',
+		'peak',
+		'fade-1',
+		'fade-2',
+		'fade-2'
+	];
 </script>
 
 <aside class="cluster" aria-hidden="true">
@@ -17,16 +31,9 @@
 	<div class="body-pad">
 		<!-- segmented meter; last 3 are dithered overflow -->
 		<div class="meter">
-			<span class="seg lit"></span>
-			<span class="seg lit"></span>
-			<span class="seg lit"></span>
-			<span class="seg lit"></span>
-			<span class="seg lit"></span>
-			<span class="seg lit"></span>
-			<span class="seg peak"></span>
-			<span class="seg fade-1"></span>
-			<span class="seg fade-2"></span>
-			<span class="seg fade-2"></span>
+			{#each meterSegs as cls, i (i)}
+				<span class="seg {cls}"></span>
+			{/each}
 		</div>
 
 		<div class="readout">
@@ -55,8 +62,8 @@
 	.cluster {
 		position: relative;
 		z-index: 2;
-		border: 1px solid var(--hal-edge);
-		background: linear-gradient(180deg, rgba(184, 255, 90, 0.05), rgba(0, 0, 0, 0));
+		border: 1px solid var(--color-edge);
+		background: linear-gradient(180deg, color-mix(in srgb, var(--color-hot) 5%, transparent), rgba(0, 0, 0, 0));
 		backdrop-filter: blur(2px);
 	}
 	.cap {
@@ -64,15 +71,15 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 8px 12px;
-		border-bottom: 1px solid var(--hal-edge);
+		border-bottom: 1px solid var(--color-edge);
 		font-family: var(--font-mono);
 		font-size: 10px;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 	}
 	.cap .id {
-		color: var(--hal-warm);
+		color: var(--color-warm);
 	}
 	.body-pad {
 		padding: 14px;
@@ -89,44 +96,52 @@
 	.meter .seg {
 		flex: 1;
 		height: 14px;
-		background: #0c1208;
-		border: 1px solid #1a2a18;
+		background: var(--color-surface);
+		border: 1px solid var(--color-edge);
 		position: relative;
 	}
 	.meter .seg.lit {
-		background: var(--hal-hot);
-		border-color: var(--hal-hot);
+		background: var(--color-hot);
+		border-color: var(--color-hot);
 		box-shadow:
-			0 0 10px rgba(184, 255, 90, 0.7),
-			inset 0 0 4px rgba(212, 255, 128, 0.45);
+			0 0 10px color-mix(in srgb, var(--color-hot) 70%, transparent),
+			inset 0 0 4px color-mix(in srgb, var(--color-ember) 45%, transparent);
 	}
 	.meter .seg.peak {
-		background: var(--hal-ember);
-		border-color: var(--hal-ember);
+		background: var(--color-ember);
+		border-color: var(--color-ember);
 		box-shadow:
-			0 0 14px rgba(212, 255, 128, 0.95),
-			0 0 30px rgba(184, 255, 90, 0.55);
+			0 0 14px color-mix(in srgb, var(--color-ember) 95%, transparent),
+			0 0 30px color-mix(in srgb, var(--color-hot) 55%, transparent);
 	}
 	.meter .seg.fade-1,
 	.meter .seg.fade-2 {
 		background: transparent;
-		border-color: var(--hal-edge);
+		border-color: var(--color-edge);
 	}
 	.meter .seg.fade-1::before {
 		content: '';
 		position: absolute;
 		inset: 1px;
-		background-image: var(--dither-medium);
-		background-size: 4px 4px;
-		image-rendering: pixelated;
+		background-color: var(--color-hot);
+		-webkit-mask-image: var(--dither-mask-medium);
+		mask-image: var(--dither-mask-medium);
+		-webkit-mask-size: 4px 4px;
+		mask-size: 4px 4px;
+		-webkit-mask-repeat: repeat;
+		mask-repeat: repeat;
 	}
 	.meter .seg.fade-2::before {
 		content: '';
 		position: absolute;
 		inset: 1px;
-		background-image: var(--dither-sparse);
-		background-size: 4px 4px;
-		image-rendering: pixelated;
+		background-color: var(--color-hot);
+		-webkit-mask-image: var(--dither-mask-sparse);
+		mask-image: var(--dither-mask-sparse);
+		-webkit-mask-size: 4px 4px;
+		mask-size: 4px 4px;
+		-webkit-mask-repeat: repeat;
+		mask-repeat: repeat;
 	}
 
 	.readout {
@@ -135,55 +150,55 @@
 		gap: 4px 10px;
 		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		border-top: 1px solid var(--hal-edge);
+		border-top: 1px solid var(--color-edge);
 		padding-top: 12px;
 	}
 	.readout .lab {
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 		text-transform: uppercase;
 		letter-spacing: 0.12em;
 		font-size: 10px;
 		align-self: center;
 	}
 	.readout .val {
-		color: var(--hal-bone);
+		color: var(--color-fg);
 	}
 	.readout .val.glow {
-		color: var(--hal-warm);
-		text-shadow: 0 0 8px rgba(184, 255, 90, 0.55);
+		color: var(--color-warm);
+		text-shadow: 0 0 8px color-mix(in srgb, var(--color-hot) 55%, transparent);
 	}
 	.readout .ind {
 		width: 8px;
 		height: 8px;
 		border-radius: 999px;
-		background: var(--hal-deep-dim);
+		background: var(--color-fg-mute);
 		align-self: center;
 	}
 	.readout .ind.on {
-		background: var(--hal-hot);
+		background: var(--color-hot);
 		box-shadow:
-			0 0 6px var(--hal-hot),
-			0 0 12px rgba(130, 227, 75, 0.7);
+			0 0 6px var(--color-hot),
+			0 0 12px color-mix(in srgb, var(--color-warm) 70%, transparent);
 	}
 	.readout .ind.cool {
-		background: var(--hal-cool);
-		box-shadow: 0 0 6px var(--hal-cool);
+		background: var(--color-cool);
+		box-shadow: 0 0 6px var(--color-cool);
 	}
 
 	.minimap {
 		margin-top: 6px;
 		height: 56px;
-		border: 1px solid var(--hal-edge);
+		border: 1px solid var(--color-edge);
 		position: relative;
 		overflow: hidden;
-		background: #050905;
+		background: var(--color-bg);
 	}
 	.minimap .grid-bg {
 		position: absolute;
 		inset: 0;
 		background-image:
-			linear-gradient(to right, rgba(184, 255, 90, 0.08) 1px, transparent 1px),
-			linear-gradient(to bottom, rgba(184, 255, 90, 0.08) 1px, transparent 1px);
+			linear-gradient(to right, color-mix(in srgb, var(--color-hot) 8%, transparent) 1px, transparent 1px),
+			linear-gradient(to bottom, color-mix(in srgb, var(--color-hot) 8%, transparent) 1px, transparent 1px);
 		background-size: 12px 12px;
 	}
 	.minimap .dither-fill {
@@ -219,11 +234,11 @@
 		width: 14px;
 		height: 14px;
 		border-radius: 999px;
-		background: var(--hal-ember);
+		background: var(--color-ember);
 		box-shadow:
-			0 0 8px var(--hal-ember),
-			0 0 26px rgba(212, 255, 128, 0.85),
-			0 0 60px rgba(184, 255, 90, 0.55);
+			0 0 8px var(--color-ember),
+			0 0 26px color-mix(in srgb, var(--color-ember) 85%, transparent),
+			0 0 60px color-mix(in srgb, var(--color-hot) 55%, transparent);
 		animation: var(--glow-pulse, none);
 	}
 	.minimap .label {
@@ -232,7 +247,7 @@
 		bottom: 6px;
 		font-family: var(--font-mono);
 		font-size: 10px;
-		color: var(--hal-dim);
+		color: var(--color-fg-dim);
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 	}
