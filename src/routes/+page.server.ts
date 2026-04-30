@@ -1,13 +1,9 @@
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
-import { openDatabase, runMigrations } from '$lib/server/db';
+import { getDb } from '$lib/server/bootstrap';
 import { getFeed, type FeedFilter } from '$lib/server/feed';
 import { decodeCursor } from '$lib/server/cursor';
-
-const dbPath = process.env.PROTO_DB_PATH ?? './data/proto.sqlite';
-const db = openDatabase(dbPath);
-runMigrations(db);
 
 const SourceSchema = z.enum(['bsky', 'pckt', 'standard', 'grain']);
 const OrderSchema = z.enum(['asc', 'desc']);
@@ -22,6 +18,8 @@ const QuerySchema = z.object({
 });
 
 export const load: PageServerLoad = ({ url }) => {
+	const db = getDb();
+
 	const raw = {
 		source: url.searchParams.getAll('source'),
 		from: url.searchParams.get('from') ?? undefined,

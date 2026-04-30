@@ -28,7 +28,7 @@ import { createBreaker } from './breaker';
 import { startScheduler, type SchedulerHandle } from './scheduler';
 import { startFirehose, type FirehoseHandle } from './firehose';
 
-const DB_PATH = process.env.PROTO_DB_PATH ?? 'data/proto.db';
+const DB_PATH = process.env.PROTO_DB_PATH ?? './data/proto.sqlite';
 
 let booted = false;
 let dbInstance: DB | null = null;
