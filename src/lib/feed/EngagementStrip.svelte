@@ -24,15 +24,15 @@
 
 <div class="engagement" aria-label="engagement">
 	<span class="stat" class:zero={replyCount === 0}>
-		<ChatCircle size={18} weight="regular" class="ic" />
+		<ChatCircle size={14} weight="regular" class="ic" />
 		<span class="n">{fmt(replyCount)}</span>
 	</span>
 	<span class="stat" class:zero={repostCount === 0}>
-		<Repeat size={18} weight="regular" class="ic" />
+		<Repeat size={14} weight="regular" class="ic" />
 		<span class="n">{fmt(repostCount)}</span>
 	</span>
 	<span class="stat" class:zero={likeCount === 0}>
-		<Heart size={18} weight="regular" class="ic" />
+		<Heart size={14} weight="regular" class="ic" />
 		<span class="n">{fmt(likeCount)}</span>
 	</span>
 	{#if trailing}
@@ -44,7 +44,7 @@
 	.engagement {
 		display: flex;
 		align-items: center;
-		gap: 22px;
+		gap: 18px;
 		padding-top: 14px;
 		margin-top: 16px;
 		border-top: 1px solid var(--color-edge);
@@ -54,7 +54,7 @@
 	}
 	.stat { display: inline-flex; align-items: center; gap: 8px; line-height: 1; }
 	.stat :global(.ic) { color: var(--color-fg-mute); flex-shrink: 0; }
-	.n { color: var(--color-fg); line-height: 1; }
+	.n { color: var(--color-fg-dim); line-height: 1; }
 	.stat.zero .n { color: var(--color-fg-mute); }
 	.trailing { margin-left: auto; }
 </style>
