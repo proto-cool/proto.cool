@@ -5,6 +5,8 @@
 	import LinkCard from './LinkCard.svelte';
 	import QuotePostCard from './QuotePostCard.svelte';
 	import EngagementStrip from './EngagementStrip.svelte';
+	import BskyChip from './BskyChip.svelte';
+	import BskyLink from './BskyLink.svelte';
 	import { relativeTime } from '$lib/relative-time';
 	import { blobUrl, type BlobContext } from '$lib/blob';
 
@@ -77,8 +79,8 @@
 	<a class="card-overlay" href={permalink} target="_blank" rel="noopener noreferrer" aria-label="open post on bsky"></a>
 
 	<header class="head">
-		<span>{relativeTime(item.createdAt)}</span>
-		<span></span>
+		<span class="head-left"><span class="handle">@{ownerHandle}</span> · <span class="time">{relativeTime(item.createdAt)}</span></span>
+		<BskyChip />
 	</header>
 	<div class="rule"></div>
 	{#if value.text}
@@ -113,7 +115,11 @@
 		replyCount={item.engagement?.replyCount ?? 0}
 		repostCount={item.engagement?.repostCount ?? 0}
 		likeCount={item.engagement?.likeCount ?? 0}
-	/>
+	>
+		{#snippet trailing()}
+			<BskyLink href={permalink} />
+		{/snippet}
+	</EngagementStrip>
 </article>
 
 <style>
@@ -139,10 +145,11 @@
 		z-index: 1;
 	}
 	.head {
-		display: flex; justify-content: space-between;
+		display: flex; justify-content: space-between; align-items: center;
 		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
 		color: var(--color-fg-dim);
 	}
+	.head .handle { color: var(--color-fg); }
 	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 12px; }
 	.body { margin: 0 0 12px; line-height: 1.55; color: var(--color-fg); font-size: 14px; }
 	.embed-wrap { margin: 12px 0 0; }

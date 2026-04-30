@@ -5,6 +5,7 @@
 	import FeaturedBlock from '$lib/feed/FeaturedBlock.svelte';
 	import Card from '$lib/feed/Card.svelte';
 	import Pagination from '$lib/feed/Pagination.svelte';
+	import Sidebar from '$lib/feed/Sidebar.svelte';
 	import type { ChromeData } from '$lib/shell/chrome';
 
 	let { data } = $props();
@@ -35,45 +36,54 @@
 		{/snippet}
 	</HeroSection>
 
-	{#if data.featured}
-		<section class="featured-wrap">
-			<FeaturedBlock item={data.featured} blobCtx={data.blobCtx} />
-		</section>
-	{/if}
+	<div class="layout">
+		<div class="content">
+			{#if data.featured}
+				<FeaturedBlock item={data.featured} blobCtx={data.blobCtx} />
+			{/if}
 
-	<section class="ledger" aria-labelledby="ledger-heading">
-		<header class="ledger-head">
-			<p class="kicker">/// recent · index</p>
-			<h2 id="ledger-heading" class="ledger-title">posts <em>&amp;</em> projects</h2>
-			<span class="rule" aria-hidden="true"></span>
-		</header>
+			<section class="ledger" aria-labelledby="ledger-heading">
+				<header class="ledger-head">
+					<p class="kicker">/// recent · index</p>
+					<h2 id="ledger-heading" class="ledger-title">posts <em>&amp;</em> projects</h2>
+					<span class="rule" aria-hidden="true"></span>
+				</header>
 
-		{#if data.stream.items.length === 0}
-			<p class="empty">nothing here yet.</p>
-		{:else}
-			<ol class="entries">
-				{#each data.stream.items as item (item.uri)}
-					<li class="entry">
-						<Card {item} {ownerHandle} blobCtx={data.blobCtx} />
-					</li>
-				{/each}
-			</ol>
-			<Pagination page={data.stream.page} totalPages={data.stream.totalPages} basePath={pageStore.url.pathname} />
-		{/if}
-	</section>
+				{#if data.stream.items.length === 0}
+					<p class="empty">nothing here yet.</p>
+				{:else}
+					<ol class="entries">
+						{#each data.stream.items as item (item.uri)}
+							<li class="entry">
+								<Card {item} {ownerHandle} blobCtx={data.blobCtx} />
+							</li>
+						{/each}
+					</ol>
+					<Pagination page={data.stream.page} totalPages={data.stream.totalPages} basePath={pageStore.url.pathname} />
+				{/if}
+			</section>
+		</div>
+
+		<Sidebar />
+	</div>
 </article>
 
 <style>
 	.home { display: contents; }
-	.featured-wrap, .ledger {
+	.layout {
 		position: relative;
 		z-index: 1;
-		max-width: 1100px;
+		max-width: 1200px;
 		width: 100%;
 		margin-inline: auto;
-		padding: 0 32px;
+		padding: 12px 32px 96px;
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		gap: 36px;
+		align-items: start;
 	}
-	.ledger { padding-bottom: 96px; padding-top: 12px; }
+	.content { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+	.ledger { display: block; }
 	.ledger-head {
 		display: grid;
 		grid-template-columns: auto auto 1fr;
@@ -127,9 +137,14 @@
 		text-align: center;
 	}
 
+	@container chrome (max-width: 1023px) {
+		.layout {
+			grid-template-columns: 1fr;
+			gap: 28px;
+		}
+	}
 	@container chrome (max-width: 767px) {
-		.ledger { padding: 8px 16px 96px; }
-		.featured-wrap { padding: 0 16px; }
+		.layout { padding: 8px 16px 64px; }
 		.ledger-title { font-size: 26px; }
 	}
 </style>

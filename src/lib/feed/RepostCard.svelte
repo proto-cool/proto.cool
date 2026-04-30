@@ -4,6 +4,8 @@
 	import ImageGrid from './ImageGrid.svelte';
 	import LinkCard from './LinkCard.svelte';
 	import EngagementStrip from './EngagementStrip.svelte';
+	import BskyChip from './BskyChip.svelte';
+	import BskyLink from './BskyLink.svelte';
 	import { relativeTime } from '$lib/relative-time';
 	import { blobUrl, type BlobContext } from '$lib/blob';
 
@@ -72,7 +74,7 @@
 
 	<header class="head">
 		<span class="repost-line">↻ reposted · {relativeTime(item.createdAt)}</span>
-		<span class="kind-tag">REPOST</span>
+		<BskyChip label="repost" />
 	</header>
 	<div class="rule"></div>
 	{#if !subject}
@@ -94,7 +96,11 @@
 			replyCount={subject.engagement?.replyCount ?? 0}
 			repostCount={subject.engagement?.repostCount ?? 0}
 			likeCount={subject.engagement?.likeCount ?? 0}
-		/>
+		>
+			{#snippet trailing()}
+				<BskyLink href={permalink} label="view original on bluesky" />
+			{/snippet}
+		</EngagementStrip>
 	{/if}
 </article>
 
@@ -120,11 +126,10 @@
 		z-index: 1;
 	}
 	.head {
-		display: flex; justify-content: space-between;
+		display: flex; justify-content: space-between; align-items: center;
 		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
 	}
 	.repost-line { color: var(--color-cool); }
-	.kind-tag { color: var(--color-cool); letter-spacing: 0.18em; text-transform: uppercase; font-size: 10px; }
 	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 12px; }
 	.subject-head {
 		display: flex; justify-content: space-between;
