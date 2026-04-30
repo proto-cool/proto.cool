@@ -8,6 +8,7 @@
 	import FeedToolbar from '$lib/feed/FeedToolbar.svelte';
 	import AutoLoadToggle from '$lib/feed/AutoLoadToggle.svelte';
 	import LoadMore from '$lib/feed/LoadMore.svelte';
+	import FeedError from '$lib/feed/FeedError.svelte';
 	import Sidebar from '$lib/feed/Sidebar.svelte';
 	import type { ChromeData } from '$lib/shell/chrome';
 	import type { FeedItem } from '$lib/server/feed';
@@ -36,6 +37,8 @@
 	};
 	let override = $state<Override | null>(null);
 	let loading = $state(false);
+	let error = $state<string | null>(null);
+	let lastFailedOp = $state<null | (() => Promise<void>)>(null);
 
 	// Auto-load preference. Persisted in localStorage so the choice survives
 	// reloads. Lifted to the page (rather than living inside LoadMore) so
@@ -101,12 +104,17 @@
 
 	async function applyQuery(next: { source: SourceVal; sort: SortVal }) {
 		if (next.source === source && next.sort === sort) return;
+		const op = () => applyQuery(next);
 		loading = true;
 		const body = await fetchPage(1, next.source, next.sort);
 		if (!body) {
 			loading = false;
+			error = "couldn’t load";
+			lastFailedOp = op;
 			return;
 		}
+		error = null;
+		lastFailedOp = null;
 		syncUrl(next.source, next.sort);
 
 		// View Transitions API gives us a free cross-fade on the swap.
@@ -138,10 +146,17 @@
 
 	async function loadMore() {
 		if (loading || !hasMore) return;
+		const op = () => loadMore();
 		loading = true;
 		try {
 			const body = await fetchPage(page + 1, source, sort);
-			if (!body) return;
+			if (!body) {
+				error = "couldn’t load";
+				lastFailedOp = op;
+				return;
+			}
+			error = null;
+			lastFailedOp = null;
 			// Offset pagination drifts when new firehose records land between
 			// page fetches — the same URI can appear at the bottom of page N
 			// and the top of page N+1. Filter dupes by URI on append so the
@@ -200,11 +215,16 @@
 
 				<div class="filter-row">
 					<FeedToolbar {source} {sort} onchange={applyQuery} />
-					<AutoLoadToggle bind:auto />
+					<div class="filter-end">
+						{#if loading}<span class="loading-caption">loading…</span>{/if}
+						<AutoLoadToggle bind:auto />
+					</div>
 				</div>
 
 				<div class="entries-wrap" class:loading aria-busy={loading}>
-					{#if items.length === 0}
+					{#if items.length === 0 && error && lastFailedOp}
+						<FeedError message={error} onretry={lastFailedOp} />
+					{:else if items.length === 0}
 						<p class="empty">nothing here yet.</p>
 					{:else}
 						<ol class="entries">
@@ -214,7 +234,11 @@
 								</li>
 							{/each}
 						</ol>
-						<LoadMore {hasMore} {loading} {auto} onload={loadMore} />
+						{#if error && lastFailedOp}
+							<FeedError message={error} onretry={lastFailedOp} />
+						{:else}
+							<LoadMore {hasMore} {loading} {auto} onload={loadMore} />
+						{/if}
 					{/if}
 				</div>
 			</div>
@@ -277,6 +301,18 @@
 		gap: 18px 32px;
 		padding: 10px 0 16px;
 		border-bottom: 1px solid var(--color-edge);
+	}
+	.filter-end {
+		display: flex;
+		align-items: baseline;
+		gap: 14px;
+	}
+	.loading-caption {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-fg-mute);
 	}
 	/* Tick-rule echoing the GreebleStrip vocabulary — visually distinct
 	   from the smooth gradient rule under the title. Marks the boundary
