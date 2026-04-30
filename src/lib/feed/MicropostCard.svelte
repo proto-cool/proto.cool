@@ -35,13 +35,6 @@
 		return uri.split('/').pop() ?? '';
 	}
 
-	// embed shapes covered:
-	//   app.bsky.embed.images           — { images: [...] }
-	//   app.bsky.embed.external         — { external: {...} }
-	//   app.bsky.embed.record           — { record: {...} }   (quote post)
-	//   app.bsky.embed.recordWithMedia  — { record: {...}, media: { images | external } }
-	// item.subject is server-resolved for record + recordWithMedia (the firehose
-	// extracts subject_uri for both).
 	let mediaEmbed = $derived.by(() => {
 		const e = value.embed as any;
 		if (!e) return null;
@@ -78,7 +71,11 @@
 	);
 </script>
 
-<a class="card" href={permalink} target="_blank" rel="noopener noreferrer">
+<article class="card">
+	<!-- background "open this post" affordance; sibling of inner content so
+	     nested links/buttons don't violate HTML interactive-nesting rules -->
+	<a class="card-overlay" href={permalink} target="_blank" rel="noopener noreferrer" aria-label="open post on bsky"></a>
+
 	<header class="head">
 		<span>{relativeTime(item.createdAt)}</span>
 		<span></span>
@@ -117,19 +114,30 @@
 		repostCount={item.engagement?.repostCount ?? 0}
 		likeCount={item.engagement?.likeCount ?? 0}
 	/>
-</a>
+</article>
 
 <style>
 	.card {
+		position: relative;
 		display: block;
-		text-decoration: none;
-		color: inherit;
 		background: var(--shell-veil);
 		border: 1px solid var(--color-edge);
 		padding: 18px 20px 16px;
 		container-type: inline-size;
 	}
 	.card:hover { border-color: var(--color-fg-dim); }
+	.card-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		text-indent: -9999px;
+		overflow: hidden;
+	}
+	/* All real content sits above the overlay so its own clicks land first. */
+	.card > :not(.card-overlay) {
+		position: relative;
+		z-index: 1;
+	}
 	.head {
 		display: flex; justify-content: space-between;
 		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;

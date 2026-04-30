@@ -67,7 +67,9 @@
 	});
 </script>
 
-<a class="card" href={permalink} target="_blank" rel="noopener noreferrer">
+<article class="card">
+	<a class="card-overlay" href={permalink} target="_blank" rel="noopener noreferrer" aria-label="open original post on bsky"></a>
+
 	<header class="head">
 		<span class="repost-line">↻ reposted · {relativeTime(item.createdAt)}</span>
 		<span class="kind-tag">REPOST</span>
@@ -94,19 +96,29 @@
 			likeCount={subject.engagement?.likeCount ?? 0}
 		/>
 	{/if}
-</a>
+</article>
 
 <style>
 	.card {
+		position: relative;
 		display: block;
-		text-decoration: none;
-		color: inherit;
 		background: var(--shell-veil);
 		border: 1px solid var(--color-edge);
 		padding: 18px 20px 16px;
 		container-type: inline-size;
 	}
 	.card:hover { border-color: var(--color-fg-dim); }
+	.card-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		text-indent: -9999px;
+		overflow: hidden;
+	}
+	.card > :not(.card-overlay) {
+		position: relative;
+		z-index: 1;
+	}
 	.head {
 		display: flex; justify-content: space-between;
 		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
