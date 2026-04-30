@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 import { getDb } from '$lib/server/bootstrap';
 import { hydrateRow, type FeedItem } from '$lib/server/feed';
 import { parseContent, type Block } from '$lib/server/blocks';
-import { getOwnerDid, getPdsHost } from '$lib/server/config';
+import { getOwnerDidFromState, getPdsHost } from '$lib/server/config';
 import { ownedBlobUrl } from '$lib/blob';
 
 type DocRow = {
@@ -59,7 +59,7 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 	if (!row) throw error(404, 'doc not found');
 
 	const item: FeedItem = hydrateRow(row);
-	const ownerDid = getOwnerDid() ?? '';
+	const ownerDid = getOwnerDidFromState(db) ?? '';
 	const pdsHost = getPdsHost();
 
 	const blocks: Block[] = await parseContent(

@@ -6,7 +6,7 @@ import { getFeedPage } from '$lib/server/feed';
 import { getFeatured } from '$lib/server/featured';
 import { getCachedProfile, resolveProfile } from '$lib/server/profiles';
 import { createAtpClient } from '$lib/server/atp-client';
-import { getBskyAppview, getOwnerDid, getPdsHost } from '$lib/server/config';
+import { getBskyAppview, getOwnerDidFromState, getPdsHost } from '$lib/server/config';
 
 const QuerySchema = z.object({
 	page: z.coerce.number().int().positive().optional()
@@ -54,7 +54,7 @@ export const load: PageServerLoad = async ({ url }) => {
 		}
 	}
 
-	const ownerDid = getOwnerDid() ?? '';
+	const ownerDid = getOwnerDidFromState(db) ?? '';
 	const blobCtx = { ownerDid, pdsHost: getPdsHost() };
 
 	return { featured, stream, blobCtx };

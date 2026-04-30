@@ -61,6 +61,13 @@ export async function bootstrap(): Promise<void> {
 		return;
 	}
 
+	// Persist the resolved DID so request-time loaders (which can't run async
+	// handle resolution on the hot path) can read it from the state table.
+	db.prepare(
+		`INSERT INTO state (key, value, updated_at) VALUES ('owner.did', ?, ?)
+		 ON CONFLICT (key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`
+	).run(ownerDid, new Date().toISOString());
+
 	await ensureBackfillIfNeeded(db, ownerDid);
 
 	const adapters: AdapterRegistry = {
