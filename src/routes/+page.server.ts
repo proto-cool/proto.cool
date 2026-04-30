@@ -1,61 +1,32 @@
 import type { PageServerLoad } from './$types';
-import { error } from '@sveltejs/kit';
-import { z } from 'zod';
 import { getDb } from '$lib/server/bootstrap';
 import { getFeedPage } from '$lib/server/feed';
 import { getFeatured } from '$lib/server/featured';
-import { getCachedProfile, resolveProfile } from '$lib/server/profiles';
-import { createAtpClient } from '$lib/server/atp-client';
-import { getBskyAppview, getOwnerDidFromState, getPdsHost } from '$lib/server/config';
-
-const QuerySchema = z.object({
-	page: z.coerce.number().int().positive().optional()
-});
-
-const PAGE_SIZE = 20;
+import { parseFeedQuery, feedQueryToInput } from '$lib/server/feed-params';
+import { hydrateSubjectHandles } from '$lib/server/hydrate-handles';
+import { getOwnerDidFromState, getPdsHost } from '$lib/server/config';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const db = getDb();
+	const q = parseFeedQuery(url.searchParams);
 
-	const parsed = QuerySchema.safeParse({
-		page: url.searchParams.get('page') ?? undefined
-	});
-	if (!parsed.success) throw error(400, parsed.error.message);
-	const page = parsed.data.page ?? 1;
+	// Featured is pinned content — stays visible across every filter so
+	// changing source/sort doesn't yank an item out from the top of the
+	// page. Always exclude its URI from the stream so the row never
+	// appears twice and offsets stay aligned across pages.
+	const featuredForExclude = getFeatured(db);
+	const featured = q.page === 1 ? featuredForExclude : null;
 
-	const featured = getFeatured(db);
-	const stream = getFeedPage(db, {
-		page,
-		limit: PAGE_SIZE,
-		exclude: featured ? [featured.uri] : []
-	});
-
-	// Hydrate handles for any subject in the stream — both reposts (subject is
-	// the original post) and quote posts (subject is the quoted record). For
-	// uncached DIDs, fire-and-forget the resolver so the next render has them.
-	const client = createAtpClient(getBskyAppview());
-	const subjectDids = new Set<string>();
-	for (const item of stream.items) {
-		if (item.subject) {
-			const m = item.subject.uri.match(/^at:\/\/([^\/]+)\//);
-			if (m) subjectDids.add(m[1]);
-		}
-	}
-	for (const did of subjectDids) {
-		const cached = getCachedProfile(db, did);
-		if (cached?.handle) {
-			for (const item of stream.items) {
-				if (item.subject && item.subject.uri.startsWith(`at://${did}/`)) {
-					item.subjectHandle = cached.handle;
-				}
-			}
-		} else {
-			void resolveProfile(db, client, did);
-		}
-	}
+	const stream = getFeedPage(
+		db,
+		feedQueryToInput(q, {
+			exclude: featuredForExclude ? [featuredForExclude.uri] : []
+		})
+	);
+	hydrateSubjectHandles(db, stream.items);
 
 	const ownerDid = getOwnerDidFromState(db) ?? '';
 	const blobCtx = { ownerDid, pdsHost: getPdsHost() };
 
-	return { featured, stream, blobCtx };
+	return { featured, stream, blobCtx, query: q };
 };
