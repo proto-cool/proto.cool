@@ -1,3 +1,4 @@
+import { writable } from 'svelte/store';
 import { themes, type ThemeId, type Mode, DEFAULT_THEME, DEFAULT_MODE } from './registry';
 import { writeCookie } from './cookies';
 import { resolveTheme, resolveMode } from './resolve';
@@ -10,6 +11,17 @@ const THEME_COOKIE = 'proto-theme';
 const MODE_COOKIE = 'proto-mode';
 
 /**
+ * Reactive store for the active theme id. Initialised from
+ * document.documentElement.dataset.theme on first read in the browser; falls
+ * back to DEFAULT_THEME on the server. setTheme() keeps it in sync.
+ */
+export const currentTheme = writable<ThemeId>(
+	(typeof document !== 'undefined'
+		? resolveTheme(document.documentElement.dataset.theme)
+		: DEFAULT_THEME) as ThemeId
+);
+
+/**
  * Browser-only: switch to the named theme.
  * Validates against the registry. Persists to cookie + updates the dom.
  */
@@ -19,6 +31,7 @@ export function setTheme(id: ThemeId): void {
 	if (typeof document !== 'undefined') {
 		document.documentElement.dataset.theme = resolved;
 	}
+	currentTheme.set(resolved as ThemeId);
 }
 
 /**
