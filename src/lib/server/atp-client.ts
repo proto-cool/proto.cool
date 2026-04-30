@@ -1,5 +1,5 @@
 import { Client, simpleFetchHandler } from '@atcute/client';
-import type { ActorIdentifier, Handle, Nsid } from '@atcute/lexicons';
+import type { ActorIdentifier, Handle, Nsid, ResourceUri } from '@atcute/lexicons';
 import type {} from '@atcute/atproto';
 import type {} from '@atcute/bluesky';
 
@@ -20,6 +20,16 @@ export interface AtpClient {
 		limit?: number;
 	}): Promise<ListRecordsResult>;
 	resolveHandle(handle: string): Promise<{ did: string }>;
+	getPosts(uris: string[]): Promise<{
+		posts: Array<{
+			uri: string;
+			cid: string;
+			record: Record<string, unknown>;
+			likeCount?: number;
+			repostCount?: number;
+			replyCount?: number;
+		}>;
+	}>;
 }
 
 export function createAtpClient(service: string): AtpClient {
@@ -64,6 +74,30 @@ export function createAtpClient(service: string): AtpClient {
 				);
 			}
 			return { did: response.data.did };
+		},
+
+		async getPosts(uris) {
+			// app.bsky.feed.getPosts caps at 25 URIs per call. The adapter slices
+			// before calling, so we trust the caller here and pass the URIs through
+			// as branded AT URIs.
+			const response = await rpc.get('app.bsky.feed.getPosts', {
+				params: { uris: uris as ResourceUri[] }
+			});
+			if (!response.ok) {
+				throw new Error(
+					`getPosts failed: ${response.data.error}: ${response.data.message ?? ''}`
+				);
+			}
+			return {
+				posts: response.data.posts.map((p) => ({
+					uri: p.uri,
+					cid: p.cid,
+					record: p.record as Record<string, unknown>,
+					likeCount: p.likeCount,
+					repostCount: p.repostCount,
+					replyCount: p.replyCount
+				}))
+			};
 		}
 	};
 }

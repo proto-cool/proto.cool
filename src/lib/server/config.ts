@@ -36,3 +36,7 @@ export function getOwnerDid(): string | null {
 	const v = process.env.PROTO_OWNER_DID;
 	return v && v.length > 0 ? v : null;
 }
+
+export function getBskyAppview(): string {
+	return process.env.PROTO_BSKY_APPVIEW ?? 'https://public.api.bsky.app';
+}

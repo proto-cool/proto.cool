@@ -20,6 +20,9 @@ function makeMockClient(
 		},
 		async resolveHandle() {
 			throw new Error('not used');
+		},
+		async getPosts() {
+			throw new Error('not used');
 		}
 	};
 }
