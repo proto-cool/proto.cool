@@ -40,3 +40,11 @@ export function getOwnerDid(): string | null {
 export function getBskyAppview(): string {
 	return process.env.PROTO_BSKY_APPVIEW ?? 'https://public.api.bsky.app';
 }
+
+export function getPdsHost(): string {
+	return process.env.PROTO_PDS_HOST ?? 'pds.proto.cool';
+}
+
+export function shouldRunBackground(): boolean {
+	return process.env.NODE_ENV === 'production' || process.env.PROTO_BACKGROUND === '1';
+}
