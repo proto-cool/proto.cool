@@ -1,9 +1,5 @@
 <script lang="ts">
-	type Props = {
-		message?: string;
-		onretry: () => void;
-	};
-	let { message = "couldn't load", onretry }: Props = $props();
+	let { message = "couldn’t load", onretry }: { message?: string; onretry: () => void } = $props();
 </script>
 
 <p class="err" role="status" aria-live="polite">
