@@ -33,6 +33,22 @@ export function getOwnerDid(): string | null {
 	return v && v.length > 0 ? v : null;
 }
 
+/**
+ * Read the operator's DID from the state table (persisted by bootstrap after
+ * handle resolution) or fall back to the env. Returns null only if neither
+ * is set — i.e. bootstrap hasn't run yet, or both env + handle paths failed.
+ */
+export function getOwnerDidFromState(
+	db: { prepare: (sql: string) => { get: () => unknown } }
+): string | null {
+	const fromEnv = getOwnerDid();
+	if (fromEnv) return fromEnv;
+	const row = db
+		.prepare(`SELECT value FROM state WHERE key = 'owner.did'`)
+		.get() as { value: string } | undefined;
+	return row?.value ?? null;
+}
+
 export function getBskyAppview(): string {
 	return process.env.PROTO_BSKY_APPVIEW ?? 'https://public.api.bsky.app';
 }
