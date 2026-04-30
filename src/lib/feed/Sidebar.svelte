@@ -44,28 +44,28 @@
 
 	<section class="block">
 		<header class="kicker">/// elsewhere</header>
-		<div class="grid" role="list">
-			<a class="cell" role="listitem" href="https://bsky.app/profile/proto.cool" target="_blank" rel="noopener noreferrer">
+		<div class="grid">
+			<a class="cell" href="https://bsky.app/profile/proto.cool" target="_blank" rel="noopener noreferrer">
 				<span class="icon"><BskyIcon /></span>
 				<span class="label">bsky</span>
 			</a>
-			<a class="cell" role="listitem" href="https://github.com/proto-cool" target="_blank" rel="noopener noreferrer">
+			<a class="cell" href="https://github.com/proto-cool" target="_blank" rel="noopener noreferrer">
 				<span class="icon"><GithubLogo size={24} weight="regular" /></span>
 				<span class="label">gh</span>
 			</a>
-			<a class="cell" role="listitem" href="https://steamcommunity.com/id/Protocol7/" target="_blank" rel="noopener noreferrer">
+			<a class="cell" href="https://steamcommunity.com/id/Protocol7/" target="_blank" rel="noopener noreferrer">
 				<span class="icon"><SteamLogo size={24} weight="regular" /></span>
 				<span class="label">steam</span>
 			</a>
-			<a class="cell" role="listitem" href="https://atproto-browser.vercel.app/at/proto.cool" target="_blank" rel="noopener noreferrer">
+			<a class="cell" href="https://atproto-browser.vercel.app/at/proto.cool" target="_blank" rel="noopener noreferrer">
 				<span class="icon icon-text">at://</span>
 				<span class="label">atp</span>
 			</a>
-			<a class="cell" role="listitem" href="mailto:nduncan@fastmail.com">
+			<a class="cell" href="mailto:nduncan@fastmail.com">
 				<span class="icon"><EnvelopeSimple size={24} weight="regular" /></span>
 				<span class="label">mail</span>
 			</a>
-			<a class="cell" role="listitem" href="/feed.xml">
+			<a class="cell" href="/feed.xml">
 				<span class="icon"><RssSimple size={24} weight="regular" /></span>
 				<span class="label">rss</span>
 			</a>
