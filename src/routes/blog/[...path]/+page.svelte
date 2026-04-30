@@ -144,12 +144,15 @@
 	.breadcrumb .sep { color: var(--color-fg-mute); padding: 0 8px; }
 
 	.hero {
-		aspect-ratio: 21 / 9;
 		margin-bottom: 32px;
-		border: 1px solid var(--color-edge);
-		overflow: hidden;
 	}
-	.hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+	.hero img {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: 60vh;
+		object-fit: contain;
+	}
 
 	.meta {
 		font-family: var(--font-mono);
