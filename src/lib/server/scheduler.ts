@@ -9,8 +9,8 @@ import type { AdapterRegistry } from './adapters/types';
 import type { Breaker } from './breaker';
 import { TIERS, tierForAge, isDueForRefresh, type Tier } from './tiers';
 
-type EngagementSource = 'bsky' | 'grain';
-const ENGAGEMENT_SOURCES: readonly EngagementSource[] = ['bsky', 'grain'];
+type EngagementSource = 'bsky' | 'standard' | 'grain';
+const ENGAGEMENT_SOURCES: readonly EngagementSource[] = ['bsky', 'standard'];
 
 const PHASE_A_BATCH = 25;       // bsky.fetchRecords batch
 const PHASE_B_BATCH = 25;       // engagement batch per source-tier
@@ -183,6 +183,7 @@ function collectionsForEngagementSource(source: EngagementSource): string[] {
 	// Reposts inherit their displayed engagement via the subject join in
 	// feed.ts, no separate refresh needed.
 	if (source === 'bsky') return ['app.bsky.feed.post'];
+	if (source === 'standard') return ['site.standard.document'];
 	if (source === 'grain') return []; // updated when grain NSIDs land
 	return [];
 }

@@ -24,12 +24,13 @@ export type AdapterBatchResult<T> = {
 };
 
 export interface Adapter {
-	readonly source: Extract<Source, 'bsky' | 'grain'>;
+	readonly source: Extract<Source, 'bsky' | 'standard' | 'grain'>;
 	fetchEngagement(uris: string[]): Promise<AdapterBatchResult<EngagementRow>>;
 	fetchRecords(uris: string[]): Promise<AdapterBatchResult<RecordRow>>;
 }
 
 export type AdapterRegistry = {
 	bsky: Adapter;
+	standard: Adapter;
 	grain: Adapter;
 };

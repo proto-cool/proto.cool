@@ -22,6 +22,7 @@ import {
 import { createAtpClient } from './atp-client';
 import { runBackfill } from './backfill';
 import { createBskyAdapter } from './adapters/bsky';
+import { createStandardAdapter } from './adapters/standard';
 import { createGrainAdapter } from './adapters/grain';
 import type { AdapterRegistry } from './adapters/types';
 import { createBreaker } from './breaker';
@@ -64,6 +65,7 @@ export async function bootstrap(): Promise<void> {
 
 	const adapters: AdapterRegistry = {
 		bsky: createBskyAdapter(createAtpClient(getBskyAppview())),
+		standard: createStandardAdapter(db, createAtpClient(getBskyAppview())),
 		grain: createGrainAdapter()
 	};
 	const breaker = createBreaker(db);

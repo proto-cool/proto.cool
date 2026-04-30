@@ -12,7 +12,7 @@ beforeEach(() => {
 	runMigrations(db);
 });
 
-function fakeAdapter(source: 'bsky' | 'grain', overrides: Partial<Adapter> = {}): Adapter {
+function fakeAdapter(source: 'bsky' | 'standard' | 'grain', overrides: Partial<Adapter> = {}): Adapter {
 	const noop: Adapter = {
 		source,
 		async fetchEngagement(uris) {
@@ -45,6 +45,7 @@ function fakeAdapter(source: 'bsky' | 'grain', overrides: Partial<Adapter> = {})
 function fakeRegistry(over: Partial<AdapterRegistry> = {}): AdapterRegistry {
 	return {
 		bsky: over.bsky ?? fakeAdapter('bsky'),
+		standard: over.standard ?? fakeAdapter('standard'),
 		grain: over.grain ?? fakeAdapter('grain')
 	};
 }
