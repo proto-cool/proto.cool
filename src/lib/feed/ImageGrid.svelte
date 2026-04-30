@@ -2,7 +2,7 @@
 	import AltChip from './AltChip.svelte';
 	import Lightbox from './Lightbox.svelte';
 
-	export type GridImage = { src: string; alt?: string };
+	export type GridImage = { src: string; alt?: string; aspect?: number };
 
 	let { images }: { images: GridImage[] } = $props();
 
@@ -17,15 +17,16 @@
 		lightboxOpen = true;
 	}
 
-	function onImgLoad(key: string, e: Event) {
+	function onImgLoad(key: string, e: Event, hasServerAspect: boolean) {
+		if (hasServerAspect) return;
 		const img = e.currentTarget as HTMLImageElement;
 		if (img.naturalWidth && img.naturalHeight) {
 			aspects[key] = img.naturalWidth / img.naturalHeight;
 		}
 	}
 
-	function singleSlotStyle(key: string): string | null {
-		const a = aspects[key];
+	function singleSlotStyle(key: string, serverAspect: number | undefined): string | null {
+		const a = serverAspect ?? aspects[key];
 		if (a === undefined) return null;
 		const widthPct = a >= 1 ? 100 : Math.max(50, a * 100);
 		return `aspect-ratio: ${a}; width: ${widthPct}%;`;
@@ -49,7 +50,7 @@
 			<button
 				type="button"
 				class="slot"
-				style={layout === 'one' ? singleSlotStyle(key) : null}
+				style={layout === 'one' ? singleSlotStyle(key, img.aspect) : null}
 				onclick={(e) => open(i, e)}
 				aria-label={`open image ${i + 1}`}
 			>
@@ -58,7 +59,7 @@
 					src={img.src}
 					alt={img.alt ?? ''}
 					loading="lazy"
-					onload={(e) => onImgLoad(key, e)}
+					onload={(e) => onImgLoad(key, e, img.aspect !== undefined)}
 				/>
 				{#if img.alt}
 					<AltChip alt={img.alt} />

@@ -46,10 +46,20 @@
 		const e = subjectValue.embed as any;
 		const list = e?.images ?? e?.media?.images;
 		if (Array.isArray(list)) {
-			return list.map((i: { image: { ref: any }; alt?: string }) => ({
-				src: blobUrl(blobCtx, subjectDid, cidOf(i.image.ref)),
-				alt: i.alt
-			}));
+			return list.map(
+				(i: {
+					image: { ref: any };
+					alt?: string;
+					aspectRatio?: { width: number; height: number };
+				}) => ({
+					src: blobUrl(blobCtx, subjectDid, cidOf(i.image.ref)),
+					alt: i.alt,
+					aspect:
+						i.aspectRatio && i.aspectRatio.height > 0
+							? i.aspectRatio.width / i.aspectRatio.height
+							: undefined
+				})
+			);
 		}
 		return [];
 	});

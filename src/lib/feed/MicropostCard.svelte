@@ -47,10 +47,20 @@
 		if (Array.isArray(images)) {
 			return {
 				kind: 'images' as const,
-				images: images.map((i: { image: { ref: any }; alt?: string }) => ({
-					src: blobUrl(blobCtx, blobCtx.ownerDid, cidOf(i.image.ref)),
-					alt: i.alt
-				}))
+				images: images.map(
+					(i: {
+						image: { ref: any };
+						alt?: string;
+						aspectRatio?: { width: number; height: number };
+					}) => ({
+						src: blobUrl(blobCtx, blobCtx.ownerDid, cidOf(i.image.ref)),
+						alt: i.alt,
+						aspect:
+							i.aspectRatio && i.aspectRatio.height > 0
+								? i.aspectRatio.width / i.aspectRatio.height
+								: undefined
+					})
+				)
 			};
 		}
 		const external = e.external ?? e.media?.external;
