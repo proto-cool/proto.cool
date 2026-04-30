@@ -40,7 +40,7 @@ describe('db', () => {
 		const applied = db
 			.prepare(`SELECT version FROM schema_migrations ORDER BY version`)
 			.all() as Array<{ version: number }>;
-		expect(applied.map((r) => r.version)).toEqual([1]);
+		expect(applied.map((r) => r.version)).toEqual([1, 2]);
 	});
 
 	it('records.uri is PRIMARY KEY and engagement.uri cascades on delete', () => {
@@ -129,5 +129,15 @@ describe('db', () => {
 					'2026-04-01T00:00:00.000Z'
 				)
 		).toThrow();
+	});
+
+	it('applies the profiles migration', () => {
+		const db = openDatabase(':memory:');
+		runMigrations(db);
+		const cols = db
+			.prepare(`PRAGMA table_info(profiles)`)
+			.all() as Array<{ name: string }>;
+		const names = cols.map((c) => c.name).sort();
+		expect(names).toEqual(['did', 'display_name', 'fetched_at', 'handle']);
 	});
 });
