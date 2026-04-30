@@ -2,58 +2,60 @@ import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
 import { getDb } from '$lib/server/bootstrap';
-import { getFeed, type FeedFilter } from '$lib/server/feed';
-import { decodeCursor } from '$lib/server/cursor';
-
-const SourceSchema = z.enum(['bsky', 'standard', 'grain']);
-const OrderSchema = z.enum(['asc', 'desc']);
+import { getFeedPage } from '$lib/server/feed';
+import { getFeatured } from '$lib/server/featured';
+import { getCachedProfile, resolveProfile } from '$lib/server/profiles';
+import { createAtpClient } from '$lib/server/atp-client';
+import { getBskyAppview, getOwnerDid, getPdsHost } from '$lib/server/config';
 
 const QuerySchema = z.object({
-	source: z.array(SourceSchema).optional(),
-	from: z.string().datetime().optional(),
-	to: z.string().datetime().optional(),
-	cursor: z.string().min(1).optional(),
-	limit: z.coerce.number().int().positive().max(50).optional(),
-	order: OrderSchema.optional()
+	page: z.coerce.number().int().positive().optional()
 });
 
-export const load: PageServerLoad = ({ url }) => {
+const PAGE_SIZE = 20;
+
+export const load: PageServerLoad = async ({ url }) => {
 	const db = getDb();
 
-	const raw = {
-		source: url.searchParams.getAll('source'),
-		from: url.searchParams.get('from') ?? undefined,
-		to: url.searchParams.get('to') ?? undefined,
-		cursor: url.searchParams.get('cursor') ?? undefined,
-		limit: url.searchParams.get('limit') ?? undefined,
-		order: url.searchParams.get('order') ?? undefined
-	};
-	// `source` may be [] when no source params present — treat as omitted.
-	const normalized = {
-		...raw,
-		source: raw.source.length > 0 ? raw.source : undefined
-	};
+	const parsed = QuerySchema.safeParse({
+		page: url.searchParams.get('page') ?? undefined
+	});
+	if (!parsed.success) throw error(400, parsed.error.message);
+	const page = parsed.data.page ?? 1;
 
-	const parsed = QuerySchema.safeParse(normalized);
-	if (!parsed.success) {
-		throw error(400, parsed.error.message);
+	const featured = getFeatured(db);
+	const stream = getFeedPage(db, {
+		page,
+		limit: PAGE_SIZE,
+		exclude: featured ? [featured.uri] : []
+	});
+
+	// Hydrate handles for any subject in the stream — both reposts (subject is
+	// the original post) and quote posts (subject is the quoted record). For
+	// uncached DIDs, fire-and-forget the resolver so the next render has them.
+	const client = createAtpClient(getBskyAppview());
+	const subjectDids = new Set<string>();
+	for (const item of stream.items) {
+		if (item.subject) {
+			const m = item.subject.uri.match(/^at:\/\/([^\/]+)\//);
+			if (m) subjectDids.add(m[1]);
+		}
 	}
-
-	const filter: FeedFilter = {
-		sources: parsed.data.source,
-		from: parsed.data.from,
-		to: parsed.data.to,
-		limit: parsed.data.limit,
-		order: parsed.data.order
-	};
-
-	if (parsed.data.cursor) {
-		try {
-			filter.cursor = decodeCursor(parsed.data.cursor);
-		} catch {
-			throw error(400, 'invalid cursor');
+	for (const did of subjectDids) {
+		const cached = getCachedProfile(db, did);
+		if (cached?.handle) {
+			for (const item of stream.items) {
+				if (item.subject && item.subject.uri.startsWith(`at://${did}/`)) {
+					item.subjectHandle = cached.handle;
+				}
+			}
+		} else {
+			void resolveProfile(db, client, did);
 		}
 	}
 
-	return { feed: getFeed(db, filter) };
+	const ownerDid = getOwnerDid() ?? '';
+	const blobCtx = { ownerDid, pdsHost: getPdsHost() };
+
+	return { featured, stream, blobCtx };
 };
