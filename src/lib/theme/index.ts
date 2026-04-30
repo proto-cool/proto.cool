@@ -16,9 +16,9 @@ const MODE_COOKIE = 'proto-mode';
  * back to DEFAULT_THEME on the server. setTheme() keeps it in sync.
  */
 export const currentTheme = writable<ThemeId>(
-	(typeof document !== 'undefined'
+	typeof document !== 'undefined'
 		? resolveTheme(document.documentElement.dataset.theme)
-		: DEFAULT_THEME) as ThemeId
+		: DEFAULT_THEME
 );
 
 /**
@@ -31,7 +31,7 @@ export function setTheme(id: ThemeId): void {
 	if (typeof document !== 'undefined') {
 		document.documentElement.dataset.theme = resolved;
 	}
-	currentTheme.set(resolved as ThemeId);
+	currentTheme.set(resolved);
 }
 
 /**
