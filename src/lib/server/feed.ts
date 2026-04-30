@@ -18,13 +18,17 @@ export type FeedItem = {
 	value: unknown;
 	engagement?: EngagementSummary;
 	subject?: FeedItem | null;
+	// Hydrated server-side from the profiles cache when a subject is present.
+	// May be null if not cached yet (the page loader fires an async resolve and
+	// it'll be present on the next render).
+	subjectHandle?: string | null;
 };
 
 export type FeedFilter = {
 	// undefined or [] both mean "no source filter" — return all sources.
-	// A source whose NSIDs aren't wired up yet (standard/grain when collections aren't wired up) is
-	// silently dropped from the IN clause; if that's the only source, the
-	// query reduces to `1 = 0` (zero rows).
+	// A source whose NSIDs aren't wired up yet (grain in v1) is silently
+	// dropped from the IN clause; if that's the only source, the query
+	// reduces to `1 = 0` (zero rows).
 	sources?: Source[];
 	from?: string; // ISO 8601 — inclusive lower bound (>=)
 	to?: string;   // ISO 8601 — exclusive upper bound (<)
@@ -35,6 +39,13 @@ export type FeedFilter = {
 	// `reply` field) are excluded from the feed, matching bsky.app's default
 	// "Posts" tab. Set true for a "Posts & Replies"-style view.
 	includeReplies?: boolean;
+	// Match records where value->>'$.tags' (a JSON array) contains the value.
+	tag?: string;
+	// Filter to records that have a non-null value->>'$.coverImage'.
+	requireCover?: boolean;
+	// URIs to omit from the result (for "exclude the featured doc from the
+	// stream" use case).
+	exclude?: readonly string[];
 };
 
 const DEFAULT_LIMIT = 20;
@@ -90,6 +101,21 @@ export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
 		wheres.push(
 			`(r.collection != 'app.bsky.feed.post' OR json_extract(r.value, '$.reply') IS NULL)`
 		);
+	}
+
+	if (filter.tag) {
+		wheres.push(
+			`EXISTS (SELECT 1 FROM json_each(json_extract(r.value, '$.tags')) WHERE value = ?)`
+		);
+		params.push(filter.tag);
+	}
+	if (filter.requireCover) {
+		wheres.push(`json_extract(r.value, '$.coverImage') IS NOT NULL`);
+	}
+	if (filter.exclude && filter.exclude.length > 0) {
+		const placeholders = filter.exclude.map(() => '?').join(', ');
+		wheres.push(`r.uri NOT IN (${placeholders})`);
+		params.push(...filter.exclude);
 	}
 
 	params.push(limit);
@@ -172,6 +198,49 @@ function parseEngagement(
 function parseValue(raw: string | null): unknown {
 	if (raw === null) return null;
 	return JSON.parse(raw);
+}
+
+export type FeedPage = {
+	items: FeedItem[];
+	total: number;
+	page: number;
+	totalPages: number;
+};
+
+export type FeedPageInput = Omit<FeedFilter, 'cursor'> & {
+	page?: number;
+};
+
+export function getFeedPage(db: DB, input: FeedPageInput): FeedPage {
+	const limit =
+		typeof input.limit === 'number' && input.limit > 0
+			? Math.min(input.limit, MAX_LIMIT)
+			: DEFAULT_LIMIT;
+	const page =
+		typeof input.page === 'number' && input.page > 0 ? Math.floor(input.page) : 1;
+
+	const baseFilter: FeedFilter = { ...input, cursor: undefined, limit };
+	const built = buildFeedQuery(baseFilter);
+	const fromIdx = built.sql.indexOf('FROM records r');
+	if (fromIdx < 0) throw new Error('buildFeedQuery sql shape changed');
+	const orderIdx = built.sql.indexOf('ORDER BY');
+	const wherePart = built.sql.slice(fromIdx, orderIdx >= 0 ? orderIdx : built.sql.length);
+
+	// COUNT runs against the same FROM/JOIN/WHERE but drops ORDER/LIMIT and the
+	// trailing limit param.
+	const countSql = `SELECT COUNT(*) AS n ${wherePart}`;
+	const countParams = built.params.slice(0, built.params.length - 1);
+	const total = (db.prepare(countSql).get(...countParams) as { n: number }).n;
+
+	// Paged items query: replace the trailing LIMIT with LIMIT ? OFFSET ?
+	const pageSql = built.sql.replace(/LIMIT \?\s*$/, 'LIMIT ? OFFSET ?');
+	const offset = (page - 1) * limit;
+	const items = (db.prepare(pageSql).all(...countParams, limit, offset) as FeedRow[]).map(
+		hydrateRow
+	);
+
+	const totalPages = Math.max(1, Math.ceil(total / limit));
+	return { items, total, page, totalPages };
 }
 
 export function getFeed(
