@@ -17,7 +17,7 @@ export function dayOfYear(d: Date): number {
 	return total;
 }
 
-const now = writable(new Date());
+export const now = writable(new Date());
 let interval: ReturnType<typeof setInterval> | null = null;
 
 export function startRuntimeTicks(): void {
