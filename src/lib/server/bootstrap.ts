@@ -21,6 +21,7 @@ import {
 } from './config';
 import { createAtpClient } from './atp-client';
 import { runBackfill } from './backfill';
+import { enqueueMissingExternals } from './enqueue-externals';
 import { createBskyAdapter } from './adapters/bsky';
 import { createStandardAdapter } from './adapters/standard';
 import { createGrainAdapter } from './adapters/grain';
@@ -69,6 +70,15 @@ export async function bootstrap(): Promise<void> {
 	).run(ownerDid, new Date().toISOString());
 
 	await ensureBackfillIfNeeded(db, ownerDid);
+
+	// Enqueue external pending rows for any owned record whose subject_uri
+	// (repost subject, embed.record, embed.recordWithMedia) doesn't yet have
+	// a corresponding row. Idempotent; covers data inserted by older backfill
+	// runs that didn't enqueue subjects. Cheap on subsequent boots.
+	const enq = enqueueMissingExternals(db);
+	if (enq.inserted > 0) {
+		console.info(`[bootstrap] enqueued ${enq.inserted} missing external subjects (scanned ${enq.scanned})`);
+	}
 
 	const adapters: AdapterRegistry = {
 		bsky: createBskyAdapter(createAtpClient(getBskyAppview())),

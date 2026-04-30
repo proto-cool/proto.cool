@@ -24,6 +24,12 @@ export async function runBackfill(
 		   subject_uri = excluded.subject_uri,
 		   indexed_at = excluded.indexed_at`
 	);
+	const insertPending = db.prepare(
+		`INSERT INTO records
+		   (uri, did, collection, rkey, cid, kind, status, subject_uri, value, created_at, indexed_at)
+		 VALUES (?, ?, ?, ?, '', 'external', 'pending', NULL, NULL, ?, ?)
+		 ON CONFLICT (uri) DO NOTHING`
+	);
 
 	const result: BackfillResult = { totalInserted: 0, byCollection: {} };
 
@@ -58,6 +64,15 @@ export async function runBackfill(
 						createdAt,
 						now
 					);
+					if (subjectUri) {
+						const parts = subjectUri.split('/');
+						const extDid = parts[2];
+						const extCollection = parts[3];
+						const extRkey = parts[4];
+						if (extDid && extCollection && extRkey) {
+							insertPending.run(subjectUri, extDid, extCollection, extRkey, now, now);
+						}
+					}
 				}
 			});
 			insertMany(page.records);
