@@ -22,6 +22,7 @@ import {
 import { createAtpClient } from './atp-client';
 import { runBackfill } from './backfill';
 import { enqueueMissingExternals } from './enqueue-externals';
+import { reconcileCreatedAt } from './reconcile-timestamps';
 import { createBskyAdapter } from './adapters/bsky';
 import { createStandardAdapter } from './adapters/standard';
 import { createGrainAdapter } from './adapters/grain';
@@ -78,6 +79,13 @@ export async function bootstrap(): Promise<void> {
 	const enq = enqueueMissingExternals(db);
 	if (enq.inserted > 0) {
 		console.info(`[bootstrap] enqueued ${enq.inserted} missing external subjects (scanned ${enq.scanned})`);
+	}
+
+	// Fix created_at for records whose lexicon doesn't use `createdAt`
+	// (e.g. site.standard.document → publishedAt). Idempotent.
+	const ts = reconcileCreatedAt(db);
+	if (ts.updated > 0) {
+		console.info(`[bootstrap] reconciled ${ts.updated} created_at values (scanned ${ts.scanned})`);
 	}
 
 	const adapters: AdapterRegistry = {

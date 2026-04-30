@@ -7,6 +7,7 @@
 
 import type { DB } from './db';
 import { WATCHED_COLLECTIONS } from './config';
+import { extractCreatedAt } from './created-at';
 
 export type CommitOp =
 	| { action: 'create' | 'update'; path: string; cid: string; record: Record<string, unknown> }
@@ -68,8 +69,7 @@ export function applyCommit(
 			}
 
 			const value = op.record;
-			const createdAt =
-				typeof value.createdAt === 'string' ? value.createdAt : nowIso;
+			const createdAt = extractCreatedAt(collection, value, nowIso);
 			const subjectUri = extractSubjectUri(value);
 			upsertOwned.run(
 				uri,

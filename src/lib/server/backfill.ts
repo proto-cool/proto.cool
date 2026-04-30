@@ -1,6 +1,7 @@
 import type { DB } from './db';
 import type { AtpClient } from './atp-client';
 import { WATCHED_COLLECTIONS } from './config';
+import { extractCreatedAt } from './created-at';
 
 export type BackfillResult = {
 	totalInserted: number;
@@ -50,8 +51,7 @@ export async function runBackfill(
 				for (const r of records) {
 					const rkey = r.uri.split('/').at(-1) ?? '';
 					const value = r.value;
-					const createdAt =
-						typeof value.createdAt === 'string' ? value.createdAt : now;
+					const createdAt = extractCreatedAt(collection, value, now);
 					const subjectUri = extractSubjectUri(value);
 					upsert.run(
 						r.uri,
