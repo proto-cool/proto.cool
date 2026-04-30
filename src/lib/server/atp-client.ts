@@ -49,6 +49,11 @@ export interface AtpClient {
 			replyCount?: number;
 		}>;
 	}>;
+	getProfile(did: string): Promise<{
+		did: string;
+		handle: string;
+		displayName?: string;
+	}>;
 }
 
 export function createAtpClient(service: string): AtpClient {
@@ -144,6 +149,22 @@ export function createAtpClient(service: string): AtpClient {
 					repostCount: p.repostCount,
 					replyCount: p.replyCount
 				}))
+			};
+		},
+
+		async getProfile(did) {
+			const response = await rpc.get('app.bsky.actor.getProfile', {
+				params: { actor: did as ActorIdentifier }
+			});
+			if (!response.ok) {
+				throw new Error(
+					`getProfile failed: ${response.data.error}: ${response.data.message ?? ''}`
+				);
+			}
+			return {
+				did: response.data.did,
+				handle: response.data.handle,
+				displayName: response.data.displayName
 			};
 		}
 	};

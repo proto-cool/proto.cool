@@ -26,6 +26,9 @@ function makeMockClient(
 		},
 		async getPosts() {
 			throw new Error('not used');
+		},
+		async getProfile() {
+			throw new Error('not used');
 		}
 	};
 }

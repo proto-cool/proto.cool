@@ -9,7 +9,8 @@ function fakeClient(posts: PostsPayload): AtpClient {
 		async listRecords() { throw new Error('not used'); },
 		async getRecord() { throw new Error('not used'); },
 		async resolveHandle() { throw new Error('not used'); },
-		async getPosts() { return { posts }; }
+		async getPosts() { return { posts }; },
+		async getProfile() { throw new Error('not used'); }
 	};
 }
 
@@ -70,7 +71,8 @@ describe('bskyAdapter.fetchEngagement', () => {
 			async getPosts(uris) {
 				calls.push(uris);
 				return { posts: uris.map((uri) => ({ uri, cid: 'c', record: {} })) };
-			}
+			},
+			async getProfile() { throw new Error('not used'); }
 		};
 		const adapter = createBskyAdapter(client);
 		const uris = Array.from({ length: 60 }, (_, i) => `at://did:plc:x/app.bsky.feed.post/${i}`);
