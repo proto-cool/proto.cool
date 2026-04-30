@@ -156,7 +156,7 @@
 	.title {
 		font-family: var(--font-display);
 		font-style: italic;
-		font-weight: 400;
+		font-weight: 800;
 		font-size: 56px;
 		line-height: 1.05;
 		letter-spacing: -0.015em;

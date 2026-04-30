@@ -54,7 +54,7 @@
 	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 14px; }
 	.title {
 		font-family: var(--font-display);
-		font-style: italic; font-weight: 400;
+		font-style: italic; font-weight: 800;
 		font-size: var(--text-md); line-height: 1.1;
 		margin: 0 0 10px;
 		color: var(--color-fg);

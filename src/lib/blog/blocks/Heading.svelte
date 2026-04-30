@@ -33,7 +33,7 @@
 	.h1, .h2, .h3 {
 		font-family: var(--font-display);
 		font-style: italic;
-		font-weight: 400;
+		font-weight: 800;
 		letter-spacing: -0.01em;
 	}
 	.h1 { font-size: 40px; }

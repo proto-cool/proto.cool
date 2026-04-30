@@ -70,7 +70,7 @@
 	.body { padding: 24px 28px 22px; }
 	.title {
 		font-family: var(--font-display);
-		font-style: italic; font-weight: 400;
+		font-style: italic; font-weight: 800;
 		font-size: var(--text-lg); line-height: 1.05;
 		letter-spacing: -0.015em;
 		margin: 0 0 12px;
