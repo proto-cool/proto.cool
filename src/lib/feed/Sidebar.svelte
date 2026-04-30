@@ -39,16 +39,16 @@
 	}
 	.kicker {
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.2em;
 		text-transform: uppercase;
 		color: var(--color-fg-dim);
-		margin: 0 0 12px;
-		padding-bottom: 10px;
+		margin: 0 0 14px;
+		padding-bottom: 12px;
 		border-bottom: 1px solid var(--color-edge);
 	}
 	.body {
-		font-size: 13px;
+		font-size: var(--text-sm);
 		line-height: 1.6;
 		color: var(--color-fg);
 		margin: 0;
@@ -62,7 +62,7 @@
 		padding: 0;
 		margin: 0;
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 	}

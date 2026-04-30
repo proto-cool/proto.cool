@@ -42,11 +42,11 @@
 		display: flex;
 		align-items: center;
 		gap: 22px;
-		padding-top: 12px;
-		margin-top: 14px;
+		padding-top: 14px;
+		margin-top: 16px;
 		border-top: 1px solid var(--color-edge);
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.08em;
 	}
 	.stat { display: inline-flex; align-items: baseline; gap: 6px; }

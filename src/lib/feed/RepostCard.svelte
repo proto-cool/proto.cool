@@ -127,22 +127,22 @@
 	}
 	.head {
 		display: flex; justify-content: space-between; align-items: center;
-		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+		font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em;
 	}
 	.repost-line { color: var(--color-cool); }
-	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 12px; }
+	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 14px; }
 	.subject-head {
 		display: flex; justify-content: space-between;
-		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+		font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em;
 		color: var(--color-fg-dim);
-		padding-bottom: 6px;
-		margin-bottom: 10px;
+		padding-bottom: 8px;
+		margin-bottom: 12px;
 	}
 	.handle { color: var(--color-fg); }
-	.body { margin: 0 0 12px; line-height: 1.55; color: var(--color-fg); font-size: 14px; }
-	.embed-wrap { margin: 12px 0 0; }
+	.body { margin: 0 0 14px; line-height: 1.55; color: var(--color-fg); font-size: var(--text-base); }
+	.embed-wrap { margin: 14px 0 0; }
 	.unavailable {
-		font-family: var(--font-mono); font-size: 12px; color: var(--color-fg-mute);
-		text-align: center; padding: 24px 0; margin: 0;
+		font-family: var(--font-mono); font-size: 14px; color: var(--color-fg-mute);
+		text-align: center; padding: 28px 0; margin: 0;
 	}
 </style>

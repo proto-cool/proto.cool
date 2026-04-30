@@ -30,12 +30,12 @@
 	}
 	.chip {
 		font-family: var(--font-mono);
-		font-size: 10px;
+		font-size: 11px;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: var(--color-fg-dim);
 		border: 1px solid var(--color-edge);
-		padding: 2px 6px;
+		padding: 3px 7px;
 	}
 	.chip-overflow { color: var(--color-fg-mute); }
 </style>

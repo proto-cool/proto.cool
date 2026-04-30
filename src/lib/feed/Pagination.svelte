@@ -44,10 +44,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 12px;
-		margin: 24px 0 8px;
+		gap: 14px;
+		margin: 28px 0 8px;
 		font-family: var(--font-mono);
-		font-size: 12px;
+		font-size: 14px;
 		letter-spacing: 0.12em;
 	}
 	.step, .num, .ellipsis {

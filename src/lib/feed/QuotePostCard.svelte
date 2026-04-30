@@ -46,21 +46,21 @@
 		display: block;
 		text-decoration: none;
 		color: inherit;
-		margin-top: 12px;
-		padding: 12px 14px;
+		margin-top: 14px;
+		padding: 14px 16px;
 		border: 1px solid var(--color-edge);
 		background: var(--color-bg);
-		font-size: 13px;
+		font-size: var(--text-sm);
 	}
 	.head {
 		display: flex;
 		justify-content: space-between;
 		font-family: var(--font-mono);
-		font-size: 10px;
+		font-size: 12px;
 		letter-spacing: 0.12em;
 		color: var(--color-fg-dim);
-		padding-bottom: 6px;
-		margin-bottom: 8px;
+		padding-bottom: 8px;
+		margin-bottom: 10px;
 		border-bottom: 1px solid var(--color-edge);
 	}
 	.handle { color: var(--color-fg); }

@@ -61,29 +61,29 @@
 		padding: 14px 20px;
 		border-bottom: 1px solid var(--color-edge);
 		font-family: var(--font-mono);
-		font-size: 11px; letter-spacing: 0.2em;
+		font-size: 13px; letter-spacing: 0.2em;
 		color: var(--color-fg-dim);
 	}
 	.month { color: var(--color-fg-dim); }
 	.cover { aspect-ratio: 16 / 7; overflow: hidden; }
 	.cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-	.body { padding: 22px 24px 20px; }
+	.body { padding: 24px 28px 22px; }
 	.title {
 		font-family: var(--font-display);
 		font-style: italic; font-weight: 400;
-		font-size: 30px; line-height: 1.05;
+		font-size: var(--text-lg); line-height: 1.05;
 		letter-spacing: -0.015em;
-		margin: 0 0 10px;
+		margin: 0 0 12px;
 		color: var(--color-fg);
 	}
 	.excerpt {
 		color: var(--color-fg-dim);
-		font-size: 14px; line-height: 1.55;
-		margin: 0 0 16px;
+		font-size: var(--text-base); line-height: 1.55;
+		margin: 0 0 18px;
 	}
 	.cta {
 		font-family: var(--font-mono);
-		font-size: 11px; letter-spacing: 0.16em;
+		font-size: 13px; letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: var(--color-warm);
 		margin: 0;

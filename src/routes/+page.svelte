@@ -94,7 +94,7 @@
 	.kicker {
 		margin: 0;
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.2em;
 		text-transform: uppercase;
 		color: var(--color-fg-dim);
@@ -103,7 +103,7 @@
 		margin: 0;
 		font-family: var(--font-display);
 		font-weight: 800;
-		font-size: 36px;
+		font-size: var(--text-lg);
 		line-height: 0.95;
 		letter-spacing: -0.025em;
 		color: var(--color-fg);
@@ -130,7 +130,7 @@
 		margin: 0;
 		padding: 32px 4px;
 		font-family: var(--font-mono);
-		font-size: var(--text-xs);
+		font-size: 14px;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: var(--color-fg-dim);
@@ -145,6 +145,6 @@
 	}
 	@container chrome (max-width: 767px) {
 		.layout { padding: 8px 16px 64px; }
-		.ledger-title { font-size: 26px; }
+		.ledger-title { font-size: 28px; }
 	}
 </style>

@@ -128,7 +128,7 @@
 	}
 	.breadcrumb {
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.16em;
 		color: var(--color-fg-dim);
 		margin-bottom: 24px;
@@ -146,10 +146,10 @@
 
 	.meta {
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.16em;
 		color: var(--color-fg-dim);
-		margin: 0 0 14px;
+		margin: 0 0 16px;
 	}
 	.meta .warm { color: var(--color-warm); }
 
@@ -157,51 +157,51 @@
 		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: 400;
-		font-size: 44px;
+		font-size: 56px;
 		line-height: 1.05;
 		letter-spacing: -0.015em;
-		margin: 0 0 16px;
+		margin: 0 0 20px;
 	}
 	.deck {
-		font-size: 17px;
+		font-size: var(--text-md);
 		color: var(--color-fg-dim);
-		line-height: 1.6;
-		margin: 0 0 36px;
-		max-width: 60ch;
+		line-height: 1.5;
+		margin: 0 0 40px;
+		max-width: 56ch;
 	}
 	.body {
-		font-size: 16px;
+		font-size: var(--text-base);
 		color: var(--color-fg);
-		max-width: 64ch;
+		max-width: 60ch;
 	}
 	.tags-wrap {
-		max-width: 64ch;
-		margin: 24px 0;
+		max-width: 60ch;
+		margin: 28px 0;
 	}
 
 	.discuss {
-		max-width: 64ch;
+		max-width: 60ch;
 		margin: 36px 0 24px;
-		padding: 18px 0;
+		padding: 20px 0;
 		border-top: 1px solid var(--color-edge);
 		border-bottom: 1px solid var(--color-edge);
 	}
 	.discuss-h {
 		font-family: var(--font-mono);
-		font-size: 12px;
+		font-size: 14px;
 		letter-spacing: 0.18em;
 		color: var(--color-cool);
-		margin: 0 0 10px;
+		margin: 0 0 12px;
 	}
 	.counts {
 		font-family: var(--font-mono);
-		font-size: 12px;
+		font-size: 14px;
 		color: var(--color-fg-dim);
-		margin: 0 0 10px;
+		margin: 0 0 12px;
 	}
 	.discuss-cta {
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: var(--color-warm);
@@ -212,13 +212,13 @@
 		padding-top: 18px;
 		border-top: 1px solid var(--color-edge);
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 13px;
 		letter-spacing: 0.16em;
 	}
 	.back a { color: var(--color-fg-dim); text-decoration: none; }
 
 	@container chrome (max-width: 767px) {
 		.blog { padding: 20px 16px 64px; }
-		.title { font-size: 32px; }
+		.title { font-size: 36px; }
 	}
 </style>

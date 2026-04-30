@@ -146,11 +146,11 @@
 	}
 	.head {
 		display: flex; justify-content: space-between; align-items: center;
-		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+		font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em;
 		color: var(--color-fg-dim);
 	}
 	.head .handle { color: var(--color-fg); }
-	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 12px; }
-	.body { margin: 0 0 12px; line-height: 1.55; color: var(--color-fg); font-size: 14px; }
-	.embed-wrap { margin: 12px 0 0; }
+	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 14px; }
+	.body { margin: 0 0 14px; line-height: 1.55; color: var(--color-fg); font-size: var(--text-base); }
+	.embed-wrap { margin: 14px 0 0; }
 </style>

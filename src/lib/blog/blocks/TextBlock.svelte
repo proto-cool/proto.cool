@@ -8,9 +8,9 @@
 
 <style>
 	.text {
-		margin: 0 0 18px;
+		margin: 0 0 20px;
 		line-height: 1.7;
 		color: var(--color-fg);
-		font-size: 16px;
+		font-size: var(--text-base);
 	}
 </style>

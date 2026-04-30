@@ -36,14 +36,14 @@
 		font-weight: 400;
 		letter-spacing: -0.01em;
 	}
-	.h1 { font-size: 32px; }
-	.h2 { font-size: 26px; }
-	.h3 { font-size: 22px; }
+	.h1 { font-size: 40px; }
+	.h2 { font-size: 32px; }
+	.h3 { font-size: 26px; }
 	.h4, .h5, .h6 {
 		font-family: var(--font-sans);
 		font-weight: 700;
 	}
-	.h4 { font-size: 18px; }
-	.h5 { font-size: 16px; }
-	.h6 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+	.h4 { font-size: 22px; }
+	.h5 { font-size: 20px; }
+	.h6 { font-size: 16px; text-transform: uppercase; letter-spacing: 0.08em; }
 </style>

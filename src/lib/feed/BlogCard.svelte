@@ -47,32 +47,32 @@
 	.card:hover { border-color: var(--color-fg-dim); }
 	.head {
 		display: flex; justify-content: space-between;
-		font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+		font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em;
 		color: var(--color-fg-dim);
 	}
-	.kind-tag { color: var(--color-warm); letter-spacing: 0.18em; text-transform: uppercase; font-size: 10px; }
-	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 12px; }
+	.kind-tag { color: var(--color-warm); letter-spacing: 0.18em; text-transform: uppercase; font-size: 11px; }
+	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 14px; }
 	.title {
 		font-family: var(--font-display);
 		font-style: italic; font-weight: 400;
-		font-size: 22px; line-height: 1.1;
-		margin: 0 0 8px;
+		font-size: var(--text-md); line-height: 1.1;
+		margin: 0 0 10px;
 		color: var(--color-fg);
 	}
 	.excerpt {
 		color: var(--color-fg-dim);
-		font-size: 13px; line-height: 1.5;
-		margin: 0 0 12px;
+		font-size: var(--text-base); line-height: 1.5;
+		margin: 0 0 14px;
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
 		line-clamp: 3;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
-	.tags-wrap { margin: 0 0 12px; }
+	.tags-wrap { margin: 0 0 14px; }
 	.cta {
 		font-family: var(--font-mono);
-		font-size: 11px; letter-spacing: 0.16em;
+		font-size: 13px; letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: var(--color-warm);
 		margin: 0;
