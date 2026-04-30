@@ -5,17 +5,25 @@ const SITE = {
 	title: 'proto.cool',
 	link: 'https://proto.cool',
 	description: 'a public log',
-	owner: 'proto.cool'
+	owner: 'proto.cool',
+	selfUrl: 'https://proto.cool/feed.xml'
 };
 
 describe('buildRssFeed', () => {
 	it('emits an XML document with channel metadata', () => {
 		const xml = buildRssFeed([], SITE);
 		expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-		expect(xml).toContain('<rss version="2.0">');
+		expect(xml).toContain('<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">');
 		expect(xml).toContain('<title>proto.cool</title>');
 		expect(xml).toContain('<link>https://proto.cool</link>');
 		expect(xml).toContain('<description>a public log</description>');
+	});
+
+	it('emits an atom:link rel="self" pointing at the feed URL', () => {
+		const xml = buildRssFeed([], SITE);
+		expect(xml).toContain(
+			'<atom:link href="https://proto.cool/feed.xml" rel="self" type="application/rss+xml" />'
+		);
 	});
 
 	it('includes one <item> per input', () => {
