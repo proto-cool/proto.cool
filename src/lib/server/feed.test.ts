@@ -48,14 +48,14 @@ describe('buildFeedQuery', () => {
 	});
 
 	it('emits 1=0 when the only requested source has no NSIDs wired up', () => {
-		const { sql } = buildFeedQuery({ sources: ['pckt'] });
+		const { sql } = buildFeedQuery({ sources: ['grain'] });
 		expect(sql).toContain('1 = 0');
 		expect(sql).not.toContain('r.collection IN');
 	});
 
 	it('drops unwired sources silently when at least one source has NSIDs', () => {
-		const { sql, params } = buildFeedQuery({ sources: ['bsky', 'pckt'] });
-		// Only bsky's two NSIDs make the IN clause; pckt vanishes.
+		const { sql, params } = buildFeedQuery({ sources: ['bsky', 'grain'] });
+		// Only bsky's two NSIDs make the IN clause; grain vanishes.
 		expect(sql).toMatch(/r\.collection IN \(\?\s*,\s*\?\)/);
 		expect(sql).not.toContain('1 = 0');
 		expect(params).toContain('app.bsky.feed.post');

@@ -40,7 +40,19 @@ describe('config', () => {
 	});
 
 	it('Source type accepts the v1 enum values', () => {
-		const s: Source[] = ['bsky', 'pckt', 'standard', 'grain'];
-		expect(s.length).toBe(4);
+		const s: Source[] = ['bsky', 'standard', 'grain'];
+		expect(s.length).toBe(3);
+	});
+});
+
+describe('standard source wiring', () => {
+	it('exposes site.standard.document under "standard"', () => {
+		expect(collectionsForSource('standard')).toEqual(['site.standard.document']);
+	});
+	it('reverse-maps site.standard.document to standard', () => {
+		expect(sourceForCollection('site.standard.document')).toBe('standard');
+	});
+	it('includes site.standard.document in WATCHED_COLLECTIONS', () => {
+		expect(WATCHED_COLLECTIONS).toContain('site.standard.document');
 	});
 });

@@ -5,7 +5,7 @@ import { getDb } from '$lib/server/bootstrap';
 import { getFeed, type FeedFilter } from '$lib/server/feed';
 import { decodeCursor } from '$lib/server/cursor';
 
-const SourceSchema = z.enum(['bsky', 'pckt', 'standard', 'grain']);
+const SourceSchema = z.enum(['bsky', 'standard', 'grain']);
 const OrderSchema = z.enum(['asc', 'desc']);
 
 const QuerySchema = z.object({

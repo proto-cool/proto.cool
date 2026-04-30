@@ -1,12 +1,8 @@
-export type Source = 'bsky' | 'pckt' | 'standard' | 'grain';
+export type Source = 'bsky' | 'standard' | 'grain';
 
-// NSIDs grain / pckt / standard remain unmapped in v1: their lexicon ids
-// are deferred to when we wire them up. Adding them is one entry per source
-// in COLLECTIONS_BY_SOURCE and one push to WATCHED_COLLECTIONS.
 const COLLECTIONS_BY_SOURCE: Record<Source, readonly string[]> = {
 	bsky: ['app.bsky.feed.post', 'app.bsky.feed.repost'],
-	pckt: [],
-	standard: [],
+	standard: ['site.standard.document'],
 	grain: []
 };
 

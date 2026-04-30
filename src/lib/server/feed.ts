@@ -22,7 +22,7 @@ export type FeedItem = {
 
 export type FeedFilter = {
 	// undefined or [] both mean "no source filter" — return all sources.
-	// A source whose NSIDs aren't wired up yet (pckt/standard/grain in v1) is
+	// A source whose NSIDs aren't wired up yet (standard/grain when collections aren't wired up) is
 	// silently dropped from the IN clause; if that's the only source, the
 	// query reduces to `1 = 0` (zero rows).
 	sources?: Source[];

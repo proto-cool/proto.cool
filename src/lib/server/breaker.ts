@@ -7,7 +7,7 @@
 
 import type { DB } from './db';
 
-type Source = 'bsky' | 'grain';
+type Source = 'bsky' | 'standard' | 'grain';
 
 const FAILURE_THRESHOLD = 5;
 const COOLDOWN_LADDER_MS = [60_000, 5 * 60_000, 15 * 60_000, 60 * 60_000];
