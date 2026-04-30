@@ -2,6 +2,7 @@ import type { PageServerLoad } from './$types';
 import { getDb } from '$lib/server/bootstrap';
 import { getFeedPage } from '$lib/server/feed';
 import { getFeatured } from '$lib/server/featured';
+import { getPulseStats } from '$lib/server/pulse';
 import { parseFeedQuery, feedQueryToInput } from '$lib/server/feed-params';
 import { hydrateSubjectHandles } from '$lib/server/hydrate-handles';
 import { getOwnerDidFromState, getPdsHost } from '$lib/server/config';
@@ -28,5 +29,7 @@ export const load: PageServerLoad = async ({ url }) => {
 	const ownerDid = getOwnerDidFromState(db) ?? '';
 	const blobCtx = { ownerDid, pdsHost: getPdsHost() };
 
-	return { featured, stream, blobCtx, query: q };
+	const pulse = getPulseStats(db);
+
+	return { featured, stream, blobCtx, query: q, pulse };
 };
