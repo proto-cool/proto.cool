@@ -135,6 +135,12 @@
 		margin-bottom: 24px;
 	}
 	.breadcrumb a { color: var(--color-fg-dim); text-decoration: none; }
+	.breadcrumb a:focus-visible,
+	.discuss-cta:focus-visible,
+	.back a:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	.breadcrumb .sep { color: var(--color-fg-mute); padding: 0 8px; }
 
 	.hero {

@@ -71,6 +71,10 @@
 	.facet-text { white-space: pre-wrap; }
 	a { color: var(--color-cool); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 	a:hover { color: var(--color-warm); }
+	a:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	.mention { color: var(--color-cool); }
 	.tag { color: var(--color-warm); }
 </style>

@@ -81,6 +81,11 @@
 	.prev { left: 16px; top: 50%; transform: translateY(-50%); }
 	.next { right: 16px; top: 50%; transform: translateY(-50%); }
 	.nav:disabled { opacity: 0.3; cursor: default; }
+	.close:focus-visible,
+	.nav:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	.counter {
 		position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
 		font-family: var(--font-mono); font-size: 12px; color: var(--color-fg-dim);

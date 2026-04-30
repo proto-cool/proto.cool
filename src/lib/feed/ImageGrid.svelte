@@ -90,6 +90,10 @@
 		cursor: pointer;
 		aspect-ratio: 1;
 	}
+	.slot:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	.slot .fg {
 		position: absolute;
 		inset: 0;

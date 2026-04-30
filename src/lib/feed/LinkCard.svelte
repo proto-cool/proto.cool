@@ -65,6 +65,11 @@
 	}
 	.title { color: var(--color-fg); margin: 0 0 4px; line-height: 1.3; }
 	.desc { color: var(--color-fg-dim); font-size: 12px; line-height: 1.4; margin: 0; }
+	.link-card:hover { border-color: var(--color-fg-dim); }
+	.link-card:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	@container (max-width: 480px) {
 		.link-card { grid-template-columns: 1fr; }
 		.thumb { aspect-ratio: 16 / 9; }
