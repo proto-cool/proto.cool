@@ -37,7 +37,7 @@
 	let subjectDid = $derived(subject ? didFromUri(subject.uri) : '');
 	let permalink = $derived(
 		subject
-			? `https://bsky.app/profile/${subjectHandle ?? subjectDid}/post/${rkeyFromUri(subject.uri)}`
+			? `https://bsky.app/profile/${subjectDid}/post/${rkeyFromUri(subject.uri)}`
 			: '#'
 	);
 
@@ -70,8 +70,6 @@
 </script>
 
 <article class="card">
-	<a class="card-overlay" href={permalink} target="_blank" rel="noopener noreferrer" aria-label="open original post on bsky"></a>
-
 	<header class="head">
 		<span class="repost-line">↻ reposted · {relativeTime(item.createdAt)}</span>
 		<BskyChip label="repost" />
@@ -106,24 +104,11 @@
 
 <style>
 	.card {
-		position: relative;
 		display: block;
 		background: var(--shell-veil);
 		border: 1px solid var(--color-edge);
 		padding: 18px 20px 16px;
 		container-type: inline-size;
-	}
-	.card:hover { border-color: var(--color-fg-dim); }
-	.card-overlay {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		text-indent: -9999px;
-		overflow: hidden;
-	}
-	.card > :not(.card-overlay) {
-		position: relative;
-		z-index: 1;
 	}
 	.head {
 		display: flex; justify-content: space-between; align-items: center;

@@ -24,7 +24,10 @@
 	let value = $derived(item.value as RecordValue);
 
 	let rkey = $derived(item.uri.split('/').pop() ?? '');
-	let permalink = $derived(`https://bsky.app/profile/${ownerHandle}/post/${rkey}`);
+	// Use DIDs in bsky.app links — handles can change, DIDs are stable.
+	// The owned post URI is at://<owner-did>/app.bsky.feed.post/<rkey>; pull
+	// the DID from there (also available as blobCtx.ownerDid).
+	let permalink = $derived(`https://bsky.app/profile/${blobCtx.ownerDid}/post/${rkey}`);
 
 	function cidOf(ref: { $link: string } | string): string {
 		return typeof ref === 'string' ? ref : ref.$link;
@@ -68,16 +71,12 @@
 	let quotedSubjectDid = $derived(item.subject ? didFromUri(item.subject.uri) : '');
 	let quotedPermalink = $derived(
 		item.subject
-			? `https://bsky.app/profile/${item.subjectHandle ?? quotedSubjectDid}/post/${rkeyFromUri(item.subject.uri)}`
+			? `https://bsky.app/profile/${quotedSubjectDid}/post/${rkeyFromUri(item.subject.uri)}`
 			: '#'
 	);
 </script>
 
 <article class="card">
-	<!-- background "open this post" affordance; sibling of inner content so
-	     nested links/buttons don't violate HTML interactive-nesting rules -->
-	<a class="card-overlay" href={permalink} target="_blank" rel="noopener noreferrer" aria-label="open post on bsky"></a>
-
 	<header class="head">
 		<span class="head-left"><span class="handle">@{ownerHandle}</span> · <span class="time">{relativeTime(item.createdAt)}</span></span>
 		<BskyChip />
@@ -124,25 +123,11 @@
 
 <style>
 	.card {
-		position: relative;
 		display: block;
 		background: var(--shell-veil);
 		border: 1px solid var(--color-edge);
 		padding: 18px 20px 16px;
 		container-type: inline-size;
-	}
-	.card:hover { border-color: var(--color-fg-dim); }
-	.card-overlay {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		text-indent: -9999px;
-		overflow: hidden;
-	}
-	/* All real content sits above the overlay so its own clicks land first. */
-	.card > :not(.card-overlay) {
-		position: relative;
-		z-index: 1;
 	}
 	.head {
 		display: flex; justify-content: space-between; align-items: center;

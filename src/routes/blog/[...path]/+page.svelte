@@ -33,8 +33,9 @@
 		if (!ref) return null;
 		const m = ref.uri.match(/^at:\/\/([^\/]+)\/[^\/]+\/(.+)$/);
 		if (!m) return null;
+		// m[1] is always a DID — at:// URIs lead with the DID, never a handle.
 		return {
-			handleOrDid: m[1],
+			did: m[1],
 			rkey: m[2],
 			engagement: data.doc.engagement
 		};
@@ -42,7 +43,7 @@
 
 	let bskyUrl = $derived(
 		bskyDiscussion
-			? `https://bsky.app/profile/${bskyDiscussion.handleOrDid}/post/${bskyDiscussion.rkey}`
+			? `https://bsky.app/profile/${bskyDiscussion.did}/post/${bskyDiscussion.rkey}`
 			: null
 	);
 
