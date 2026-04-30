@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { FeedItem } from '$lib/server/feed';
 	import TagChips from './TagChips.svelte';
-	import { relativeTime } from '$lib/relative-time';
+	import RelativeTime from './RelativeTime.svelte';
 
 	let { item }: { item: FeedItem } = $props();
 
@@ -21,7 +21,7 @@
 
 <a class="card" {href}>
 	<header class="head">
-		<span>{relativeTime(item.createdAt)}</span>
+		<RelativeTime datetime={item.createdAt} />
 		<span class="kind-tag">BLOG</span>
 	</header>
 	<div class="rule"></div>

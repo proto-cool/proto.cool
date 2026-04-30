@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FacetText from './FacetText.svelte';
 	import EngagementStrip from './EngagementStrip.svelte';
-	import { relativeTime } from '$lib/relative-time';
+	import RelativeTime from './RelativeTime.svelte';
 
 	let {
 		handle,
@@ -33,7 +33,7 @@
 >
 	<header class="head">
 		<span class="handle">@{handle}</span>
-		<span class="time">{relativeTime(createdAt)}</span>
+		<RelativeTime class="time" datetime={createdAt} />
 	</header>
 	{#if text}
 		<p class="body"><FacetText {text} {facets} /></p>

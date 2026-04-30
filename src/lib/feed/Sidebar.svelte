@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { currentTheme } from '$lib/theme';
-	import { relativeTime } from '$lib/relative-time';
+	import RelativeTime from './RelativeTime.svelte';
 	import type { PulseStats } from '$lib/server/pulse';
 	import {
 		GithubLogo,
@@ -11,14 +11,6 @@
 	import BskyIcon from './BskyIcon.svelte';
 
 	let { pulse }: { pulse: PulseStats } = $props();
-
-	// `relativeTime` returns an absolute date for old entries; for the pulse
-	// block's tight rhythm we want a uniformly short value. Fall back to '—'
-	// when missing.
-	function fmt(ts: string | null): string {
-		if (!ts) return '—';
-		return relativeTime(ts);
-	}
 </script>
 
 <aside class="sidebar" aria-label="sidebar">
@@ -26,10 +18,10 @@
 		<header class="kicker">/// pulse</header>
 		<dl class="pulse">
 			<dt>last post</dt>
-			<dd>{fmt(pulse.lastPost)}</dd>
+			<dd>{#if pulse.lastPost}<RelativeTime datetime={pulse.lastPost} />{:else}—{/if}</dd>
 
 			<dt>last blog</dt>
-			<dd>{fmt(pulse.lastBlog)}</dd>
+			<dd>{#if pulse.lastBlog}<RelativeTime datetime={pulse.lastBlog} />{:else}—{/if}</dd>
 
 			<dt>posts</dt>
 			<dd>{pulse.posts}</dd>

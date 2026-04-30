@@ -6,7 +6,7 @@
 	import EngagementStrip from './EngagementStrip.svelte';
 	import BskyChip from './BskyChip.svelte';
 	import BskyLink from './BskyLink.svelte';
-	import { relativeTime } from '$lib/relative-time';
+	import RelativeTime from './RelativeTime.svelte';
 	import { blobUrl, type BlobContext } from '$lib/blob';
 
 	let {
@@ -71,7 +71,7 @@
 
 <article class="card">
 	<header class="head">
-		<span class="repost-line">↻ reposted · {relativeTime(item.createdAt)}</span>
+		<span class="repost-line">↻ reposted · <RelativeTime datetime={item.createdAt} /></span>
 		<BskyChip label="repost" />
 	</header>
 	<div class="rule"></div>
@@ -80,7 +80,7 @@
 	{:else}
 		<header class="subject-head">
 			<span class="handle">@{subjectHandle ?? `${subjectDid.slice(0, 12)}…`}</span>
-			<span class="time">{relativeTime(subject.createdAt)}</span>
+			<RelativeTime class="time" datetime={subject.createdAt} />
 		</header>
 		{#if subjectValue?.text}
 			<p class="body"><FacetText text={subjectValue.text} facets={subjectValue.facets} /></p>

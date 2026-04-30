@@ -7,7 +7,7 @@
 	import EngagementStrip from './EngagementStrip.svelte';
 	import BskyChip from './BskyChip.svelte';
 	import BskyLink from './BskyLink.svelte';
-	import { relativeTime } from '$lib/relative-time';
+	import RelativeTime from './RelativeTime.svelte';
 	import { blobUrl, type BlobContext } from '$lib/blob';
 
 	let {
@@ -78,7 +78,7 @@
 
 <article class="card">
 	<header class="head">
-		<span class="head-left"><span class="handle">@{ownerHandle}</span> · <span class="time">{relativeTime(item.createdAt)}</span></span>
+		<span class="head-left"><span class="handle">@{ownerHandle}</span> · <RelativeTime class="time" datetime={item.createdAt} /></span>
 		<BskyChip />
 	</header>
 	<div class="rule"></div>
