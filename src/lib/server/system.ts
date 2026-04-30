@@ -1,6 +1,7 @@
 import os from 'node:os';
 import type { DB } from './db';
 import type { Source } from './config';
+import { getFirehoseState } from './firehose';
 
 type Tier = 'recent' | 'week' | 'month' | 'archive';
 
@@ -93,11 +94,18 @@ export function getSystemSnapshot(db: DB): SystemSnapshot {
 			memRssMb,
 			loadavg: [l1, l5, l15]
 		},
-		firehose: {
-			connected: false, // Plan 2 makes this dynamic.
-			lastSeq,
-			lagSec: null
-		},
+		firehose: (() => {
+			const fh = getFirehoseState();
+			const lagSec =
+				fh.lastEventAtMs !== null
+					? Math.max(0, (Date.now() - fh.lastEventAtMs) / 1000)
+					: null;
+			return {
+				connected: fh.connected,
+				lastSeq: fh.lastSeq ?? lastSeq,
+				lagSec
+			};
+		})(),
 		cron: readCronStatus(db),
 		db: {
 			records: counts.records,
