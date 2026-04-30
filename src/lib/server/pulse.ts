@@ -1,8 +1,7 @@
 // Auto-derived snapshot for the home sidebar's `/// pulse` block. Counts
 // and latest-timestamps of owned records, split into "posts" (bsky-side
-// collections) vs "blogs" (standard.site documents). Cheap — four scalar
-// queries against the records table, all hitting the (status, kind, ...)
-// index. Called once per home-page load.
+// collections) vs "blogs" (standard.site documents). Cheap — two scalar
+// queries against the records table. Called once per home-page load.
 
 import { collectionsForSource } from './config';
 import type { DB } from './db';
@@ -23,42 +22,26 @@ export function getPulseStats(db: DB): PulseStats {
 	}
 	const blogPlaceholders = blogCollections.map(() => '?').join(', ');
 
-	const lastPostRow = db
+	const postRow = db
 		.prepare(
-			`SELECT MAX(created_at) AS ts FROM records
+			`SELECT MAX(created_at) AS ts, COUNT(*) AS n FROM records
 			 WHERE kind = 'owned' AND status = 'ok'
 			   AND collection NOT IN (${blogPlaceholders})`
 		)
-		.get(...blogCollections) as { ts: string | null };
+		.get(...blogCollections) as { ts: string | null; n: number };
 
-	const lastBlogRow = db
+	const blogRow = db
 		.prepare(
-			`SELECT MAX(created_at) AS ts FROM records
+			`SELECT MAX(created_at) AS ts, COUNT(*) AS n FROM records
 			 WHERE kind = 'owned' AND status = 'ok'
 			   AND collection IN (${blogPlaceholders})`
 		)
-		.get(...blogCollections) as { ts: string | null };
-
-	const postsRow = db
-		.prepare(
-			`SELECT COUNT(*) AS n FROM records
-			 WHERE kind = 'owned' AND status = 'ok'
-			   AND collection NOT IN (${blogPlaceholders})`
-		)
-		.get(...blogCollections) as { n: number };
-
-	const blogsRow = db
-		.prepare(
-			`SELECT COUNT(*) AS n FROM records
-			 WHERE kind = 'owned' AND status = 'ok'
-			   AND collection IN (${blogPlaceholders})`
-		)
-		.get(...blogCollections) as { n: number };
+		.get(...blogCollections) as { ts: string | null; n: number };
 
 	return {
-		lastPost: lastPostRow.ts,
-		lastBlog: lastBlogRow.ts,
-		posts: postsRow.n,
-		blogs: blogsRow.n
+		lastPost: postRow.ts,
+		lastBlog: blogRow.ts,
+		posts: postRow.n,
+		blogs: blogRow.n
 	};
 }
