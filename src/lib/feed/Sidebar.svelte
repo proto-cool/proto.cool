@@ -1,25 +1,38 @@
 <script lang="ts">
-	// Placeholder sidebar. Lives next to the feed on the home page. Content
-	// is intentionally minimal until the operator decides what belongs here
-	// (candidates: a "now" panel, a tag cloud, a vital-stats block, links to
-	// the operator's bsky profile, etc).
+	import { currentTheme } from '$lib/theme';
+	import { relativeTime } from '$lib/relative-time';
+	import type { PulseStats } from '$lib/server/pulse';
+
+	let { pulse }: { pulse: PulseStats } = $props();
+
+	// `relativeTime` returns an absolute date for old entries; for the pulse
+	// block's tight rhythm we want a uniformly short value. Fall back to '—'
+	// when missing.
+	function fmt(ts: string | null): string {
+		if (!ts) return '—';
+		return relativeTime(ts);
+	}
 </script>
 
 <aside class="sidebar" aria-label="sidebar">
 	<section class="block">
-		<header class="kicker">/// now</header>
-		<p class="body">
-			currently building <em>proto.cool</em> in public on the at protocol — the
-			home page you're reading is the live feed.
-		</p>
-	</section>
+		<header class="kicker">/// pulse</header>
+		<dl class="pulse">
+			<dt>last post</dt>
+			<dd>{fmt(pulse.lastPost)}</dd>
 
-	<section class="block">
-		<header class="kicker">/// links</header>
-		<ul class="links">
-			<li><a href="https://bsky.app/profile/proto.cool" target="_blank" rel="noopener noreferrer">bsky · @proto.cool</a></li>
-			<li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">github</a></li>
-		</ul>
+			<dt>last blog</dt>
+			<dd>{fmt(pulse.lastBlog)}</dd>
+
+			<dt>posts</dt>
+			<dd>{pulse.posts}</dd>
+
+			<dt>blogs</dt>
+			<dd>{pulse.blogs}</dd>
+
+			<dt>theme</dt>
+			<dd>{$currentTheme}</dd>
+		</dl>
 	</section>
 </aside>
 
@@ -47,29 +60,25 @@
 		padding-bottom: 12px;
 		border-bottom: 1px solid var(--color-edge);
 	}
-	.body {
-		font-size: var(--text-sm);
-		line-height: 1.6;
-		color: var(--color-fg);
-		margin: 0;
-	}
-	.body em {
-		color: var(--color-warm);
-		font-style: italic;
-	}
-	.links {
-		list-style: none;
-		padding: 0;
+
+	.pulse {
+		display: grid;
+		grid-template-columns: 8ch 1fr;
+		gap: 7px 14px;
 		margin: 0;
 		font-family: var(--font-mono);
-		font-size: 13px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
 	}
-	.links li { padding: 6px 0; }
-	.links a {
+	.pulse dt {
+		font-size: 11px;
+		letter-spacing: 0.16em;
+		text-transform: lowercase;
 		color: var(--color-fg-dim);
-		text-decoration: none;
+		align-self: baseline;
 	}
-	.links a:hover { color: var(--color-warm); }
+	.pulse dd {
+		margin: 0;
+		font-size: 13px;
+		color: var(--color-fg);
+		align-self: baseline;
+	}
 </style>

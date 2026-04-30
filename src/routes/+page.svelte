@@ -220,7 +220,7 @@
 			</div>
 		</section>
 
-		<Sidebar />
+		<Sidebar pulse={data.pulse} />
 	</div>
 </article>
 
