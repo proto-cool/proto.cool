@@ -66,7 +66,11 @@ export function buildFeedQuery(filter: FeedFilter): BuiltQuery {
 			? Math.min(filter.limit, MAX_LIMIT)
 			: DEFAULT_LIMIT;
 
-	const wheres: string[] = [`r.status = 'ok'`];
+	// kind='owned' restricts the top-level feed to records the operator
+	// authored. External records (subject of a repost / quote) live in the
+	// same table and are joined in via subject_uri — they should never appear
+	// as their own card.
+	const wheres: string[] = [`r.status = 'ok'`, `r.kind = 'owned'`];
 	const params: Array<string | number> = [];
 
 	if (filter.sources && filter.sources.length > 0) {
