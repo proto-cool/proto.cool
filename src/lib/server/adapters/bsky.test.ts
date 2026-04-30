@@ -104,4 +104,18 @@ describe('bskyAdapter.fetchRecords', () => {
 		const r = await adapter.fetchRecords(['at://did:plc:x/app.bsky.feed.post/GONE']);
 		expect(r.notFound).toEqual(['at://did:plc:x/app.bsky.feed.post/GONE']);
 	});
+
+	it('falls back to current time when record.createdAt is missing or non-string', async () => {
+		const client = fakeClient([
+			{ uri: 'at://did:plc:x/app.bsky.feed.post/1', cid: 'c', record: { text: 'no date' } }
+		]);
+		const adapter = createBskyAdapter(client);
+		const before = Date.now();
+		const r = await adapter.fetchRecords(['at://did:plc:x/app.bsky.feed.post/1']);
+		const after = Date.now();
+		expect(r.found[0].createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+		const ts = new Date(r.found[0].createdAt).getTime();
+		expect(ts).toBeGreaterThanOrEqual(before);
+		expect(ts).toBeLessThanOrEqual(after);
+	});
 });
