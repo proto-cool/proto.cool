@@ -4,8 +4,9 @@
 
 import { getFeedPage, type FeedItem } from './feed';
 import type { DB } from './db';
+import { PINNED_TAG } from '$lib/constants';
 
-export const PINNED_TAG = 'Pinned';
+export { PINNED_TAG };
 
 export function getFeatured(db: DB): FeedItem | null {
 	const pinned = getFeedPage(db, {

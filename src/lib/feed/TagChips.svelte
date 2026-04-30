@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PINNED_TAG } from '$lib/server/featured';
+	import { PINNED_TAG } from '$lib/constants';
 
 	let { tags, max = 5 }: { tags: readonly string[]; max?: number } = $props();
 
