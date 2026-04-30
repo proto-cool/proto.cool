@@ -79,7 +79,13 @@
 		<p class="unavailable">[unavailable]</p>
 	{:else}
 		<header class="subject-head">
-			<span class="handle">@{subjectHandle ?? `${subjectDid.slice(0, 12)}…`}</span>
+			<a
+				class="handle"
+				href="https://bsky.app/profile/{subjectDid}"
+				target="_blank"
+				rel="noopener noreferrer"
+				onclick={(e) => e.stopPropagation()}
+			>@{subjectHandle ?? `${subjectDid.slice(0, 12)}…`}</a>
 			<RelativeTime class="time" datetime={subject.createdAt} />
 		</header>
 		{#if subjectValue?.text}
@@ -123,7 +129,18 @@
 		padding-bottom: 8px;
 		margin-bottom: 12px;
 	}
-	.handle { color: var(--color-fg); }
+	.handle {
+		color: var(--color-fg);
+		text-decoration: none;
+	}
+	.handle:hover {
+		color: var(--color-warm);
+		text-decoration: underline;
+	}
+	.handle:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	.body { margin: 0 0 14px; line-height: 1.55; color: var(--color-fg); font-size: var(--text-base); }
 	.embed-wrap { margin: 14px 0 0; }
 	.unavailable {

@@ -78,7 +78,17 @@
 
 <article class="card">
 	<header class="head">
-		<span class="head-left"><span class="handle">@{ownerHandle}</span> · <RelativeTime class="time" datetime={item.createdAt} /></span>
+		<span class="head-left">
+			<a
+				class="handle"
+				href="https://bsky.app/profile/{blobCtx.ownerDid}"
+				target="_blank"
+				rel="noopener noreferrer"
+				onclick={(e) => e.stopPropagation()}
+			>@{ownerHandle}</a>
+			·
+			<RelativeTime class="time" datetime={item.createdAt} />
+		</span>
 		<BskyChip />
 	</header>
 	<div class="rule"></div>
@@ -134,7 +144,18 @@
 		font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em;
 		color: var(--color-fg-dim);
 	}
-	.head .handle { color: var(--color-fg); }
+	.head .handle {
+		color: var(--color-fg);
+		text-decoration: none;
+	}
+	.head .handle:hover {
+		color: var(--color-warm);
+		text-decoration: underline;
+	}
+	.head .handle:focus-visible {
+		outline: 2px solid var(--color-warm);
+		outline-offset: 2px;
+	}
 	.rule { height: 1px; background: var(--color-edge); margin: 10px 0 14px; }
 	.body { margin: 0 0 14px; line-height: 1.55; color: var(--color-fg); font-size: var(--text-base); }
 	.embed-wrap { margin: 14px 0 0; }
