@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { setContext, onMount, untrack } from 'svelte';
+	import { onNavigate } from '$app/navigation';
 	import favicon from '$lib/assets/favicon.svg';
 	import Shell from '$lib/shell/Shell.svelte';
 	import KeyboardLayer from '$lib/shell/KeyboardLayer.svelte';
@@ -21,6 +22,20 @@
 	onMount(() => {
 		startRuntimeTicks();
 		return () => stopRuntimeTicks();
+	});
+
+	onNavigate((navigation) => {
+		if (typeof document === 'undefined') return;
+		const startVT = (
+			document as Document & { startViewTransition?: (cb: () => Promise<void>) => unknown }
+		).startViewTransition;
+		if (typeof startVT !== 'function') return;
+		return new Promise<void>((resolve) => {
+			startVT.call(document, async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
 </script>
 
