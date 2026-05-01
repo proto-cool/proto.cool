@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { getContext, tick } from 'svelte';
+	import { fly } from 'svelte/transition';
 	import { page as pageStore } from '$app/state';
 	import { replaceState } from '$app/navigation';
+	import { prefersReducedMotion } from '$lib/prefers-reduced-motion';
 	import HeroSection from '$lib/shell/HeroSection.svelte';
 	import FeaturedBlock from '$lib/feed/FeaturedBlock.svelte';
 	import Card from '$lib/feed/Card.svelte';
@@ -39,6 +41,7 @@
 	let loading = $state(false);
 	let error = $state<string | null>(null);
 	let lastFailedOp = $state<null | (() => Promise<void>)>(null);
+	let staggerFromIndex = $state<number>(Number.POSITIVE_INFINITY);
 
 	// Auto-load preference. Persisted in localStorage so the choice survives
 	// reloads. Lifted to the page (rather than living inside LoadMore) so
@@ -121,6 +124,7 @@
 		// Falls back to an instant swap on browsers that don't support it
 		// (still smooth — only the items list changes; featured/toolbar/
 		// header don't move, so there's no perceived jump).
+		staggerFromIndex = Number.POSITIVE_INFINITY;
 		const swap = () => {
 			override = {
 				items: body.items,
@@ -163,6 +167,7 @@
 			// keyed each block stays valid.
 			const seen = new Set(items.map((i) => i.uri));
 			const novel = body.items.filter((i) => !seen.has(i.uri));
+			staggerFromIndex = items.length;
 			override = {
 				items: [...items, ...novel],
 				page: body.page,
@@ -228,8 +233,17 @@
 						<p class="empty">nothing here yet.</p>
 					{:else}
 						<ol class="entries">
-							{#each items as item (item.uri)}
-								<li class="entry">
+							{#each items as item, i (item.uri)}
+								<li
+									class="entry"
+									in:fly={{
+										y: 8,
+										duration: $prefersReducedMotion ? 0 : 200,
+										delay: i >= staggerFromIndex
+											? Math.min(i - staggerFromIndex, 5) * 40
+											: 0
+									}}
+								>
 									<Card {item} {ownerHandle} blobCtx={data.blobCtx} />
 								</li>
 							{/each}
