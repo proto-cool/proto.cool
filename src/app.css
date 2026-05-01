@@ -87,3 +87,26 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizeLegibility;
 }
+
+/* ==========================================================================
+   View Transitions root cross-fade
+   ========================================================================== */
+
+/* View Transitions root cross-fade.
+   Used by:
+   - SvelteKit page navigation (src/routes/+layout.svelte onNavigate)
+   - Theme switch (src/lib/shell/theme-controls.ts setTheme)
+   - Filter/sort swap on the home feed (src/routes/+page.svelte applyQuery)
+   No-op on browsers without startViewTransition support. */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: var(--dur-base);
+	animation-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 0s;
+	}
+}

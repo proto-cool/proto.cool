@@ -365,12 +365,4 @@
 	@container chrome (max-width: 767px) {
 		.layout { padding: 8px 16px 64px; }
 	}
-
-	/* View Transitions: tune the cross-fade. Works only when the browser
-	   supports startViewTransition; otherwise the @keyframes are unused. */
-	:global(::view-transition-old(root)),
-	:global(::view-transition-new(root)) {
-		animation-duration: 220ms;
-		animation-timing-function: ease;
-	}
 </style>
