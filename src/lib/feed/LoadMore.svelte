@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { CircleNotch } from 'phosphor-svelte';
+
 	type Props = {
 		hasMore: boolean;
 		loading: boolean;
@@ -28,7 +30,12 @@
 {#if hasMore}
 	<div class="wrap">
 		<button bind:this={btnRef} class="btn" type="button" disabled={loading} onclick={onload}>
-			{loading ? 'loading…' : 'load more →'}
+			{#if loading}
+				<CircleNotch size={14} weight="regular" class="spin" />
+				<span class="lbl">loading</span>
+			{:else}
+				load more →
+			{/if}
 		</button>
 	</div>
 {:else}
@@ -64,6 +71,18 @@
 	.btn:disabled {
 		opacity: 0.55;
 		cursor: progress;
+	}
+	.btn :global(.spin) {
+		vertical-align: -2px;
+		margin-right: 8px;
+		animation: rotate 1s linear infinite;
+	}
+	.lbl { vertical-align: baseline; }
+	@keyframes rotate {
+		to { transform: rotate(360deg); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.btn :global(.spin) { animation: none; }
 	}
 	.end {
 		text-align: center;
