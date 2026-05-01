@@ -9,6 +9,7 @@
 	let lightboxOpen = $state(false);
 	let lightboxIndex = $state(0);
 	let aspects = $state<Record<string, number>>({});
+	let loaded = $state<Record<string, boolean>>({});
 
 	function open(i: number, e: MouseEvent) {
 		e.stopPropagation();
@@ -18,6 +19,7 @@
 	}
 
 	function onImgLoad(key: string, e: Event, hasServerAspect: boolean) {
+		loaded[key] = true;
 		if (hasServerAspect) return;
 		const img = e.currentTarget as HTMLImageElement;
 		if (img.naturalWidth && img.naturalHeight) {
@@ -56,6 +58,7 @@
 			>
 				<img
 					class="fg"
+					class:loaded={loaded[key]}
 					src={img.src}
 					alt={img.alt ?? ''}
 					loading="lazy"
@@ -102,6 +105,12 @@
 		height: 100%;
 		object-fit: contain;
 		display: block;
+		opacity: 0;
+		transition: opacity var(--dur-base) ease;
+	}
+	.slot .fg.loaded { opacity: 1; }
+	@media (prefers-reduced-motion: reduce) {
+		.slot .fg { opacity: 1; transition: none; }
 	}
 
 	.grid-one .slot {

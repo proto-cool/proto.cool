@@ -47,6 +47,8 @@
 			: null
 	);
 
+	let coverLoaded = $state(false);
+
 	let ogImage = $derived(coverUrl ?? '');
 	let canonical = $derived(`https://proto.cool/blog${value.path ?? ''}`);
 </script>
@@ -79,7 +81,14 @@
 	</nav>
 
 	{#if coverUrl}
-		<div class="hero"><img src={coverUrl} alt="" /></div>
+		<div class="hero">
+			<img
+				src={coverUrl}
+				alt=""
+				class:loaded={coverLoaded}
+				onload={() => (coverLoaded = true)}
+			/>
+		</div>
 	{/if}
 
 	<p class="meta"><span class="warm">/// blog · entry</span> · <span>{publishedDate}</span></p>
@@ -152,6 +161,12 @@
 		height: auto;
 		max-height: 60vh;
 		object-fit: contain;
+		opacity: 0;
+		transition: opacity var(--dur-base) ease;
+	}
+	.hero img.loaded { opacity: 1; }
+	@media (prefers-reduced-motion: reduce) {
+		.hero img { opacity: 1; transition: none; }
 	}
 
 	.meta {

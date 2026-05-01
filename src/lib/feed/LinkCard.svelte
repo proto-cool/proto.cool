@@ -11,6 +11,8 @@
 		thumb?: string;
 	} = $props();
 
+	let thumbLoaded = $state(false);
+
 	let domain = $derived.by(() => {
 		try { return new URL(uri).hostname.replace(/^www\./, ''); }
 		catch { return uri; }
@@ -25,7 +27,15 @@
 	onclick={(e) => e.stopPropagation()}
 >
 	{#if thumb}
-		<div class="thumb"><img src={thumb} alt="" loading="lazy" /></div>
+		<div class="thumb">
+			<img
+				src={thumb}
+				alt=""
+				loading="lazy"
+				class:loaded={thumbLoaded}
+				onload={() => (thumbLoaded = true)}
+			/>
+		</div>
 	{:else}
 		<div class="thumb thumb-empty" aria-hidden="true">↗</div>
 	{/if}
@@ -50,7 +60,18 @@
 		transition: border-color var(--dur-fast) ease;
 	}
 	.thumb { aspect-ratio: 1; overflow: hidden; }
-	.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+	.thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		opacity: 0;
+		transition: opacity var(--dur-base) ease;
+	}
+	.thumb img.loaded { opacity: 1; }
+	@media (prefers-reduced-motion: reduce) {
+		.thumb img { opacity: 1; transition: none; }
+	}
 	.thumb-empty {
 		display: flex; align-items: center; justify-content: center;
 		font-family: var(--font-mono); color: var(--color-fg-mute); font-size: 24px;
