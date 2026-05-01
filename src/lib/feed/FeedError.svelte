@@ -1,8 +1,16 @@
 <script lang="ts">
-	let { message = "couldn’t load", onretry }: { message?: string; onretry: () => void } = $props();
+	import { fly } from 'svelte/transition';
+	import { prefersReducedMotion } from '$lib/prefers-reduced-motion';
+
+	let { message = "couldn't load", onretry }: { message?: string; onretry: () => void } = $props();
 </script>
 
-<p class="err" role="status" aria-live="polite">
+<p
+	class="err"
+	role="status"
+	aria-live="polite"
+	in:fly={{ y: 8, duration: $prefersReducedMotion ? 0 : 200 }}
+>
 	<span class="msg">{message}</span>
 	<span class="sep" aria-hidden="true">·</span>
 	<button type="button" class="retry" onclick={onretry}>retry →</button>
@@ -35,6 +43,7 @@
 		cursor: pointer;
 	}
 	.retry:hover { color: var(--color-hot); }
+	.retry:active { color: var(--color-hot); }
 	.retry:focus-visible {
 		outline: 2px solid var(--color-warm);
 		outline-offset: 2px;
