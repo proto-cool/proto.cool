@@ -129,7 +129,7 @@
 		border: 1px solid var(--color-edge);
 		text-decoration: none;
 		color: inherit;
-		transition: color 100ms ease;
+		transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
 		/* Avoid the doubled-border effect by collapsing shared edges. */
 		margin: -0.5px 0 0 -0.5px;
 	}

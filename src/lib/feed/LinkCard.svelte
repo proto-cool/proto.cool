@@ -47,6 +47,7 @@
 		text-decoration: none;
 		color: inherit;
 		overflow: hidden;
+		transition: border-color var(--dur-fast) ease;
 	}
 	.thumb { aspect-ratio: 1; overflow: hidden; }
 	.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }

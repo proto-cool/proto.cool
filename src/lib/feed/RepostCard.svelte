@@ -142,6 +142,7 @@
 	.handle {
 		color: var(--color-fg);
 		text-decoration: none;
+		transition: color var(--dur-fast) ease, text-decoration-color var(--dur-fast) ease;
 	}
 	.handle:hover {
 		color: var(--color-warm);
