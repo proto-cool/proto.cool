@@ -781,7 +781,7 @@
 	.reveal {
 		opacity: 0;
 		transform: translateY(8px);
-		transition: opacity 240ms ease-out, transform 240ms ease-out;
+		transition: opacity var(--dur-base) ease-out, transform var(--dur-base) ease-out;
 	}
 	.reveal.revealed {
 		opacity: 1;

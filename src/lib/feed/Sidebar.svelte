@@ -143,7 +143,7 @@
 		justify-content: center;
 		height: 24px;
 		color: var(--color-fg-dim);
-		transition: color 100ms ease;
+		transition: color var(--dur-fast) ease;
 	}
 	.cell .icon-text {
 		font-family: var(--font-display);
@@ -157,7 +157,7 @@
 		letter-spacing: 0.16em;
 		text-transform: lowercase;
 		color: var(--color-fg-dim);
-		transition: color 100ms ease;
+		transition: color var(--dur-fast) ease;
 	}
 	.cell:hover .icon { color: var(--color-warm); }
 	.cell:hover .label { color: var(--color-fg); }
