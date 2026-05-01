@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { prefersReducedMotion } from '$lib/prefers-reduced-motion';
 
 	export type LightboxImage = { src: string; alt?: string };
 
@@ -34,6 +36,7 @@
 	tabindex="-1"
 	onclick={(e) => { if (e.target === e.currentTarget) onClose(); }}
 	onkeydown={(e) => { if (e.key === 'Escape') onClose(); }}
+	transition:fade={{ duration: $prefersReducedMotion ? 0 : 200 }}
 >
 	<button class="close" type="button" aria-label="close" onclick={onClose}>×</button>
 	{#if images.length > 1}
@@ -41,7 +44,14 @@
 		<button class="nav next" type="button" aria-label="next" disabled={index === images.length - 1} onclick={next}>›</button>
 		<div class="counter">{index + 1} / {images.length}</div>
 	{/if}
-	<img src={current.src} alt={current.alt ?? ''} />
+	{#key current.src}
+		<img
+			src={current.src}
+			alt={current.alt ?? ''}
+			in:fade={{ duration: $prefersReducedMotion ? 0 : 120 }}
+			out:fade={{ duration: $prefersReducedMotion ? 0 : 120 }}
+		/>
+	{/key}
 	{#if current.alt}
 		<p class="alt">{current.alt}</p>
 	{/if}
