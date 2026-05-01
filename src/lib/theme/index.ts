@@ -24,14 +24,29 @@ export const currentTheme = writable<ThemeId>(
 /**
  * Browser-only: switch to the named theme.
  * Validates against the registry. Persists to cookie + updates the dom.
+ * When the View Transitions API is available the swap is wrapped in
+ * document.startViewTransition() so the global ::view-transition cross-fade
+ * (defined in app.css) plays automatically.
  */
 export function setTheme(id: ThemeId): void {
-	const resolved = resolveTheme(id);
-	writeCookie(THEME_COOKIE, resolved);
+	const apply = () => {
+		const resolved = resolveTheme(id);
+		writeCookie(THEME_COOKIE, resolved);
+		if (typeof document !== 'undefined') {
+			document.documentElement.dataset.theme = resolved;
+		}
+		currentTheme.set(resolved);
+	};
 	if (typeof document !== 'undefined') {
-		document.documentElement.dataset.theme = resolved;
+		const startVT = (
+			document as Document & { startViewTransition?: (cb: () => unknown) => unknown }
+		).startViewTransition;
+		if (typeof startVT === 'function') {
+			startVT.call(document, apply);
+			return;
+		}
 	}
-	currentTheme.set(resolved);
+	apply();
 }
 
 /**
