@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import Halo from './Halo.svelte';
 	import InstrumentCluster from './InstrumentCluster.svelte';
@@ -35,6 +36,14 @@
 		avatarId = '@proto.cool',
 		mark = '01'
 	}: Props = $props();
+
+	let revealed = $state(false);
+	onMount(() => {
+		// rAF avoids the inserted-then-snapped-to-hidden one-frame flicker:
+		// the browser paints once with `revealed === false` styles applied,
+		// then we flip — and the transition fires from the hidden state.
+		requestAnimationFrame(() => (revealed = true));
+	});
 
 	let sectionName = $derived(page.url.pathname.split('/').filter(Boolean)[0] ?? 'index');
 
@@ -75,7 +84,7 @@
 		<span class="meta-tag warm">est mmxxvi</span>
 	</p>
 
-	<h1 class="intro-lockup">
+	<h1 class="intro-lockup reveal" class:revealed>
 		<span class="lk-line lk-l1"
 			>{parts.before}{#if parts.mid}<em>{parts.mid}</em>{/if}{parts.after}</span
 		>
@@ -87,7 +96,7 @@
 	</h1>
 
 	{#if deck}
-		<p class="intro-deck">{@render deck()}</p>
+		<p class="intro-deck reveal delay-1" class:revealed>{@render deck()}</p>
 	{/if}
 
 	<div class="halo-foot" aria-hidden="true">
@@ -98,7 +107,7 @@
 	</div>
 
 	{#if variant !== 'compact'}
-		<aside class="intro-aside" aria-label={avatar ? 'portrait' : 'live signal'}>
+		<aside class="intro-aside reveal delay-2" class:revealed aria-label={avatar ? 'portrait' : 'live signal'}>
 			{#if avatar}
 				<figure class="intro-avatar">
 					<span class="av-rail" aria-hidden="true">// subj 01 · 2026</span>
@@ -763,6 +772,30 @@
 		.halo-foot .hf-rule::before,
 		.halo-foot .hf-rule::after {
 			display: none;
+		}
+	}
+
+	/* ============================================================
+	   Reveal cascade — staggered fade-up on first mount
+	   ============================================================ */
+	.reveal {
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 240ms ease-out, transform 240ms ease-out;
+	}
+	.reveal.revealed {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.reveal.delay-1 { transition-delay: 80ms; }
+	.reveal.delay-2 { transition-delay: 160ms; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal,
+		.reveal.revealed {
+			opacity: 1;
+			transform: none;
+			transition: none;
 		}
 	}
 </style>
